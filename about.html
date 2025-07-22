@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>임재균 자기소개</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        background: #f0f0f0;
+      }
+
+      .card {
+        width: 1000px;
+        margin: 3rem auto;
+        background: white;
+        display: flex;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .left {
+        flex: 2;
+        padding: 2rem;
+        border-right: 1px solid #eee;
+      }
+
+      .right {
+        flex: 1;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fafafa;
+      }
+
+      .logo {
+        max-width: 100px;
+        margin-bottom: 1rem;
+      }
+
+      .company-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .info {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: #444;
+      }
+
+      .buttons {
+        margin-bottom: 1rem;
+      }
+
+      .buttons button {
+        padding: 0.5rem 1rem;
+        background: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-right: 0.5rem;
+        cursor: pointer;
+      }
+
+      .intro {
+        line-height: 1.6;
+        font-size: 1rem;
+        white-space: pre-line;
+      }
+
+      @media print {
+        .buttons {
+          display: none;
+        }
+      }
+      .pdf-link {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        background-color: #0066cc;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        white-space: nowrap;
+      }
+
+      .pdf-link:hover {
+        background-color: #005bb5;
+      }
+
+      @media print {
+        .pdf-link {
+          all: unset;
+          color: black;
+          font-weight: normal;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="left">
+        <div class="buttons">
+          <button onclick="showIntro('pm')">PM 자기소개</button>
+          <button onclick="showIntro('dev')">개발자 자기소개</button>
+          <button onclick="showIntro('forPort')">PDF_port</button>
+          <button onclick="showIntro('forSumm')">PDF_summ</button>
+        </div>
+        <div class="intro" id="introText">자기소개를 선택해 주세요.</div>
+      </div>
+      <div class="right">
+        <img class="logo" src="images/임재균.png" alt="프로필 사진" />
+        <div class="company-name">임재균</div>
+        <div class="info">
+          <!--           집연구소 HTML5 Game Company<br />
+          충남 아산시 배방읍 희망로46번길 45-7<br />
+          창조빌딩 504호 (주)집연구소<br /> -->
+          T. 010.7268.1012<br />
+          E. torrico203@gmail.com
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const intros = {
+        pm: `저는 소규모 게임사를 11년간 공동 운영하며,
+기획/개발부터 출시, 운영, 서비스 종료, 법인 청산까지
+게임 라이프사이클 전 과정을 실무로 경험한 임재균입니다.
+
+특히, 방치형 RPG, 디펜스 RPG 같은 미드코어 게임부터
+MMORPG 프로젝트까지 다양한 장르의 프로젝트를 주도하며,
+작은 규모에서도 실질적인 성과를 내기 위한 전략과 실행을
+직접 고민하고 실천해 왔습니다.
+
+그 과정에서 매출, 이탈률, 행동 데이터를 기반으로
+게임 업데이트, 제품 개선 및 수익화 전략을 도출한 경험이 있습니다.
+또한 국내외 퍼블리싱 계약을 직접 체결하며 사업 총괄로서의 역할도 수행했고,
+다양한 직군과 협업하며 일정 관리와 문제 해결에서도 리더십을 발휘해 왔습니다.
+
+무엇보다, 성공뿐만 아니라 실패의 경험도 온전히 책임지며 얻은
+교훈과 통찰력을 바탕으로, 어떤 상황에서도 실현 가능한 전략을 수립하고
+강력하게 실행할 수 있는 실전형 PM으로 팀에 기여할 준비가 되어 있습니다.
+      `,
+        dev: `저는 기획자이자 개발자로서,
+RPG 기반 게임의 기획부터 개발, 서비스까지 전 과정을 직접 수행해온 임재균입니다.
+
+11년간 인디 게임 개발사를 공동 운영하며,
+MMORPG와 방치형 RPG 등 다양한 장르의 프로젝트를 주도해왔습니다.
+단순히 기획서를 작성하는 데 그치지 않고, 아이디어를 실제 게임으로 구현하고,
+출시 이후에는 유저 지표 분석, BM 설계, 콘텐츠 개선까지 전반을 책임졌습니다.
+
+MMORPG 프로젝트에서는 클래스별 역할, 성장 구조, 경제 시스템까지 설계했으며,
+방치형 및 로그라이트 RPG에서는 반복 피로도를 줄이기 위한 콘텐츠 구조와 수집 요소 
+설계를 통해 유저 몰입도를 높였습니다.
+
+Unity, Node.js, HTML5 등 다양한 기술을 직접 다루며 프로토타입을 구현했고,
+출시 이후에는 리텐션, 전환율, ARPU 등의 주요 지표를 분석해 실질적인 개선으로 이어갔습니다.
+
+이처럼 기획과 개발 양측의 언어를 이해하고,
+실현 가능한 전략을 빠르게 실행에 옮길 수 있는 실전형 인재로서,
+새로운 프로젝트에서도 주도적으로 기여할 준비가 되어 있습니다.
+      `,
+        forPort: `
+  <h2>포트폴리오 링크</h2>
+  <a href="https://torrico203.github.io/portfolio_projects.html" class="pdf-link" target="_blank">
+    포트폴리오 바로가기(클릭하세요)
+  </a>
+`,
+        forSumm: `
+  <h2>경력기술서 링크</h2>
+  <a href="https://torrico203.github.io" class="pdf-link" target="_blank">
+    경력기술서 바로가기(클릭하세요)
+  </a>
+`,
+      };
+
+      function showIntro(type) {
+        document.getElementById("introText").innerHTML = intros[type];
+      }
+    </script>
+  </body>
+</html>

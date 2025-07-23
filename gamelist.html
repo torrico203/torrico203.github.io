@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML5 게임 라인업</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        margin: 20px;
+        background-color: #eef2f7; /* Lighter background */
+        color: #333;
+      }
+      .container {
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px; /* More rounded corners */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
+      }
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5em; /* Larger title */
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 15px;
+      }
+      h2 {
+        color: #3498db;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-top: 40px;
+        font-size: 1.8em;
+      }
+      h3 {
+        color: #2980b9;
+        margin-top: 30px;
+        font-size: 1.4em;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      ul li {
+        background: #f7f9fc; /* Lighter list item background */
+        margin-bottom: 10px; /* More spacing between items */
+        padding: 15px 20px; /* More padding */
+        border-radius: 8px; /* Rounded corners for list items */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #e0e6ed; /* Subtle border */
+      }
+      ul li span {
+        /* For game titles */
+        flex-grow: 1;
+        font-weight: 500;
+        color: #444;
+      }
+      .monetization {
+        font-style: italic;
+        color: #7f8c8d;
+        margin-top: 10px;
+        font-size: 0.95em;
+      }
+      .game-category {
+        margin-bottom: 40px;
+      }
+
+      /* Button-like styles for links */
+      .button-link {
+        display: inline-block;
+        padding: 8px 15px;
+        margin-left: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px; /* Slightly more rounded buttons */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition and slight scale */
+        font-size: 0.9em;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Subtle button shadow */
+      }
+
+      /* Specific colors for different button types */
+      .gameplay-button {
+        background-color: #28a745; /* Green for Gameplay */
+      }
+      .gameplay-button:hover {
+        background-color: #218838;
+        transform: translateY(-1px); /* Slight lift on hover */
+      }
+
+      .video-button {
+        background-color: #dc3545; /* Red for Video */
+      }
+      .video-button:hover {
+        background-color: #c82333;
+        transform: translateY(-1px);
+      }
+
+      .download-button {
+        background-color: #007bff; /* Blue for Download */
+      }
+      .download-button:hover {
+        background-color: #0069d9;
+        transform: translateY(-1px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>HTML5 게임 라인업</h1>
+
+      <div class="game-category">
+        <h2>🎮 캐주얼 웹 게임 (HTML5 기반)</h2>
+        <p class="monetization">수익 모델: 광고</p>
+        <ul>
+          <li>
+            <span>SEA POP</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/seapop/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Zone Defense</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/zonedefense/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Coin Dozer</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/coin/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Yeopjeon Matgo</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/matgo/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>King of Climbing, Kim Deungban</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/kim/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Claw Machine</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/picker/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Speed Maze</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/maze/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Birds Hear Words</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/word/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="game-category">
+        <h2>🚀 하이퍼 캐주얼 웹 게임 (HTML5 기반)</h2>
+        <ul>
+          <li>
+            <span>2048</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/2048-game/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Fast Knife</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/knife/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Moles Attack</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/molesattack/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Dodge</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/dodge/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+          <li>
+            <span>Block Breaker</span>
+            <a
+              href="http://cdn.zip-lab.co.kr/data/block/game/"
+              class="button-link gameplay-button"
+              target="_blank"
+              >Gameplay</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="game-category">
+        <h2>📱 모바일 게임 (Unity 기반)</h2>
+        <p class="monetization">수익 모델: 인앱 구매</p>
+        <ul>
+          <li>
+            <span>Cosmic Online (MMORPG)</span>
+            <a
+              href="https://youtu.be/f498fWwm7gg"
+              class="button-link video-button"
+              target="_blank"
+              >Video</a
+            >
+          </li>
+          <li>
+            <span>Heritage of Mayhem (Idle RPG Collector)</span>
+            <a
+              href="https://youtu.be/g_mbQVGDCVQ"
+              class="button-link video-button"
+              target="_blank"
+              >Video</a
+            >
+          </li>
+          <li>
+            <span>Heroic Tactics (Defense RPG)</span>
+            <a
+              href="https://youtu.be/on1oQGkgPdY"
+              class="button-link video-button"
+              target="_blank"
+              >Video</a
+            >
+          </li>
+          <li>
+            <span>DropPop (Casual Game)</span>
+            <a
+              href="https://youtu.be/TCBNeKnYya0"
+              class="button-link video-button"
+              target="_blank"
+              >Video</a
+            >
+          </li>
+          <li>
+            <span>Crush the Block (Casual Runner Game)</span>
+            <a
+              href="https://youtu.be/u7yK_a168ao"
+              class="button-link video-button"
+              target="_blank"
+              >Video</a
+            >
+          </li>
+          <li>
+            <span>Seoul Zombie (Idle RPG)</span>
+            <a
+              href="https://youtu.be/5vo2NKISCIM"
+              class="button-link video-button"
+              target="_blank"
+              >Video</a
+            >
+            <a
+              href="https://play.google.com/store/apps/details?id=com.ziplab.seoulzombie&hl=ko"
+              class="button-link download-button"
+              target="_blank"
+              >Google Download</a
+            >
+          </li>
+          <!--           <li><span>Casual Game 1 (Watermelon Game & Stages)</span></li>
+          <li><span>Casual Game 2 (Merge & Decorating)</span></li> -->
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

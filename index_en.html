@@ -17,6 +17,15 @@
         padding: 2rem 1rem;
         text-align: center;
       }
+      .button-wrapper {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10;
+        display: flex;
+        gap: 5px;
+      }
+
       .container {
         max-width: 800px;
         margin: 2rem auto;
@@ -89,15 +98,13 @@
         top: 3rem;
         left: 33rem;
       }
-
-      .buttons button {
+      .button-wrapper button {
         padding: 6px 12px;
         background: white;
         color: black;
         border: none;
         border-radius: 4px;
         font-weight: bold;
-        margin-left: 5px;
         cursor: pointer;
         font-size: 14px;
         transition: background-color 0.3s;
@@ -105,11 +112,22 @@
       .buttons button:hover {
         background: rgb(74, 75, 75);
       }
+      @media (max-width: 480px) {
+        .button-wrapper {
+          top: 10px;
+          left: 10px;
+          gap: 3px;
+        }
+        .button-wrapper button {
+          font-size: 12px;
+          padding: 4px 8px;
+        }
+      }
     </style>
   </head>
   <body>
     <header>
-      <div class="buttons">
+      <div class="button-wrapper">
         <button onclick="location.href='index.html'">KO</button>
         <button onclick="location.href='index_en.html'">EN</button>
       </div>

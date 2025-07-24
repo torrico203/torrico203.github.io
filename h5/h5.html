@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTML5 게임 사업</title>
+    <title>HTML5 게임 사업 방향성</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,14 +12,6 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Chosen Palette: Calm Harmony -->
-    <!-- Application Structure Plan: A single-page, vertical-scrolling application with a sticky navigation header for quick access to key sections: "개요 (Overview)", "장단점 비교 (Pros & Cons)", "g123 분석 (g123 Analysis)", and "사업 방안 (Business Plan)". The structure is designed to guide the user through a narrative: starting with a general overview, moving to a detailed, interactive comparison of strengths and weaknesses, then providing a specific case study/analysis (g123), and concluding with a clear, visual representation of the strategic plan. This linear-yet-navigable flow is effective for presenting a strategic report, ensuring key takeaways are easily digestible and contextualized by a relevant example. -->
-    <!-- Visualization & Content Choices: 
-        1. Report Info: Pros & Cons List -> Goal: Compare -> Viz/Presentation: A two-column card layout for direct side-by-side comparison, enhanced with a horizontal bar chart visualizing a "Business Impact Score" for each point. -> Interaction: None (static visual weight). -> Justification: This transforms a static list into an engaging, at-a-glance analysis, making the relative importance of each factor immediately apparent to decision-makers. -> Library/Method: HTML/Tailwind for layout, Chart.js for the chart.
-        2. Report Info: Business Plan (Phased approach) -> Goal: Show Process/Change -> Viz/Presentation: A clean, numbered, step-by-step visual diagram built with HTML/CSS. -> Interaction: Static visual flow. -> Justification: A process diagram is more intuitive for communicating a sequence of actions than a simple text list, clearly illustrating the strategic roadmap from R&D to scalable implementation. -> Library/Method: HTML/Tailwind.
-        3. Report Info: g123 Site Analysis -> Goal: Inform/Analyze Case Study -> Viz/Presentation: Dedicated section with textual content (overview, strengths, challenges, implications) presented in a clear, readable format using headings and paragraphs. -> Interaction: None. -> Justification: Providing a concrete example like g123 helps ground the theoretical discussion of HTML5 games in a real-world context, offering insights into existing models and potential strategies. -> Library/Method: HTML/Tailwind.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
       body {
         font-family: "Noto Sans KR", sans-serif;
@@ -72,6 +64,12 @@
         <h1 class="text-xl font-bold text-[#3D405B]">HTML5 게임 사업 전략</h1>
         <div class="hidden md:flex space-x-8">
           <a
+            href="https://torrico203.github.io/gamelist.html"
+            target="_blank"
+            class="text-red-600 hover:text-[#81B29A] transition-colors"
+            >H5 게임</a
+          >
+          <a
             href="#overview"
             class="text-gray-600 hover:text-[#81B29A] transition-colors"
             >개요</a
@@ -82,14 +80,19 @@
             >장단점 비교</a
           >
           <a
-            href="#g123-analysis"
+            href="#platform-analysis"
             class="text-gray-600 hover:text-[#81B29A] transition-colors"
-            >g123 분석</a
+            >플랫폼 분석</a
           >
           <a
             href="#plan"
             class="text-gray-600 hover:text-[#81B29A] transition-colors"
             >사업 방안</a
+          >
+          <a
+            href="#framework-strategy"
+            class="text-gray-600 hover:text-[#81B29A] transition-colors"
+            >프레임워크 전략</a
           >
         </div>
         <div class="md:hidden">
@@ -97,10 +100,17 @@
             id="mobile-nav"
             class="bg-white border border-gray-300 rounded-md p-2 text-gray-600"
           >
+            <option
+              value="https://torrico203.github.io/gamelist.html"
+              data-target="_blank"
+            >
+              H5 게임
+            </option>
             <option value="#overview">개요</option>
             <option value="#comparison">장단점 비교</option>
-            <option value="#g123-analysis">g123 분석</option>
+            <option value="#platform-analysis">플랫폼 분석</option>
             <option value="#plan">사업 방안</option>
+            <option value="#framework-strategy">프레임워크 전략</option>
           </select>
         </div>
       </nav>
@@ -113,11 +123,9 @@
             HTML5 게임, 새로운 기회의 문을 열다
           </h2>
           <p class="text-lg text-gray-700 max-w-3xl mx-auto">
-            본 보고서는 HTML5 게임 시장의 잠재력을 분석하고, 성공적인 사업화를
-            위한 전략적 방향을 제시합니다. 별도의 설치 없이 웹에서 바로 즐기는
-            접근성과 플랫폼 독립성은 강력한 무기이지만, 인지도 확보와 수익 모델
-            구축이라는 과제 또한 명확합니다. 이 기회와 위협 요인을 종합적으로
-            분석하여 최적의 사업 로드맵을 제안합니다.
+            HTML5 게임 시장의 잠재력을 분석하고 성공 전략을 제시합니다. 웹
+            기반의 접근성과 플랫폼 독립성은 강력한 장점이지만, 인지도 확보와
+            수익 모델 구축은 주요 과제입니다.
           </p>
         </div>
       </section>
@@ -127,8 +135,7 @@
           <div class="text-center mb-12">
             <h2 class="text-3xl font-bold mb-2">기회와 위협: 장단점 분석</h2>
             <p class="text-md text-gray-600">
-              HTML5 게임 사업의 명과 암을 한눈에 비교하고, 각 요소가 비즈니스에
-              미치는 영향을 확인하세요.
+              HTML5 게임 사업의 명과 암을 비교
             </p>
           </div>
 
@@ -139,24 +146,24 @@
               <h3
                 class="text-2xl font-bold mb-4 text-[#81B29A] flex items-center"
               >
-                <span class="text-3xl mr-3">👍</span> 장점 (Pros)
+                <span class="text-3xl mr-3">👍</span> 장점
               </h3>
-              <ul class="space-y-4 text-gray-700">
+              <ul class="space-y-2 text-gray-700">
                 <li>
-                  <strong class="font-semibold">접근성 극대화:</strong> 별도
-                  설치 없이 웹 브라우저로 즉시 실행하여 진입 장벽 최소화.
+                  <strong class="font-semibold">간편한 접근성:</strong> 설치
+                  없이 웹 브라우저로 즉시 실행.
                 </li>
                 <li>
-                  <strong class="font-semibold">우수한 개발 효율:</strong> 빠른
-                  개발, 배포, 업데이트가 가능하며 앱스토어 심사 불필요.
+                  <strong class="font-semibold">빠른 개발/배포:</strong>
+                  앱스토어 심사 없이 유연한 업데이트.
                 </li>
                 <li>
                   <strong class="font-semibold">플랫폼 독립성:</strong> OS/기기
-                  제약 없이 단일 소스로 다양한 사용자층 확보.
+                  제약 없이 넓은 사용자층 확보.
                 </li>
                 <li>
-                  <strong class="font-semibold">충분한 퍼포먼스:</strong> WebGL,
-                  WebAssembly 기술 발전으로 미드코어급 게임 구현 가능.
+                  <strong class="font-semibold">향상된 퍼포먼스:</strong> WebGL,
+                  WebAssembly로 미드코어급 구현 가능.
                 </li>
               </ul>
             </div>
@@ -166,25 +173,24 @@
               <h3
                 class="text-2xl font-bold mb-4 text-[#E07A5F] flex items-center"
               >
-                <span class="text-3xl mr-3">👎</span> 단점 (Cons)
+                <span class="text-3xl mr-3">👎</span> 단점
               </h3>
-              <ul class="space-y-4 text-gray-700">
+              <ul class="space-y-2 text-gray-700">
                 <li>
-                  <strong class="font-semibold">인지도 확보의 어려움:</strong>
-                  앱스토어와 같은 강력한 유통 플랫폼 부재로 초기 유저 유입이
-                  힘듦.
+                  <strong class="font-semibold">낮은 인지도:</strong> 앱스토어
+                  부재로 초기 유저 확보 어려움.
                 </li>
                 <li>
-                  <strong class="font-semibold">수익 모델의 한계:</strong>
-                  검증된 모바일 인앱 결제, 광고 모델을 웹에 적용하기 어려움.
+                  <strong class="font-semibold">수익 모델 한계:</strong> 웹
+                  환경에 맞는 수익 모델 정립 필요.
                 </li>
                 <li>
-                  <strong class="font-semibold">'킬러 콘텐츠' 부재:</strong>
-                  시장을 주도할 유명 게임이 없어 선순환 구조 형성 난항.
+                  <strong class="font-semibold">킬러 콘텐츠 부재:</strong> 시장
+                  주도할 유명 게임 부족.
                 </li>
                 <li>
-                  <strong class="font-semibold">사용자 습관:</strong> 게임은
-                  앱으로 즐긴다는 기존 사용자들의 익숙한 패턴을 전환시켜야 함.
+                  <strong class="font-semibold">사용자 습관:</strong> 앱 중심의
+                  게임 플레이 습관 전환 유도 필요.
                 </li>
               </ul>
             </div>
@@ -195,8 +201,7 @@
               비즈니스 영향도 시각화
             </h3>
             <p class="text-center text-gray-600 mb-6">
-              각 항목이 사업 성공에 미치는 잠재적 영향력을 차트로 비교
-              분석합니다.
+              각 항목이 사업 성공에 미치는 잠재적 영향력 비교 분석
             </p>
             <div class="chart-container">
               <canvas id="impactChart"></canvas>
@@ -205,90 +210,146 @@
         </div>
       </section>
 
-      <section id="g123-analysis" class="py-20 bg-white">
+      <section id="platform-analysis" class="py-20 bg-white">
         <div class="container mx-auto px-6">
           <div class="text-center mb-12">
             <h2 class="text-3xl font-bold mb-2">
-              g123 사이트 분석: 성공 사례와 시사점
+              주요 HTML5 게임 플랫폼 분석 및 전략
             </h2>
             <p class="text-md text-gray-600">
-              g123은 HTML5 게임 시장에서 주목할 만한 플랫폼입니다. 이 섹션에서는
-              g123의 특징과 우리의 사업 방향성에 주는 시사점을 분석합니다.
+              다양한 HTML5 게임 플랫폼의 현황을 분석 및 전략적 방향 모색
             </p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-gray-50 p-6 rounded-lg shadow-md mb-8 overflow-x-auto">
+            <h3 class="text-xl font-bold mb-4 text-[#3D405B]">
+              플랫폼별 현황 요약
+            </h3>
+            <table
+              class="min-w-full bg-white rounded-lg overflow-hidden shadow-sm"
+            >
+              <thead class="bg-[#81B29A] text-white">
+                <tr>
+                  <th class="py-3 px-4 text-left">플랫폼</th>
+                  <th class="py-3 px-4 text-left">월간 방문자 (MAU)</th>
+                  <th class="py-3 px-4 text-left">추정 연매출</th>
+                  <th class="py-3 px-4 text-left">주요 인기 게임 / 장르</th>
+                  <th class="py-3 px-4 text-left">수익 모델</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-b border-gray-200">
+                  <td class="py-3 px-4">G123 (CTW Inc.)</td>
+                  <td class="py-3 px-4">5억 가입자, 25개 활성 게임</td>
+                  <td class="py-3 px-4">IPO 계획, 구체 매출 자료 미공개</td>
+                  <td class="py-3 px-4">
+                    Vivid Army, Queen’s Blade 등 2D RPG/방치형 RPG
+                  </td>
+                  <td class="py-3 px-4">HTML5 즉시 실행, IAP + 광고</td>
+                </tr>
+                <tr class="border-b border-gray-200 bg-gray-50">
+                  <td class="py-3 px-4">CrazyGames</td>
+                  <td class="py-3 px-4">~3500만 MAU</td>
+                  <td class="py-3 px-4">약 800만 달러/년</td>
+                  <td class="py-3 px-4">
+                    Shell Shockers (2D FPS), Paper.io, 팝업 퍼즐/RPG 라이트
+                  </td>
+                  <td class="py-3 px-4">광고 기반 + IAP 수익 공유</td>
+                </tr>
+                <tr class="border-b border-gray-200">
+                  <td class="py-3 px-4">Poki</td>
+                  <td class="py-3 px-4">1억 7120만 방문/3개월</td>
+                  <td class="py-3 px-4">공개 자료 없음</td>
+                  <td class="py-3 px-4">
+                    캐주얼·방치·미드코어 RPG 등 라이트 HTML5
+                  </td>
+                  <td class="py-3 px-4">광고 중심</td>
+                </tr>
+                <tr class="border-b border-gray-200 bg-gray-50">
+                  <td class="py-3 px-4">Kongregate</td>
+                  <td class="py-3 px-4">
+                    과거 월간 수백만 방문, 현재 모바일 중심 전환
+                  </td>
+                  <td class="py-3 px-4">미공개 (퍼블리싱 주력)</td>
+                  <td class="py-3 px-4">
+                    AdVenture Capitalist, Realm Grinder (방치형 RPG)
+                  </td>
+                  <td class="py-3 px-4">IAP + 광고 기반</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">37Games</td>
+                  <td class="py-3 px-4">중국 및 동남아 중심, 웹+모바일 통합</td>
+                  <td class="py-3 px-4">미공개</td>
+                  <td class="py-3 px-4">브라우저 RPG·SLG·방치형 하이브리드</td>
+                  <td class="py-3 px-4">전통 IAP 및 광고</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div class="bg-gray-50 p-6 rounded-lg shadow-md">
               <h3 class="text-xl font-bold mb-3 text-[#3D405B]">
-                g123 개요 및 특징
+                주요 게임 & 수익모델 사례
               </h3>
-              <p class="text-gray-700 mb-4">
-                g123은 별도 다운로드 없이 웹 브라우저에서 바로 즐길 수 있는
-                HTML5 기반의 캐주얼 및 미드코어 게임을 제공하는 플랫폼입니다.
-                주로 일본 시장에서 큰 인기를 얻고 있으며, 간편한 접근성과 다양한
-                IP(지식재산권) 활용 게임으로 사용자층을 확보하고 있습니다.
-              </p>
               <ul class="list-disc list-inside text-gray-700 space-y-2">
                 <li>
-                  <strong class="font-semibold">간편한 접근성:</strong> 원클릭
-                  플레이, 소셜 계정 연동.
+                  <strong class="font-semibold">G123:</strong> 일본 애니 IP 기반
+                  RPG/방치형, HTML5 즉시 실행. IP 팬덤 충성도 확보.
                 </li>
                 <li>
-                  <strong class="font-semibold">다양한 IP 게임:</strong> 유명
-                  애니메이션/만화 IP를 활용한 게임 다수.
+                  <strong class="font-semibold">CrazyGames:</strong> 2D FPS
+                  Shell Shockers, 퍼즐 Trivia Crack 등 다양한 장르 성공.
                 </li>
                 <li>
-                  <strong class="font-semibold">효율적인 마케팅:</strong> 웹툰,
-                  웹소설 등과 연계한 마케팅 전략.
+                  <strong class="font-semibold">Kongregate:</strong> AdVenture
+                  Capitalist, Realm Grinder 등 방치형 RPG 라이트 장르에서 높은
+                  성과.
                 </li>
               </ul>
             </div>
             <div class="bg-gray-50 p-6 rounded-lg shadow-md">
               <h3 class="text-xl font-bold mb-3 text-[#3D405B]">
-                강점 및 시사점
+                플랫폼별 수익모델 특징
               </h3>
-              <p class="text-gray-700 mb-4">
-                g123의 성공은 HTML5 게임의 잠재력을 보여줍니다. 특히 IP 활용과
-                간편한 접근성, 그리고 효과적인 마케팅 전략은 우리가 벤치마킹할
-                수 있는 중요한 요소입니다.
-              </p>
               <ul class="list-disc list-inside text-gray-700 space-y-2">
                 <li>
-                  <strong class="font-semibold">IP의 힘:</strong> 강력한 IP는
-                  인지도 확보 및 초기 유저 유입에 결정적 역할.
+                  <strong class="font-semibold">G123:</strong> IP 중심 IAP +
+                  가챠 + VIP 시스템 + 광고.
                 </li>
                 <li>
-                  <strong class="font-semibold">수익 모델 다각화:</strong> 인앱
-                  결제 외 광고, 구독 등 다양한 수익 모델 시도.
+                  <strong class="font-semibold">CrazyGames:</strong> 광고 수익
+                  중심, 인앱 결제(IAP) 병행.
                 </li>
                 <li>
-                  <strong class="font-semibold">빠른 콘텐츠 순환:</strong> 웹
-                  기반의 장점을 활용한 빠른 게임 출시 및 업데이트.
+                  <strong class="font-semibold">Poki:</strong> 광고 기반, HTML5
+                  캐주얼 게임 중심.
+                </li>
+                <li>
+                  <strong class="font-semibold">Kongregate:</strong> IAP + 광고
+                  중심, HTML5 및 모바일 병행.
                 </li>
               </ul>
             </div>
           </div>
-          <div class="bg-gray-50 p-6 rounded-lg shadow-md mt-8">
+
+          <div class="bg-gray-50 p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-bold mb-3 text-[#3D405B]">
-              도전 과제 및 우리의 전략적 방향
+              전략적 인사이트
             </h3>
-            <p class="text-gray-700 mb-4">
-              g123 또한 "킬러 콘텐츠" 부재, 사용자 습관 전환 등의 단점을 완전히
-              극복하지 못하고 있습니다. 우리의 사업은 이러한 한계를 인지하고,
-              g123의 성공 요소를 우리 사업에 맞게 적용해야 합니다.
-            </p>
             <ul class="list-disc list-inside text-gray-700 space-y-2">
               <li>
-                <strong class="font-semibold">독자적인 IP 발굴:</strong>
-                장기적인 관점에서 자체 킬러 콘텐츠 확보 노력.
+                <strong class="font-semibold">IP 중심 + 즉시 실행:</strong>
+                G123처럼 애니 IP 기반 RPG/방치형으로 팬덤 공략, 글로벌 확대
+                검토.
               </li>
               <li>
-                <strong class="font-semibold">사용자 경험 최적화:</strong> 웹
-                환경에 맞는 UI/UX 및 리텐션 전략 강화.
+                <strong class="font-semibold">광고 + IAP 병행:</strong>
+                CrazyGames 구조대로 광고 수익 기반 + HTML5 간편 결제 기능 제공.
               </li>
               <li>
-                <strong class="font-semibold">글로벌 시장 확장:</strong> 특정
-                지역에 국한되지 않는 글로벌 서비스 모델 모색.
+                <strong class="font-semibold">트래픽 채널 확보:</strong> SEO,
+                UI/UX 최적화 통한 유입, Poki 수준의 글로벌 MAU 확보 전략 필요.
               </li>
             </ul>
           </div>
@@ -302,8 +363,7 @@
               성공을 위한 단계별 사업 방안
             </h2>
             <p class="text-md text-gray-600">
-              점진적 접근을 통해 리스크를 최소화하고 성공 가능성을 극대화하는
-              2단계 전략입니다.
+              리스크를 최소화하고 성공 가능성을 극대화하는 2단계 전략입니다.
             </p>
           </div>
 
@@ -319,12 +379,12 @@
                 1
               </div>
               <h3 class="text-2xl font-bold mt-8 mb-4">
-                Phase 1: R&D 및 파일럿 프로젝트
+                Phase 1: R&D 및 파일럿
               </h3>
               <p class="text-gray-600">
-                홍보용 미니 게임(오즈 리라이트, 프로젝트B 등)을 제작하여 시장
-                반응을 테스트하고 핵심 기술 R&D를 진행합니다. 이 단계에서 웹
-                게임 개발 노하우와 사용자 데이터를 확보하는 데 집중합니다.
+                홍보용 미니 게임(오즈 리라이트, 프로젝트B, 고블린 퀘스트 등)
+                제작으로 시장 반응 테스트, 핵심 기술 R&D 진행. 개발 노하우 및
+                사용자 데이터 확보에 집중.
               </p>
             </div>
 
@@ -340,10 +400,67 @@
                 Phase 2: 프레임워크 구축 및 확장
               </h3>
               <p class="text-gray-600">
-                R&D 결과를 바탕으로 확장성 높은 웹 게임 프레임워크를 구축합니다.
-                특히 방치형 장르의 핵심 시스템을 모듈화하여, 향후 다양한 IP의
-                게임을 최소한의 리소스로 빠르게 양산할 수 있는 기반을
-                마련합니다.
+                R&D 바탕으로 확장성 높은 웹 게임 프레임워크 구축. 방치형 장르
+                핵심 시스템 모듈화로 다양한 IP 게임 빠른 양산 기반 마련.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="framework-strategy" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-2">프레임워크 개발 단계</h2>
+            <p class="text-md text-gray-600">
+              HTML5 게임 개발을 위한 프레임워크 구축 프로세스
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div
+              class="bg-gray-50 p-6 rounded-lg shadow-md flex flex-col items-center text-center"
+            >
+              <div class="text-5xl mb-4 text-[#81B29A]">🎯</div>
+              <h3 class="text-xl font-bold mb-2 text-[#3D405B]">
+                1. 목표 정의
+              </h3>
+              <p class="text-gray-700">
+                "어떤 게임을 만들 것인가?" 타겟 장르, 개발자, 비즈니스 목표
+                설정.
+              </p>
+            </div>
+            <div
+              class="bg-gray-50 p-6 rounded-lg shadow-md flex flex-col items-center text-center"
+            >
+              <div class="text-5xl mb-4 text-[#F2CC8F]">🛠️</div>
+              <h3 class="text-xl font-bold mb-2 text-[#3D405B]">
+                2. 핵심 기능
+              </h3>
+              <p class="text-gray-700">
+                필수 기능 목록화 (렌더링, UI, 자산/입력/사운드, 네트워크, 플랫폼
+                연동 등).
+              </p>
+            </div>
+            <div
+              class="bg-gray-50 p-6 rounded-lg shadow-md flex flex-col items-center text-center"
+            >
+              <div class="text-5xl mb-4 text-[#E07A5F]">🏗️</div>
+              <h3 class="text-xl font-bold mb-2 text-[#3D405B]">3. 아키텍처</h3>
+              <p class="text-gray-700">
+                프레임워크 뼈대 설계. 기술 스택, 모듈화, 확장성, 성능, 보안
+                포함.
+              </p>
+            </div>
+            <div
+              class="bg-gray-50 p-6 rounded-lg shadow-md flex flex-col items-center text-center"
+            >
+              <div class="text-5xl mb-4 text-[#3D405B]">🧪</div>
+              <h3 class="text-xl font-bold mb-2 text-[#3D405B]">
+                4. 프로토타입
+              </h3>
+              <p class="text-gray-700">
+                핵심 기술 및 아키텍처 검증을 위한 PoC 또는 MVF 개발.
               </p>
             </div>
           </div>
@@ -448,10 +565,17 @@
 
         const mobileNav = document.getElementById("mobile-nav");
         mobileNav.addEventListener("change", (e) => {
-          const targetId = e.target.value;
-          document
-            .querySelector(targetId)
-            .scrollIntoView({ behavior: "smooth" });
+          const selectedOption = e.target.options[e.target.selectedIndex];
+          const targetUrl = selectedOption.value;
+          const openInNewTab = selectedOption.dataset.target === "_blank";
+
+          if (openInNewTab) {
+            window.open(targetUrl, "_blank");
+          } else {
+            document
+              .querySelector(targetUrl)
+              .scrollIntoView({ behavior: "smooth" });
+          }
         });
       });
     </script>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML5 게임 사업 방향성 대화형 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A single-page, vertical-scrolling application with a sticky navigation header for quick access to key sections: "개요 (Overview)", "장단점 비교 (Pros & Cons)", and "사업 방안 (Business Plan)". The structure is designed to guide the user through a narrative: starting with a general overview, moving to a detailed, interactive comparison of strengths and weaknesses, and concluding with a clear, visual representation of the strategic plan. This linear-yet-navigable flow is more effective for presenting a strategic report than a complex dashboard, ensuring key takeaways are easily digestible. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: Pros & Cons List -> Goal: Compare -> Viz/Presentation: A two-column card layout for direct side-by-side comparison, enhanced with a horizontal bar chart visualizing a "Business Impact Score" for each point. -> Interaction: Hovering over a card could highlight its corresponding bar in the chart (deferred for simplicity, but chart provides static visual weight). -> Justification: This transforms a static list into an engaging, at-a-glance analysis, making the relative importance of each factor immediately apparent to decision-makers. -> Library/Method: HTML/Tailwind for layout, Chart.js for the chart.
+        2. Report Info: Business Plan (Phased approach) -> Goal: Show Process/Change -> Viz/Presentation: A clean, numbered, step-by-step visual diagram built with HTML/CSS. -> Interaction: Static visual flow. -> Justification: A process diagram is more intuitive for communicating a sequence of actions than a simple text list, clearly illustrating the strategic roadmap from R&D to scalable implementation. -> Library/Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background-color: #f8f7f4;
+        color: #3d405b;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 400px;
+        max-height: 50vh;
+      }
+      @media (max-width: 768px) {
+        .chart-container {
+          height: 300px;
+          max-height: 60vh;
+        }
+      }
+      .step-connector::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -2.5rem;
+        width: 2rem;
+        height: 2px;
+        background-color: #f2cc8f;
+        transform: translateY(-50%);
+      }
+      @media (max-width: 768px) {
+        .step-connector::after {
+          top: auto;
+          bottom: -2.5rem;
+          left: 50%;
+          right: auto;
+          width: 2px;
+          height: 2rem;
+          transform: translateX(-50%);
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <nav
+        class="container mx-auto px-6 py-3 flex justify-between items-center"
+      >
+        <h1 class="text-xl font-bold text-[#3D405B]">HTML5 게임 사업 전략</h1>
+        <div class="hidden md:flex space-x-8">
+          <a
+            href="#overview"
+            class="text-gray-600 hover:text-[#81B29A] transition-colors"
+            >개요</a
+          >
+          <a
+            href="#comparison"
+            class="text-gray-600 hover:text-[#81B29A] transition-colors"
+            >장단점 비교</a
+          >
+          <a
+            href="#plan"
+            class="text-gray-600 hover:text-[#81B29A] transition-colors"
+            >사업 방안</a
+          >
+        </div>
+        <div class="md:hidden">
+          <select
+            id="mobile-nav"
+            class="bg-white border border-gray-300 rounded-md p-2 text-gray-600"
+          >
+            <option value="#overview">개요</option>
+            <option value="#comparison">장단점 비교</option>
+            <option value="#plan">사업 방안</option>
+          </select>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="overview" class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+          <h2 class="text-4xl font-bold mb-4 text-[#3D405B]">
+            HTML5 게임, 새로운 기회의 문을 열다
+          </h2>
+          <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+            본 보고서는 HTML5 게임 시장의 잠재력을 분석하고, 성공적인 사업화를
+            위한 전략적 방향을 제시합니다. 별도의 설치 없이 웹에서 바로 즐기는
+            접근성과 플랫폼 독립성은 강력한 무기이지만, 인지도 확보와 수익 모델
+            구축이라는 과제 또한 명확합니다. 이 기회와 위협 요인을 종합적으로
+            분석하여 최적의 사업 로드맵을 제안합니다.
+          </p>
+        </div>
+      </section>
+
+      <section id="comparison" class="py-20">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-2">기회와 위협: 장단점 분석</h2>
+            <p class="text-md text-gray-600">
+              HTML5 게임 사업의 명과 암을 한눈에 비교하고, 각 요소가 비즈니스에
+              미치는 영향을 확인하세요.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div
+              class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-[#81B29A]"
+            >
+              <h3
+                class="text-2xl font-bold mb-4 text-[#81B29A] flex items-center"
+              >
+                <span class="text-3xl mr-3">👍</span> 장점 (Pros)
+              </h3>
+              <ul class="space-y-4 text-gray-700">
+                <li>
+                  <strong class="font-semibold">접근성 극대화:</strong> 별도
+                  설치 없이 웹 브라우저로 즉시 실행하여 진입 장벽 최소화.
+                </li>
+                <li>
+                  <strong class="font-semibold">우수한 개발 효율:</strong> 빠른
+                  개발, 배포, 업데이트가 가능하며 앱스토어 심사 불필요.
+                </li>
+                <li>
+                  <strong class="font-semibold">플랫폼 독립성:</strong> OS/기기
+                  제약 없이 단일 소스로 다양한 사용자층 확보.
+                </li>
+                <li>
+                  <strong class="font-semibold">충분한 퍼포먼스:</strong> WebGL,
+                  WebAssembly 기술 발전으로 미드코어급 게임 구현 가능.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-[#E07A5F]"
+            >
+              <h3
+                class="text-2xl font-bold mb-4 text-[#E07A5F] flex items-center"
+              >
+                <span class="text-3xl mr-3">👎</span> 단점 (Cons)
+              </h3>
+              <ul class="space-y-4 text-gray-700">
+                <li>
+                  <strong class="font-semibold">인지도 확보의 어려움:</strong>
+                  앱스토어와 같은 강력한 유통 플랫폼 부재로 초기 유저 유입이
+                  힘듦.
+                </li>
+                <li>
+                  <strong class="font-semibold">수익 모델의 한계:</strong>
+                  검증된 모바일 인앱 결제, 광고 모델을 웹에 적용하기 어려움.
+                </li>
+                <li>
+                  <strong class="font-semibold">'킬러 콘텐츠' 부재:</strong>
+                  시장을 주도할 유명 게임이 없어 선순환 구조 형성 난항.
+                </li>
+                <li>
+                  <strong class="font-semibold">사용자 습관:</strong> 게임은
+                  앱으로 즐긴다는 기존 사용자들의 익숙한 패턴을 전환시켜야 함.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-2xl font-bold text-center mb-4">
+              비즈니스 영향도 시각화
+            </h3>
+            <p class="text-center text-gray-600 mb-6">
+              각 항목이 사업 성공에 미치는 잠재적 영향력을 차트로 비교
+              분석합니다.
+            </p>
+            <div class="chart-container">
+              <canvas id="impactChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="plan" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-2">
+              성공을 위한 단계별 사업 방안
+            </h2>
+            <p class="text-md text-gray-600">
+              점진적 접근을 통해 리스크를 최소화하고 성공 가능성을 극대화하는
+              2단계 전략입니다.
+            </p>
+          </div>
+
+          <div
+            class="flex flex-col md:flex-row justify-center items-center md:items-start gap-10 md:gap-20"
+          >
+            <div
+              class="relative text-center bg-white p-8 rounded-xl shadow-xl w-full max-w-sm step-connector"
+            >
+              <div
+                class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#81B29A] text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold"
+              >
+                1
+              </div>
+              <h3 class="text-2xl font-bold mt-8 mb-4">
+                Phase 1: R&D 및 파일럿 프로젝트
+              </h3>
+              <p class="text-gray-600">
+                홍보용 미니 게임(오즈 리라이트, 프로젝트B 등)을 제작하여 시장
+                반응을 테스트하고 핵심 기술 R&D를 진행합니다. 이 단계에서 웹
+                게임 개발 노하우와 사용자 데이터를 확보하는 데 집중합니다.
+              </p>
+            </div>
+
+            <div
+              class="relative text-center bg-white p-8 rounded-xl shadow-xl w-full max-w-sm"
+            >
+              <div
+                class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#E07A5F] text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold"
+              >
+                2
+              </div>
+              <h3 class="text-2xl font-bold mt-8 mb-4">
+                Phase 2: 프레임워크 구축 및 확장
+              </h3>
+              <p class="text-gray-600">
+                R&D 결과를 바탕으로 확장성 높은 웹 게임 프레임워크를 구축합니다.
+                특히 방치형 장르의 핵심 시스템을 모듈화하여, 향후 다양한 IP의
+                게임을 최소한의 리소스로 빠르게 양산할 수 있는 기반을
+                마련합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-[#3D405B] text-white py-8">
+      <div class="container mx-auto px-6 text-center">
+        <p>&copy; 2025 HTML5 Game Business Strategy.</p>
+        <p class="text-sm text-gray-400 mt-2">
+          본 자료는 이주현 대표님과의 사업 계획 수립을 위한 참고 자료입니다.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const chartData = {
+          labels: [
+            "접근성 극대화",
+            "개발 효율",
+            "플랫폼 독립성",
+            "퍼포먼스",
+            "인지도 확보",
+            "수익 모델",
+            "킬러 콘텐츠 부재",
+            "사용자 습관",
+          ],
+          datasets: [
+            {
+              label: "비즈니스 영향도",
+              data: [8, 7, 7, 6, -9, -8, -7, -6],
+              backgroundColor: (context) => {
+                const value = context.dataset.data[context.dataIndex];
+                return value > 0
+                  ? "rgba(129, 178, 154, 0.7)"
+                  : "rgba(224, 122, 95, 0.7)";
+              },
+              borderColor: (context) => {
+                const value = context.dataset.data[context.dataIndex];
+                return value > 0
+                  ? "rgba(129, 178, 154, 1)"
+                  : "rgba(224, 122, 95, 1)";
+              },
+              borderWidth: 1,
+            },
+          ],
+        };
+
+        const chartConfig = {
+          type: "bar",
+          data: chartData,
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    let label = context.dataset.label || "";
+                    if (label) {
+                      label += ": ";
+                    }
+                    const value = context.raw;
+                    label += Math.abs(value);
+                    label += value > 0 ? " (긍정적)" : " (부정적)";
+                    return label;
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "영향력 점수 (높을수록 중요)",
+                },
+                ticks: {
+                  callback: function (value) {
+                    return Math.abs(value);
+                  },
+                },
+              },
+              y: {
+                ticks: {
+                  font: {
+                    size: 12,
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        const ctx = document.getElementById("impactChart").getContext("2d");
+        new Chart(ctx, chartConfig);
+
+        const mobileNav = document.getElementById("mobile-nav");
+        mobileNav.addEventListener("change", (e) => {
+          const targetId = e.target.value;
+          document
+            .querySelector(targetId)
+            .scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
+</html>

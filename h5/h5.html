@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTML5 게임 사업 방향성 대화형 보고서</title>
+    <title>HTML5 게임 사업</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,10 +13,11 @@
       rel="stylesheet"
     />
     <!-- Chosen Palette: Calm Harmony -->
-    <!-- Application Structure Plan: A single-page, vertical-scrolling application with a sticky navigation header for quick access to key sections: "개요 (Overview)", "장단점 비교 (Pros & Cons)", and "사업 방안 (Business Plan)". The structure is designed to guide the user through a narrative: starting with a general overview, moving to a detailed, interactive comparison of strengths and weaknesses, and concluding with a clear, visual representation of the strategic plan. This linear-yet-navigable flow is more effective for presenting a strategic report than a complex dashboard, ensuring key takeaways are easily digestible. -->
+    <!-- Application Structure Plan: A single-page, vertical-scrolling application with a sticky navigation header for quick access to key sections: "개요 (Overview)", "장단점 비교 (Pros & Cons)", "g123 분석 (g123 Analysis)", and "사업 방안 (Business Plan)". The structure is designed to guide the user through a narrative: starting with a general overview, moving to a detailed, interactive comparison of strengths and weaknesses, then providing a specific case study/analysis (g123), and concluding with a clear, visual representation of the strategic plan. This linear-yet-navigable flow is effective for presenting a strategic report, ensuring key takeaways are easily digestible and contextualized by a relevant example. -->
     <!-- Visualization & Content Choices: 
-        1. Report Info: Pros & Cons List -> Goal: Compare -> Viz/Presentation: A two-column card layout for direct side-by-side comparison, enhanced with a horizontal bar chart visualizing a "Business Impact Score" for each point. -> Interaction: Hovering over a card could highlight its corresponding bar in the chart (deferred for simplicity, but chart provides static visual weight). -> Justification: This transforms a static list into an engaging, at-a-glance analysis, making the relative importance of each factor immediately apparent to decision-makers. -> Library/Method: HTML/Tailwind for layout, Chart.js for the chart.
+        1. Report Info: Pros & Cons List -> Goal: Compare -> Viz/Presentation: A two-column card layout for direct side-by-side comparison, enhanced with a horizontal bar chart visualizing a "Business Impact Score" for each point. -> Interaction: None (static visual weight). -> Justification: This transforms a static list into an engaging, at-a-glance analysis, making the relative importance of each factor immediately apparent to decision-makers. -> Library/Method: HTML/Tailwind for layout, Chart.js for the chart.
         2. Report Info: Business Plan (Phased approach) -> Goal: Show Process/Change -> Viz/Presentation: A clean, numbered, step-by-step visual diagram built with HTML/CSS. -> Interaction: Static visual flow. -> Justification: A process diagram is more intuitive for communicating a sequence of actions than a simple text list, clearly illustrating the strategic roadmap from R&D to scalable implementation. -> Library/Method: HTML/Tailwind.
+        3. Report Info: g123 Site Analysis -> Goal: Inform/Analyze Case Study -> Viz/Presentation: Dedicated section with textual content (overview, strengths, challenges, implications) presented in a clear, readable format using headings and paragraphs. -> Interaction: None. -> Justification: Providing a concrete example like g123 helps ground the theoretical discussion of HTML5 games in a real-world context, offering insights into existing models and potential strategies. -> Library/Method: HTML/Tailwind.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -81,6 +82,11 @@
             >장단점 비교</a
           >
           <a
+            href="#g123-analysis"
+            class="text-gray-600 hover:text-[#81B29A] transition-colors"
+            >g123 분석</a
+          >
+          <a
             href="#plan"
             class="text-gray-600 hover:text-[#81B29A] transition-colors"
             >사업 방안</a
@@ -93,6 +99,7 @@
           >
             <option value="#overview">개요</option>
             <option value="#comparison">장단점 비교</option>
+            <option value="#g123-analysis">g123 분석</option>
             <option value="#plan">사업 방안</option>
           </select>
         </div>
@@ -198,6 +205,96 @@
         </div>
       </section>
 
+      <section id="g123-analysis" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-2">
+              g123 사이트 분석: 성공 사례와 시사점
+            </h2>
+            <p class="text-md text-gray-600">
+              g123은 HTML5 게임 시장에서 주목할 만한 플랫폼입니다. 이 섹션에서는
+              g123의 특징과 우리의 사업 방향성에 주는 시사점을 분석합니다.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+              <h3 class="text-xl font-bold mb-3 text-[#3D405B]">
+                g123 개요 및 특징
+              </h3>
+              <p class="text-gray-700 mb-4">
+                g123은 별도 다운로드 없이 웹 브라우저에서 바로 즐길 수 있는
+                HTML5 기반의 캐주얼 및 미드코어 게임을 제공하는 플랫폼입니다.
+                주로 일본 시장에서 큰 인기를 얻고 있으며, 간편한 접근성과 다양한
+                IP(지식재산권) 활용 게임으로 사용자층을 확보하고 있습니다.
+              </p>
+              <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li>
+                  <strong class="font-semibold">간편한 접근성:</strong> 원클릭
+                  플레이, 소셜 계정 연동.
+                </li>
+                <li>
+                  <strong class="font-semibold">다양한 IP 게임:</strong> 유명
+                  애니메이션/만화 IP를 활용한 게임 다수.
+                </li>
+                <li>
+                  <strong class="font-semibold">효율적인 마케팅:</strong> 웹툰,
+                  웹소설 등과 연계한 마케팅 전략.
+                </li>
+              </ul>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+              <h3 class="text-xl font-bold mb-3 text-[#3D405B]">
+                강점 및 시사점
+              </h3>
+              <p class="text-gray-700 mb-4">
+                g123의 성공은 HTML5 게임의 잠재력을 보여줍니다. 특히 IP 활용과
+                간편한 접근성, 그리고 효과적인 마케팅 전략은 우리가 벤치마킹할
+                수 있는 중요한 요소입니다.
+              </p>
+              <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li>
+                  <strong class="font-semibold">IP의 힘:</strong> 강력한 IP는
+                  인지도 확보 및 초기 유저 유입에 결정적 역할.
+                </li>
+                <li>
+                  <strong class="font-semibold">수익 모델 다각화:</strong> 인앱
+                  결제 외 광고, 구독 등 다양한 수익 모델 시도.
+                </li>
+                <li>
+                  <strong class="font-semibold">빠른 콘텐츠 순환:</strong> 웹
+                  기반의 장점을 활용한 빠른 게임 출시 및 업데이트.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="bg-gray-50 p-6 rounded-lg shadow-md mt-8">
+            <h3 class="text-xl font-bold mb-3 text-[#3D405B]">
+              도전 과제 및 우리의 전략적 방향
+            </h3>
+            <p class="text-gray-700 mb-4">
+              g123 또한 "킬러 콘텐츠" 부재, 사용자 습관 전환 등의 단점을 완전히
+              극복하지 못하고 있습니다. 우리의 사업은 이러한 한계를 인지하고,
+              g123의 성공 요소를 우리 사업에 맞게 적용해야 합니다.
+            </p>
+            <ul class="list-disc list-inside text-gray-700 space-y-2">
+              <li>
+                <strong class="font-semibold">독자적인 IP 발굴:</strong>
+                장기적인 관점에서 자체 킬러 콘텐츠 확보 노력.
+              </li>
+              <li>
+                <strong class="font-semibold">사용자 경험 최적화:</strong> 웹
+                환경에 맞는 UI/UX 및 리텐션 전략 강화.
+              </li>
+              <li>
+                <strong class="font-semibold">글로벌 시장 확장:</strong> 특정
+                지역에 국한되지 않는 글로벌 서비스 모델 모색.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section id="plan" class="py-20 bg-gray-50">
         <div class="container mx-auto px-6">
           <div class="text-center mb-12">
@@ -258,7 +355,7 @@
       <div class="container mx-auto px-6 text-center">
         <p>&copy; 2025 HTML5 Game Business Strategy.</p>
         <p class="text-sm text-gray-400 mt-2">
-          본 자료는 이주현 대표님과의 사업 계획 수립을 위한 참고 자료입니다.
+          본 자료는 사업 계획 수립을 위한 참고 자료입니다.
         </p>
       </div>
     </footer>

@@ -30,6 +30,116 @@
         border-radius: 0.5rem;
         overflow: hidden;
       }
+      .timeline-item {
+        position: relative;
+        padding-left: 3rem;
+        margin-bottom: 2rem;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 0.5rem;
+        top: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        background-color: #81b29a;
+        border-radius: 50%;
+        z-index: 10;
+      }
+      .timeline-item::after {
+        content: "";
+        position: absolute;
+        left: 1rem;
+        top: 1.5rem;
+        bottom: -1rem;
+        width: 2px;
+        background-color: #f2cc8f;
+      }
+      .timeline-item:last-child::after {
+        display: none;
+      }
+      .timeline-grid {
+        display: grid;
+        grid-template-columns: 80px repeat(3, 1fr); /* Label column + 3 for '25, '26, '27 */
+        gap: 0.5rem;
+        align-items: center;
+        padding: 1rem;
+        background-color: #fdfbf8;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+      .timeline-header {
+        font-weight: bold;
+        text-align: center;
+        color: #3d405b;
+        padding: 0.5rem 0;
+      }
+      .timeline-label {
+        font-weight: 500;
+        color: #555;
+        text-align: right;
+        padding-right: 1rem;
+      }
+      .timeline-bar-container {
+        position: relative;
+        height: 1.5rem;
+        background-color: #e5e7eb; /* Light background for the track */
+        border-radius: 0.25rem;
+        overflow: hidden;
+      }
+      .timeline-bar {
+        width: 100%; /* Fill container width */
+        height: 100%; /* Fill container height */
+        border-radius: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 0.5rem;
+      }
+      /* Specific bar colors */
+      .bar-casual {
+        background-color: #81b29a;
+      }
+      .bar-rd {
+        background-color: #f2cc8f;
+      }
+      .bar-midcore {
+        background-color: #e07a5f;
+      }
+
+      /* Adjustments for smaller screens */
+      @media (max-width: 768px) {
+        .timeline-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        .timeline-label {
+          text-align: left;
+          padding-right: 0;
+          padding-bottom: 0.5rem;
+        }
+        .timeline-bar-container {
+          height: 2rem;
+        }
+        .timeline-bar {
+          position: relative; /* Make bars flow normally in mobile grid */
+          width: 100%; /* Take full width of their cell */
+          left: 0;
+          padding: 0.5rem;
+          margin-bottom: 0.5rem; /* Add spacing between bars in mobile */
+        }
+        .bar-casual,
+        .bar-rd,
+        .bar-midcore {
+          width: 100%; /* Full width in mobile column */
+          left: 0;
+        }
+      }
     </style>
   </head>
   <body class="antialiased">
@@ -132,7 +242,7 @@
           </ul>
         </div>
 
-        <div class="bg-gray-100 p-8 rounded-lg shadow-inner text-center">
+        <div class="bg-gray-100 p-8 rounded-lg shadow-inner text-center mb-12">
           <h3 class="text-2xl font-bold mb-4 text-[#3D405B]">
             미드 코어급 게임 / 웹 게임 미들웨어 프레임워크
           </h3>
@@ -141,6 +251,55 @@
             미드 코어 이상 게임 개발 또는 웹 게임 미들웨어 프레임워크 구축을
             통해 장기적 기술 경쟁력 확보.
           </p>
+        </div>
+
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+          <h3 class="text-2xl font-bold text-center mb-6 text-[#3D405B]">
+            연도별 개발 로드맵
+          </h3>
+          <div class="timeline-grid">
+            <div class="timeline-header">항목</div>
+            <div class="timeline-header">2025년</div>
+            <div class="timeline-header">2026년</div>
+            <div class="timeline-header">2027년</div>
+
+            <div class="timeline-label">캐주얼</div>
+            <div
+              class="timeline-bar-container grid-col-25"
+              style="grid-column: 2"
+            >
+              <div class="timeline-bar bar-casual">홍보용</div>
+            </div>
+            <div></div>
+            <div></div>
+
+            <div class="timeline-label">R&D</div>
+            <div
+              class="timeline-bar-container bar-rd"
+              style="grid-column: 2 / span 3"
+            >
+              <div class="timeline-bar">웹 게임 미들웨어 프레임워크</div>
+            </div>
+
+            <div
+              class="timeline-label"
+              style="
+                grid-column: 1 / span 2;
+                text-align: left;
+                padding-left: 1rem;
+              "
+            >
+              미드코어
+            </div>
+            <div
+              class="timeline-bar-container bar-midcore"
+              style="grid-column: 3 / span 2"
+            >
+              <div class="timeline-bar">
+                방치형 RPG, 수집형 RPG 등 미드코어 이하
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>

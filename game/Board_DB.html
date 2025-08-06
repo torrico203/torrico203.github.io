@@ -1027,6 +1027,7 @@
               "postgres_changes",
               { event: "*", schema: "public", table: "posts" },
               (payload) => {
+                console.log("*** REALTIME EVENT RECEIVED ***", payload); // 새로운 로그 추가
                 console.log("Change received from Supabase Realtime!", payload);
                 // 변경된 데이터에 따라 posts 배열 업데이트
                 if (payload.eventType === "INSERT") {
@@ -1043,6 +1044,10 @@
               }
             )
             .subscribe((status, err) => {
+              console.log(
+                "Supabase Realtime Subscription Status (Callback):",
+                status
+              ); // subscribe 콜백 상태 로그
               if (status === "SUBSCRIBED") {
                 console.log("Supabase Realtime 구독 상태: SUBSCRIBED");
               } else if (status === "CHANNEL_ERROR") {
@@ -1055,6 +1060,10 @@
                 showCustomAlert(
                   "Supabase 실시간 구독 시간 초과. 네트워크 연결을 확인해주세요."
                 );
+              } else if (status === "CLOSED") {
+                console.log("Supabase Realtime 구독 상태: CLOSED");
+              } else if (status === "ERRORED") {
+                console.error("Supabase Realtime 구독 상태: ERRORED", err);
               } else {
                 console.log("Supabase Realtime 구독 상태:", status);
               }

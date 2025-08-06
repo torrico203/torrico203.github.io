@@ -977,6 +977,9 @@
         }
       }
 
+      // 현재 구독 중인 채널을 추적하기 위한 변수
+      let currentSupabaseChannel = null;
+
       async function fetchAndSubscribePosts() {
         if (!supabase) {
           console.error(
@@ -1009,9 +1012,16 @@
         }
         loadingSpinner.style.display = "none";
 
+        // 기존 구독이 있다면 해제
+        if (currentSupabaseChannel) {
+          console.log("기존 Supabase Realtime 구독 해제 시도...");
+          await supabase.removeChannel(currentSupabaseChannel);
+          console.log("기존 Supabase Realtime 구독 해제 완료.");
+        }
+
         try {
           console.log("Supabase Realtime 구독 시도...");
-          supabase
+          currentSupabaseChannel = supabase
             .channel("public:posts")
             .on(
               "postgres_changes",
@@ -1033,18 +1043,23 @@
               }
             )
             .subscribe((status, err) => {
-              // subscribe 콜백 추가
               if (status === "SUBSCRIBED") {
                 console.log("Supabase Realtime 구독 상태: SUBSCRIBED");
               } else if (status === "CHANNEL_ERROR") {
                 console.error("Supabase Realtime 구독 채널 오류:", err);
+                showCustomAlert(
+                  "Supabase 실시간 구독 채널 오류가 발생했습니다. 콘솔을 확인해주세요."
+                );
               } else if (status === "TIMED_OUT") {
                 console.warn("Supabase Realtime 구독 시간 초과.");
+                showCustomAlert(
+                  "Supabase 실시간 구독 시간 초과. 네트워크 연결을 확인해주세요."
+                );
               } else {
                 console.log("Supabase Realtime 구독 상태:", status);
               }
             });
-          console.log("Supabase Realtime 구독 호출 완료."); // subscribe() 호출 직후
+          console.log("Supabase Realtime 구독 호출 완료.");
         } catch (e) {
           console.error("Supabase Realtime 구독 오류 (try-catch):", e.message);
           showCustomAlert(

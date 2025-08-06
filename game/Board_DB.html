@@ -17,50 +17,45 @@
         font-family: "Inter", sans-serif;
         background-color: #f3f4f6;
         display: flex;
-        justify-content: flex-start; /* Changed to flex-start to accommodate fixed sidebar */
+        justify-content: flex-start;
         align-items: flex-start;
         min-height: 100vh;
-        padding: 0; /* Removed padding from body, handled by content areas */
+        padding: 0;
         box-sizing: border-box;
-        overflow-x: hidden; /* Prevent horizontal scroll due to fixed element */
+        overflow-x: hidden;
       }
       .main-layout {
         display: flex;
         width: 100%;
-        /* max-width is now handled by individual sections */
-        background-color: #ffffff; /* This background is now less relevant for the whole layout */
-        /* Removed border-radius and box-shadow from here as it's not a single container anymore */
         overflow: hidden;
       }
       .sidebar {
-        width: 280px; /* 사이드바 고정 너비 */
+        width: 280px;
         background-color: #f9fafb;
         padding: 2rem;
         border-right: 1px solid #e5e7eb;
         flex-shrink: 0;
         overflow-y: auto;
-        position: fixed; /* 사이드바 고정 */
-        height: 100vh; /* 전체 뷰포트 높이 */
-        top: 0; /* 상단에 고정 */
-        left: 0; /* 왼쪽에 고정 */
+        position: fixed;
+        height: 100vh;
+        top: 0;
+        left: 0;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* 그림자 추가 */
-        border-radius: 0 1rem 1rem 0; /* 오른쪽만 둥글게 */
-        padding-top: 2rem; /* 상단 패딩 유지 */
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        border-radius: 0 1rem 1rem 0;
+        padding-top: 2rem;
       }
       .content-wrapper {
-        /* New wrapper for main content */
         flex-grow: 1;
-        margin-left: 280px; /* 사이드바 너비만큼 왼쪽 여백 */
-        padding: 2rem; /* 콘텐츠 영역 내부 패딩 */
+        margin-left: 280px;
+        padding: 2rem;
         overflow-y: auto;
-        width: calc(100% - 280px); /* Adjust width to fill remaining space */
+        width: calc(100% - 280px);
         box-sizing: border-box;
       }
       .content-area {
-        /* Renamed from main-content-area for clarity */
-        max-width: 920px; /* Adjust max-width for content within the wrapper */
-        margin: 0 auto; /* Center content within its wrapper */
+        max-width: 920px;
+        margin: 0 auto;
         background-color: #ffffff;
         border-radius: 1rem;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
@@ -78,7 +73,7 @@
       }
       .post-card.expanded {
         background-color: #ffffff;
-        border-color: #6366f1; /* Indigo-500 */
+        border-color: #6366f1;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
       }
@@ -106,12 +101,12 @@
         transition: background-color 0.2s ease-in-out;
       }
       .sidebar-item:hover {
-        background-color: #eef2ff; /* Indigo-50 */
-        color: #4f46e5; /* Indigo-600 */
+        background-color: #eef2ff;
+        color: #4f46e5;
       }
       .sidebar-item.active {
-        background-color: #e0e7ff; /* Indigo-100 */
-        color: #4338ca; /* Indigo-700 */
+        background-color: #e0e7ff;
+        color: #4338ca;
         font-weight: 600;
       }
 
@@ -133,21 +128,21 @@
       /* Responsive adjustments */
       @media (max-width: 768px) {
         .sidebar {
-          position: static; /* 모바일에서는 고정 해제 */
+          position: static;
           width: 100%;
-          height: auto; /* 높이 자동 조절 */
+          height: auto;
           border-right: none;
           border-bottom: 1px solid #e5e7eb;
-          max-height: 200px; /* 모바일에서 사이드바 높이 제한 */
-          border-radius: 1rem 1rem 0 0; /* 상단만 둥글게 */
+          max-height: 200px;
+          border-radius: 1rem 1rem 0 0;
         }
         .content-wrapper {
-          margin-left: 0; /* 모바일에서는 왼쪽 여백 제거 */
+          margin-left: 0;
           width: 100%;
-          padding-top: 1rem; /* 상단 패딩 조정 */
+          padding-top: 1rem;
         }
         .content-area {
-          padding: 1rem; /* 모바일에서 콘텐츠 영역 패딩 조정 */
+          padding: 1rem;
         }
       }
       .loading-spinner {
@@ -206,23 +201,23 @@
         transition: background-color 0.2s ease-in-out;
       }
       .modal-buttons .confirm-button {
-        background-color: #6366f1; /* Indigo-500 */
+        background-color: #6366f1;
         color: white;
       }
       .modal-buttons .confirm-button:hover {
-        background-color: #4f46e5; /* Indigo-600 */
+        background-color: #4f46e5;
       }
       .modal-buttons .cancel-button {
-        background-color: #e5e7eb; /* Gray-200 */
-        color: #4b5563; /* Gray-700 */
+        background-color: #e5e7eb;
+        color: #4b5563;
       }
       .modal-buttons .cancel-button:hover {
-        background-color: #d1d5db; /* Gray-300 */
+        background-color: #d1d5db;
       }
       /* Video iframe responsive container */
       .video-responsive-container {
         position: relative;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        padding-bottom: 56.25%;
         height: 0;
         overflow: hidden;
         margin-top: 1rem;
@@ -239,7 +234,6 @@
     </style>
   </head>
   <body class="bg-gray-100">
-    <!-- Removed padding-8 from body -->
     <div class="main-layout">
       <!-- 사이드바 -->
       <div class="sidebar">
@@ -405,10 +399,22 @@
       const SUPABASE_URL = "https://zjayzfjifsmajisfsgpn.supabase.co"; // 여기에 실제 Supabase URL을 입력하세요
       const SUPABASE_ANON_KEY =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqYXl6ZmppZnNtYWppc2ZzZ3BuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MzkxNjgsImV4cCI6MjA3MDAxNTE2OH0.T7_4I6qvaPOAbJ5KFRhiEAokVSbmosPC1dUyHLVeLNI"; // 여기에 실제 Supabase Anon Key를 입력하세요
-      const supabase = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-      );
+      let supabase; // Supabase 클라이언트를 전역 변수로 선언
+
+      try {
+        console.log("Supabase 클라이언트 초기화 시도...");
+        supabase = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_ANON_KEY
+        );
+        console.log("Supabase 클라이언트 초기화 성공:", supabase);
+      } catch (e) {
+        console.error("Supabase 클라이언트 초기화 오류:", e.message);
+        // 사용자에게 오류 메시지를 표시하는 UI 추가 가능
+        showCustomAlert(
+          "Supabase 클라이언트 초기화 중 오류가 발생했습니다. 콘솔을 확인해주세요."
+        );
+      }
 
       // 게시물 데이터를 저장할 배열
       let posts = [];
@@ -935,68 +941,6 @@
       }
 
       /**
-       * 게시물 수정을 취소합니다.
-       * Cancels post editing.
-       * @param {string} id - 수정을 취소할 게시물의 ID. ID of the post to cancel editing.
-       */
-      function cancelEdit(id) {
-        const postIndex = posts.findIndex((p) => p.id === id);
-        if (postIndex > -1) {
-          posts[postIndex].isEditing = false; // 수정 모드 종료 (저장 안 함)
-          renderPosts();
-        }
-      }
-
-      /**
-       * 새 게시물을 Supabase에 추가합니다.
-       * Adds a new post to Supabase.
-       * @param {Event} event - 폼 제출 이벤트 객체. Form submission event object.
-       */
-      addPostForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        if (!isAdminMode) {
-          showCustomAlert(
-            "관리자 모드를 활성화해야 새 게시물을 추가할 수 있습니다."
-          );
-          return;
-        }
-
-        const titleInput = document.getElementById("post-title");
-        const subtitleInput = document.getElementById("post-subtitle");
-        const contentInput = document.getElementById("post-content");
-        const videoUrlInput = document.getElementById("post-video-url"); // 영상 URL 입력 필드 가져오기
-
-        const newPostData = {
-          title: titleInput.value,
-          subtitle: subtitleInput.value,
-          content: contentInput.value,
-          video_url: videoUrlInput.value || null, // 영상 URL 저장 (값이 없으면 null)
-          // created_at은 Supabase 테이블의 기본값으로 자동 설정됩니다.
-        };
-
-        const { data, error } = await supabase
-          .from("posts")
-          .insert([newPostData]);
-
-        if (error) {
-          console.error("Error adding new post:", error.message);
-          showCustomAlert(
-            "새 게시물 추가 중 오류가 발생했습니다: " + error.message
-          );
-        } else {
-          console.log("New post added successfully:", data);
-          showCustomAlert("새 게시물이 성공적으로 추가되었습니다!");
-          // Supabase 실시간 리스너가 변경 사항을 감지하여 renderPosts를 호출할 것입니다.
-          // 폼 필드 초기화
-          titleInput.value = "";
-          subtitleInput.value = "";
-          contentInput.value = "";
-          videoUrlInput.value = ""; // 영상 URL 필드 초기화
-        }
-      });
-
-      /**
        * 게시물을 Supabase에서 삭제합니다.
        * Deletes a post from Supabase.
        * @param {string} id - 삭제할 게시물의 ID. ID of the post to delete.
@@ -1078,7 +1022,18 @@
        * Fetches posts from Supabase and sets up a real-time listener.
        */
       async function fetchAndSubscribePosts() {
+        if (!supabase) {
+          console.error(
+            "Supabase 클라이언트가 초기화되지 않았습니다. 데이터를 불러올 수 없습니다."
+          );
+          postsList.innerHTML =
+            '<p class="text-center text-red-500 mt-8">Supabase 연결 오류: 게시물을 불러올 수 없습니다. 콘솔을 확인해주세요.</p>';
+          loadingSpinner.style.display = "none";
+          return;
+        }
+
         loadingSpinner.style.display = "block"; // 로딩 스피너 표시
+        console.log("게시물 초기 로드 및 구독 시도...");
 
         // 초기 데이터 로드
         const { data, error } = await supabase
@@ -1087,35 +1042,48 @@
           .order("created_at", { ascending: false }); // 최신 게시물이 먼저 오도록 정렬
 
         if (error) {
-          console.error("Error fetching initial posts:", error.message);
+          console.error("초기 게시물 불러오기 오류:", error.message);
           postsList.innerHTML =
             '<p class="text-center text-red-500 mt-8">게시물을 불러오는 중 오류가 발생했습니다: ' +
             error.message +
             "</p>";
         } else {
+          console.log("초기 게시물 불러오기 성공:", data.length, "개");
           posts = data;
           renderPosts();
         }
         loadingSpinner.style.display = "none"; // 로딩 스피너 숨기기
 
         // 실시간 변경 사항 구독
-        supabase
-          .channel("public:posts") // 'posts' 테이블의 모든 변경 사항 구독
-          .on(
-            "postgres_changes",
-            { event: "*", schema: "public", table: "posts" },
-            (payload) => {
-              console.log("Change received!", payload);
-              // 변경 사항이 발생하면 전체 게시물을 다시 불러와 렌더링
-              // (간단한 예시를 위해 전체를 다시 불러오지만, 실제 앱에서는 payload를 활용하여 효율적으로 업데이트할 수 있습니다)
-              fetchAndSubscribePosts();
-            }
-          )
-          .subscribe();
+        try {
+          console.log("Supabase Realtime 구독 시도...");
+          supabase
+            .channel("public:posts") // 'posts' 테이블의 모든 변경 사항 구독
+            .on(
+              "postgres_changes",
+              { event: "*", schema: "public", table: "posts" },
+              (payload) => {
+                console.log("Change received from Supabase Realtime!", payload);
+                // 변경 사항이 발생하면 전체 게시물을 다시 불러와 렌더링
+                // (간단한 예시를 위해 전체를 다시 불러오지만, 실제 앱에서는 payload를 활용하여 효율적으로 업데이트할 수 있습니다)
+                fetchAndSubscribePosts();
+              }
+            )
+            .subscribe();
+          console.log("Supabase Realtime 구독 성공.");
+        } catch (e) {
+          console.error("Supabase Realtime 구독 오류:", e.message);
+          showCustomAlert(
+            "Supabase 실시간 구독 중 오류가 발생했습니다. 콘솔을 확인해주세요."
+          );
+        }
       }
 
       // 페이지 로드 시 게시물 불러오기 및 실시간 구독 시작
       document.addEventListener("DOMContentLoaded", () => {
+        console.log(
+          "DOMContentLoaded 이벤트 발생. fetchAndSubscribePosts 호출."
+        );
         fetchAndSubscribePosts();
       });
     </script>

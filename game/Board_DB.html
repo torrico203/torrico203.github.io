@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>간단한 게시판</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6;
+        display: flex;
+        justify-content: flex-start; /* Changed to flex-start to accommodate fixed sidebar */
+        align-items: flex-start;
+        min-height: 100vh;
+        padding: 0; /* Removed padding from body, handled by content areas */
+        box-sizing: border-box;
+        overflow-x: hidden; /* Prevent horizontal scroll due to fixed element */
+      }
+      .main-layout {
+        display: flex;
+        width: 100%;
+        /* max-width is now handled by individual sections */
+        background-color: #ffffff; /* This background is now less relevant for the whole layout */
+        /* Removed border-radius and box-shadow from here as it's not a single container anymore */
+        overflow: hidden;
+      }
+      .sidebar {
+        width: 280px; /* 사이드바 고정 너비 */
+        background-color: #f9fafb;
+        padding: 2rem;
+        border-right: 1px solid #e5e7eb;
+        flex-shrink: 0;
+        overflow-y: auto;
+        position: fixed; /* 사이드바 고정 */
+        height: 100vh; /* 전체 뷰포트 높이 */
+        top: 0; /* 상단에 고정 */
+        left: 0; /* 왼쪽에 고정 */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* 그림자 추가 */
+        border-radius: 0 1rem 1rem 0; /* 오른쪽만 둥글게 */
+        padding-top: 2rem; /* 상단 패딩 유지 */
+      }
+      .content-wrapper {
+        /* New wrapper for main content */
+        flex-grow: 1;
+        margin-left: 280px; /* 사이드바 너비만큼 왼쪽 여백 */
+        padding: 2rem; /* 콘텐츠 영역 내부 패딩 */
+        overflow-y: auto;
+        width: calc(100% - 280px); /* Adjust width to fill remaining space */
+        box-sizing: border-box;
+      }
+      .content-area {
+        /* Renamed from main-content-area for clarity */
+        max-width: 920px; /* Adjust max-width for content within the wrapper */
+        margin: 0 auto; /* Center content within its wrapper */
+        background-color: #ffffff;
+        border-radius: 1rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+      }
+      .post-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1.25rem;
+        background-color: #f9fafb;
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+      }
+      .post-card.expanded {
+        background-color: #ffffff;
+        border-color: #6366f1; /* Indigo-500 */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .post-subtitle-summary {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+      }
+      .toggle-button {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1;
+      }
+      .sidebar-item {
+        padding: 0.75rem 0.5rem;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        transition: background-color 0.2s ease-in-out;
+      }
+      .sidebar-item:hover {
+        background-color: #eef2ff; /* Indigo-50 */
+        color: #4f46e5; /* Indigo-600 */
+      }
+      .sidebar-item.active {
+        background-color: #e0e7ff; /* Indigo-100 */
+        color: #4338ca; /* Indigo-700 */
+        font-weight: 600;
+      }
+
+      .action-buttons-wrapper {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-left: 1rem;
+        flex-shrink: 0;
+        min-width: 130px;
+        justify-content: flex-end;
+      }
+      .title-subtitle-container {
+        flex: 1;
+        min-width: 0;
+        padding-right: 1rem;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .sidebar {
+          position: static; /* 모바일에서는 고정 해제 */
+          width: 100%;
+          height: auto; /* 높이 자동 조절 */
+          border-right: none;
+          border-bottom: 1px solid #e5e7eb;
+          max-height: 200px; /* 모바일에서 사이드바 높이 제한 */
+          border-radius: 1rem 1rem 0 0; /* 상단만 둥글게 */
+        }
+        .content-wrapper {
+          margin-left: 0; /* 모바일에서는 왼쪽 여백 제거 */
+          width: 100%;
+          padding-top: 1rem; /* 상단 패딩 조정 */
+        }
+        .content-area {
+          padding: 1rem; /* 모바일에서 콘텐츠 영역 패딩 조정 */
+        }
+      }
+      .loading-spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Custom Modal Styles */
+      .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+      }
+      .modal-buttons {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+      .modal-buttons button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+      .modal-buttons .confirm-button {
+        background-color: #6366f1; /* Indigo-500 */
+        color: white;
+      }
+      .modal-buttons .confirm-button:hover {
+        background-color: #4f46e5; /* Indigo-600 */
+      }
+      .modal-buttons .cancel-button {
+        background-color: #e5e7eb; /* Gray-200 */
+        color: #4b5563; /* Gray-700 */
+      }
+      .modal-buttons .cancel-button:hover {
+        background-color: #d1d5db; /* Gray-300 */
+      }
+      /* Video iframe responsive container */
+      .video-responsive-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        margin-top: 1rem;
+        border-radius: 0.5rem;
+      }
+      .video-responsive-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Removed padding-8 from body -->
+    <div class="main-layout">
+      <!-- 사이드바 -->
+      <div class="sidebar">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">게임 기획</h2>
+        <div id="sidebar-posts-list">
+          <!-- Sidebar titles will be rendered here -->
+        </div>
+      </div>
+
+      <!-- 메인 콘텐츠를 감싸는 새로운 래퍼 -->
+      <div class="content-wrapper">
+        <div class="content-area">
+          <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
+            게임 아이디어 정리
+          </h1>
+
+          <!-- Admin Mode Controls -->
+          <div
+            id="admin-mode-controls"
+            class="mb-8 p-6 bg-yellow-50 rounded-lg shadow-md"
+          >
+            <h2 class="text-2xl font-semibold text-yellow-700 mb-4">
+              관리자 모드
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label
+                  for="admin-password"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >비밀번호 입력</label
+                >
+                <input
+                  type="password"
+                  id="admin-password"
+                  class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
+                />
+              </div>
+              <button
+                id="toggle-admin-mode-button"
+                class="w-full bg-yellow-600 text-white py-2 px-4 rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-150 ease-in-out"
+              >
+                관리자 모드 활성화/비활성화
+              </button>
+              <p
+                id="admin-status"
+                class="text-center text-sm font-medium text-yellow-800 mt-2"
+              >
+                관리자 모드: 비활성화됨
+              </p>
+            </div>
+          </div>
+
+          <!-- New Post Form (Conditionally visible) -->
+          <div
+            id="add-post-form-container"
+            class="mb-8 p-6 bg-indigo-50 rounded-lg shadow-md"
+            style="display: none"
+          >
+            <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
+              새 글 추가
+            </h2>
+            <form id="add-post-form" class="space-y-4">
+              <div>
+                <label
+                  for="post-title"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >제목</label
+                >
+                <input
+                  type="text"
+                  id="post-title"
+                  name="title"
+                  required
+                  class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  for="post-subtitle"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >부제목</label
+                >
+                <input
+                  type="text"
+                  id="post-subtitle"
+                  name="subtitle"
+                  required
+                  class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  for="post-content"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >내용</label
+                >
+                <textarea
+                  id="post-content"
+                  name="content"
+                  rows="5"
+                  required
+                  class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                ></textarea>
+              </div>
+              <div>
+                <label
+                  for="post-video-url"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >영상 URL (선택 사항)</label
+                >
+                <input
+                  type="url"
+                  id="post-video-url"
+                  name="video_url"
+                  placeholder="예: https://www.youtube.com/embed/VIDEO_ID 또는 Google Drive 임베드 링크 (https://drive.google.com/embed?id=FILE_ID)"
+                  class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <button
+                type="submit"
+                class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+              >
+                게시물 추가
+              </button>
+            </form>
+          </div>
+
+          <!-- 게시물 목록 -->
+          <div id="posts-list">
+            <div id="loading-spinner" class="loading-spinner"></div>
+            <!-- Posts will be rendered here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="custom-alert-modal" class="modal-backdrop hidden">
+      <div class="modal-content">
+        <p id="alert-message" class="text-lg font-semibold text-gray-800"></p>
+        <div class="modal-buttons">
+          <button class="confirm-button" onclick="hideCustomAlert()">
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="custom-confirm-modal" class="modal-backdrop hidden">
+      <div class="modal-content">
+        <p id="confirm-message" class="text-lg font-semibold text-gray-800"></p>
+        <div class="modal-buttons">
+          <button class="confirm-button" id="confirm-ok-button">확인</button>
+          <button class="cancel-button" id="confirm-cancel-button">취소</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Supabase 클라이언트 초기화
+      // YOUR_SUPABASE_URL과 YOUR_SUPABASE_ANON_KEY를 실제 Supabase 프로젝트 값으로 교체하세요.
+      const SUPABASE_URL = "https://zjayzfjifsmajisfsgpn.supabase.co"; // 여기에 실제 Supabase URL을 입력하세요
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqYXl6ZmppZnNtYWppc2ZzZ3BuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MzkxNjgsImV4cCI6MjA3MDAxNTE2OH0.T7_4I6qvaPOAbJ5KFRhiEAokVSbmosPC1dUyHLVeLNI"; // 여기에 실제 Supabase Anon Key를 입력하세요
+      const supabase = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+      // 게시물 데이터를 저장할 배열
+      let posts = [];
+
+      // 부제목 최대 길이 설정 (글자수)
+      const MAX_SUBTITLE_LENGTH = 70; // 적절한 길이로 조정 가능
+
+      // 관리자 모드 관련 변수
+      const ADMIN_PASSWORD = "snowLYNbellGUN"; // 여기에 원하는 비밀번호를 설정하세요!
+      let isAdminMode = false;
+
+      // DOM elements
+      const postsList = document.getElementById("posts-list");
+      const sidebarPostsList = document.getElementById("sidebar-posts-list");
+      const addPostFormContainer = document.getElementById(
+        "add-post-form-container"
+      ); // 폼 컨테이너
+      const addPostForm = document.getElementById("add-post-form");
+      const loadingSpinner = document.getElementById("loading-spinner");
+      const adminPasswordInput = document.getElementById("admin-password");
+      const toggleAdminModeButton = document.getElementById(
+        "toggle-admin-mode-button"
+      );
+      const adminStatusText = document.getElementById("admin-status");
+      const adminModeControls = document.getElementById("admin-mode-controls"); // 관리자 모드 전체 컨테이너
+
+      // Custom Modal Elements
+      const customAlertDialog = document.getElementById("custom-alert-modal");
+      const customAlertMessage = document.getElementById("alert-message");
+      const customConfirmDialog = document.getElementById(
+        "custom-confirm-modal"
+      );
+      const customConfirmMessage = document.getElementById("confirm-message");
+      const customConfirmOkButton =
+        document.getElementById("confirm-ok-button");
+      const customConfirmCancelButton = document.getElementById(
+        "confirm-cancel-button"
+      );
+
+      /**
+       * 커스텀 알림 모달을 표시합니다.
+       * @param {string} message - 표시할 메시지.
+       */
+      function showCustomAlert(message) {
+        customAlertMessage.textContent = message;
+        customAlertDialog.classList.remove("hidden");
+      }
+
+      /**
+       * 커스텀 알림 모달을 숨깁니다.
+       */
+      function hideCustomAlert() {
+        customAlertDialog.classList.add("hidden");
+      }
+
+      /**
+       * 커스텀 확인 모달을 표시합니다.
+       * @param {string} message - 표시할 메시지.
+       * @param {function} onConfirm - '확인' 버튼 클릭 시 실행할 콜백 함수.
+       * @param {function} onCancel - '취소' 버튼 클릭 시 실행할 콜백 함수.
+       */
+      function showCustomConfirm(message, onConfirm, onCancel) {
+        customConfirmMessage.textContent = message;
+        customConfirmDialog.classList.remove("hidden");
+
+        const handleOk = () => {
+          onConfirm();
+          hideCustomConfirm();
+        };
+        const handleCancel = () => {
+          onCancel();
+          hideCustomConfirm();
+        };
+
+        // 기존 이벤트 리스너 제거 후 추가 (중복 방지)
+        customConfirmOkButton.removeEventListener("click", handleOk);
+        customConfirmCancelButton.removeEventListener("click", handleCancel);
+
+        customConfirmOkButton.addEventListener("click", handleOk);
+        customConfirmCancelButton.addEventListener("click", handleCancel);
+      }
+
+      /**
+       * 커스텀 확인 모달을 숨깁니다.
+       */
+      function hideCustomConfirm() {
+        customConfirmDialog.classList.add("hidden");
+      }
+
+      /**
+       * 주어진 텍스트를 최대 길이에 따라 자르고 '...'을 추가합니다.
+       * Truncates the given text to a maximum length and adds '...'.
+       * @param {string} text - 원본 텍스트. Original text.
+       * @param {number} maxLength - 최대 길이. Maximum length.
+       * @returns {string} 잘린 텍스트. Truncated text.
+       */
+      function getTruncatedSubtitle(text, maxLength) {
+        if (text.length > maxLength) {
+          return text.substring(0, maxLength - 3) + "...";
+        }
+        return text;
+      }
+
+      /**
+       * 단일 게시물 DOM 요소를 생성하고 반환합니다.
+       * Creates and returns a single post DOM element.
+       * @param {object} post - 게시물 데이터 객체. Post data object.
+       * @returns {HTMLElement} 생성된 게시물 카드 요소. Created post card element.
+       */
+      function createPostElement(post) {
+        const postCard = document.createElement("div");
+        // Supabase에서 받은 id는 문자열이므로 그대로 사용합니다.
+        postCard.id = `post-${post.id}`;
+        postCard.classList.add("post-card", "relative", "overflow-hidden");
+
+        if (post.expanded) {
+          postCard.classList.add("expanded");
+        }
+
+        const header = document.createElement("div");
+        header.classList.add("flex", "justify-between", "items-start", "mb-2");
+
+        const titleAndSubtitleContainer = document.createElement("div");
+        titleAndSubtitleContainer.classList.add("title-subtitle-container");
+
+        if (post.isEditing) {
+          const titleInput = document.createElement("input");
+          titleInput.type = "text";
+          titleInput.id = `edit-title-${post.id}`;
+          titleInput.value = post.title;
+          titleInput.classList.add(
+            "w-full",
+            "bg-gray-50",
+            "border",
+            "border-gray-300",
+            "rounded-md",
+            "p-1",
+            "text-xl",
+            "font-semibold",
+            "text-gray-900",
+            "mb-1"
+          );
+          titleAndSubtitleContainer.appendChild(titleInput);
+
+          const subtitleInput = document.createElement("input");
+          subtitleInput.type = "text";
+          subtitleInput.id = `edit-subtitle-${post.id}`;
+          subtitleInput.value = post.subtitle;
+          subtitleInput.classList.add(
+            "w-full",
+            "bg-gray-50",
+            "border",
+            "border-gray-300",
+            "rounded-md",
+            "p-1",
+            "text-gray-600",
+            "text-sm"
+          );
+          titleAndSubtitleContainer.appendChild(subtitleInput);
+        } else {
+          const title = document.createElement("h2");
+          title.classList.add(
+            "text-xl",
+            "font-semibold",
+            "text-gray-900",
+            "mb-1"
+          );
+          title.textContent = post.title;
+          titleAndSubtitleContainer.appendChild(title);
+
+          const subtitle = document.createElement("p");
+          subtitle.classList.add("text-gray-600", "text-sm");
+
+          if (!post.expanded) {
+            subtitle.classList.add("post-subtitle-summary");
+            subtitle.textContent = getTruncatedSubtitle(
+              post.subtitle,
+              MAX_SUBTITLE_LENGTH
+            );
+          } else {
+            subtitle.textContent = post.subtitle;
+          }
+          titleAndSubtitleContainer.appendChild(subtitle);
+        }
+        header.appendChild(titleAndSubtitleContainer);
+
+        const actionButtonsContainer = document.createElement("div");
+        actionButtonsContainer.classList.add("action-buttons-wrapper");
+
+        // 관리자 모드일 때만 수정/삭제 버튼 표시
+        if (isAdminMode) {
+          if (post.isEditing) {
+            const saveButton = document.createElement("button");
+            saveButton.classList.add(
+              "bg-green-600",
+              "text-white",
+              "py-1",
+              "px-3",
+              "rounded-md",
+              "hover:bg-green-700",
+              "focus:outline-none",
+              "focus:ring-2",
+              "focus:ring-offset-2",
+              "focus:ring-green-500",
+              "transition"
+            );
+            saveButton.textContent = "저장";
+            saveButton.addEventListener("click", () => savePost(post.id));
+            actionButtonsContainer.appendChild(saveButton);
+
+            const cancelButton = document.createElement("button");
+            cancelButton.classList.add(
+              "bg-red-600",
+              "text-white",
+              "py-1",
+              "px-3",
+              "rounded-md",
+              "hover:bg-red-700",
+              "focus:outline-none",
+              "focus:ring-2",
+              "focus:ring-offset-2",
+              "focus:ring-red-500",
+              "transition"
+            );
+            cancelButton.textContent = "취소";
+            cancelButton.addEventListener("click", () => cancelEdit(post.id));
+            actionButtonsContainer.appendChild(cancelButton);
+          } else {
+            const editButton = document.createElement("button");
+            editButton.classList.add(
+              "bg-blue-100",
+              "text-blue-600",
+              "py-1",
+              "px-3",
+              "rounded-md",
+              "hover:bg-blue-200",
+              "focus:outline-none",
+              "focus:ring-2",
+              "focus:ring-offset-2",
+              "focus:ring-blue-500",
+              "transition"
+            );
+            editButton.textContent = "수정";
+            editButton.addEventListener("click", () => toggleEdit(post.id));
+            actionButtonsContainer.appendChild(editButton);
+
+            // Delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.classList.add(
+              "bg-gray-100",
+              "text-gray-600",
+              "py-1",
+              "px-3",
+              "rounded-md",
+              "hover:bg-gray-200",
+              "focus:outline-none",
+              "focus:ring-2",
+              "focus:ring-offset-2",
+              "focus:ring-gray-500",
+              "transition"
+            );
+            deleteButton.textContent = "삭제";
+            deleteButton.addEventListener("click", () => deletePost(post.id));
+            actionButtonsContainer.appendChild(deleteButton);
+          }
+        }
+
+        // Toggle button (for expand/collapse) - Always present
+        const toggleButton = document.createElement("button");
+        toggleButton.classList.add(
+          "toggle-button",
+          "bg-indigo-100",
+          "text-indigo-600",
+          "rounded-full",
+          "hover:bg-indigo-200",
+          "focus:outline-none",
+          "focus:ring-2",
+          "focus:ring-indigo-500",
+          "focus:ring-offset-2",
+          "transition",
+          "duration-150",
+          "ease-in-out"
+        );
+        toggleButton.textContent = post.expanded ? "-" : "+";
+        toggleButton.addEventListener("click", () => togglePost(post.id));
+        actionButtonsContainer.appendChild(toggleButton);
+
+        header.appendChild(actionButtonsContainer);
+        postCard.appendChild(header);
+
+        const contentContainer = document.createElement("div");
+        contentContainer.classList.add(
+          "text-gray-700",
+          "text-base",
+          "mt-4",
+          "leading-relaxed"
+        );
+        if (!post.expanded && !post.isEditing) {
+          contentContainer.classList.add("hidden");
+        }
+
+        if (post.isEditing) {
+          const contentTextarea = document.createElement("textarea");
+          contentTextarea.id = `edit-content-${post.id}`;
+          contentTextarea.rows = 5;
+          contentTextarea.value = post.content;
+          contentTextarea.classList.add(
+            "w-full",
+            "bg-gray-50",
+            "border",
+            "border-gray-300",
+            "rounded-md",
+            "p-2",
+            "text-base",
+            "mb-2"
+          );
+          contentContainer.appendChild(contentTextarea);
+
+          const videoUrlInput = document.createElement("input");
+          videoUrlInput.type = "url";
+          videoUrlInput.id = `edit-video-url-${post.id}`;
+          videoUrlInput.value = post.video_url || "";
+          videoUrlInput.placeholder =
+            "예: https://www.youtube.com/embed/VIDEO_ID 또는 Google Drive 임베드 링크 (https://drive.google.com/embed?id=FILE_ID)";
+          videoUrlInput.classList.add(
+            "w-full",
+            "bg-gray-50",
+            "border",
+            "border-gray-300",
+            "rounded-md",
+            "p-2",
+            "text-base"
+          );
+          contentContainer.appendChild(videoUrlInput);
+        } else {
+          // 줄 바꿈 문자를 <br> 태그로 변환하여 innerHTML에 할당
+          contentContainer.innerHTML = post.content.replace(/\n/g, "<br>");
+
+          // 영상 URL이 있으면 iframe 추가
+          if (post.video_url) {
+            const videoWrapper = document.createElement("div");
+            videoWrapper.classList.add("video-responsive-container");
+            const iframe = document.createElement("iframe");
+            iframe.src = post.video_url;
+            iframe.setAttribute("allowfullscreen", "");
+            iframe.setAttribute("frameborder", "0");
+            iframe.setAttribute(
+              "allow",
+              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            );
+            videoWrapper.appendChild(iframe);
+            contentContainer.appendChild(videoWrapper);
+          }
+        }
+        postCard.appendChild(contentContainer);
+
+        return postCard;
+      }
+
+      /**
+       * 모든 게시물을 렌더링합니다.
+       * Renders all posts.
+       */
+      function renderPosts() {
+        postsList.innerHTML = ""; // 기존 게시물 목록 초기화
+        if (posts.length === 0) {
+          postsList.innerHTML =
+            '<p class="text-center text-gray-500 mt-8">게시물이 없습니다. 새 글을 추가해 보세요!</p>';
+        } else {
+          // 최신 게시물이 먼저 보이도록 created_at 기준으로 역순으로 정렬
+          const sortedPosts = [...posts].sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+          );
+          sortedPosts.forEach((post) => {
+            postsList.appendChild(createPostElement(post));
+          });
+        }
+        renderSidebar(); // 게시물 렌더링 후 사이드바도 업데이트
+        updateAdminModeUI(); // 관리자 모드 UI 업데이트
+      }
+
+      /**
+       * 사이드바를 렌더링합니다.
+       * Renders the sidebar.
+       */
+      function renderSidebar() {
+        sidebarPostsList.innerHTML = ""; // 기존 사이드바 목록 초기화
+
+        // 최신 게시물이 먼저 보이도록 created_at 기준으로 역순으로 정렬
+        const sortedPosts = [...posts].sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        sortedPosts.forEach((post) => {
+          const sidebarItem = document.createElement("div");
+          sidebarItem.classList.add(
+            "sidebar-item",
+            "text-gray-700",
+            "font-medium"
+          );
+          sidebarItem.textContent = post.title;
+          sidebarItem.dataset.postId = post.id; // 게시물 ID 저장
+
+          sidebarItem.addEventListener("click", () => {
+            document.querySelectorAll(".sidebar-item").forEach((item) => {
+              item.classList.remove("active");
+            });
+            sidebarItem.classList.add("active");
+
+            const targetPost = document.getElementById(`post-${post.id}`);
+            if (targetPost) {
+              targetPost.scrollIntoView({ behavior: "smooth", block: "start" });
+              // 해당 게시물을 찾아 확장 상태로 변경하고, 다른 게시물은 접기
+              const postIndex = posts.findIndex((p) => p.id === post.id);
+              if (postIndex > -1) {
+                posts.forEach((p, i) => {
+                  if (i === postIndex) {
+                    p.expanded = true; // 클릭된 게시물 확장
+                  } else {
+                    p.expanded = false; // 다른 게시물은 접기
+                  }
+                  p.isEditing = false; // 모든 게시물의 편집 모드 해제
+                });
+                renderPosts(); // 변경된 상태로 다시 렌더링
+              }
+            }
+          });
+          sidebarPostsList.appendChild(sidebarItem);
+        });
+      }
+
+      /**
+       * 특정 게시물의 확장/요약 상태를 토글합니다.
+       * Toggles the expanded/summary state of a specific post.
+       * @param {string} id - 토글할 게시물의 ID. ID of the post to toggle.
+       */
+      function togglePost(id) {
+        const postIndex = posts.findIndex((p) => p.id === id);
+        if (postIndex > -1) {
+          if (posts[postIndex].isEditing) {
+            return;
+          }
+          posts[postIndex].expanded = !posts[postIndex].expanded;
+          renderPosts();
+        }
+      }
+
+      /**
+       * 게시물 수정 모드를 토글합니다.
+       * Toggles the edit mode of a post. If another post is being edited, its edit mode is disabled.
+       * @param {string} id - 수정 모드를 토글할 게시물의 ID. ID of the post to toggle edit mode.
+       */
+      function toggleEdit(id) {
+        if (!isAdminMode) {
+          showCustomAlert(
+            "관리자 모드를 활성화해야 게시물을 수정할 수 있습니다."
+          );
+          return;
+        }
+        const currentlyEditingPost = posts.find((p) => p.isEditing);
+        if (currentlyEditingPost && currentlyEditingPost.id !== id) {
+          currentlyEditingPost.isEditing = false;
+        }
+
+        const postIndex = posts.findIndex((p) => p.id === id);
+        if (postIndex > -1) {
+          posts[postIndex].isEditing = !posts[postIndex].isEditing;
+          if (posts[postIndex].isEditing && !posts[postIndex].expanded) {
+            posts[postIndex].expanded = true;
+          }
+          renderPosts();
+        }
+      }
+
+      /**
+       * 게시물 내용을 Supabase에 저장합니다 (업데이트).
+       * Saves the post content to Supabase (updates).
+       * @param {string} id - 저장할 게시물의 ID. ID of the post to save.
+       */
+      async function savePost(id) {
+        if (!isAdminMode) {
+          showCustomAlert(
+            "관리자 모드를 활성화해야 게시물을 저장할 수 있습니다."
+          );
+          return;
+        }
+        const postIndex = posts.findIndex((p) => p.id === id);
+        if (postIndex > -1) {
+          const titleInput = document.getElementById(`edit-title-${id}`);
+          const subtitleInput = document.getElementById(`edit-subtitle-${id}`);
+          const contentInput = document.getElementById(`edit-content-${id}`);
+          const videoUrlInput = document.getElementById(`edit-video-url-${id}`); // 영상 URL 입력 필드 가져오기
+
+          if (titleInput && subtitleInput && contentInput && videoUrlInput) {
+            const { data, error } = await supabase
+              .from("posts")
+              .update({
+                title: titleInput.value,
+                subtitle: subtitleInput.value,
+                content: contentInput.value,
+                video_url: videoUrlInput.value || null, // 영상 URL 저장 (값이 없으면 null)
+                // created_at은 Supabase에서 자동으로 관리하므로 업데이트하지 않습니다.
+              })
+              .eq("id", id); // id가 일치하는 게시물 업데이트
+
+            if (error) {
+              console.error("Error updating post:", error.message);
+              showCustomAlert(
+                "게시물 업데이트 중 오류가 발생했습니다: " + error.message
+              );
+            } else {
+              console.log("Post updated successfully:", data);
+              // 로컬 상태 업데이트 및 렌더링 (즉시 UI 반영)
+              posts[postIndex].title = titleInput.value;
+              posts[postIndex].subtitle = subtitleInput.value;
+              posts[postIndex].content = contentInput.value;
+              posts[postIndex].video_url = videoUrlInput.value || null;
+              posts[postIndex].isEditing = false; // 수정 모드 종료
+              renderPosts();
+              showCustomAlert("게시물이 성공적으로 업데이트되었습니다!");
+              // Supabase 실시간 리스너가 변경 사항을 감지하여 renderPosts를 호출할 것입니다.
+            }
+          }
+        }
+      }
+
+      /**
+       * 게시물 수정을 취소합니다.
+       * Cancels post editing.
+       * @param {string} id - 수정을 취소할 게시물의 ID. ID of the post to cancel editing.
+       */
+      function cancelEdit(id) {
+        const postIndex = posts.findIndex((p) => p.id === id);
+        if (postIndex > -1) {
+          posts[postIndex].isEditing = false; // 수정 모드 종료 (저장 안 함)
+          renderPosts();
+        }
+      }
+
+      /**
+       * 새 게시물을 Supabase에 추가합니다.
+       * Adds a new post to Supabase.
+       * @param {Event} event - 폼 제출 이벤트 객체. Form submission event object.
+       */
+      addPostForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!isAdminMode) {
+          showCustomAlert(
+            "관리자 모드를 활성화해야 새 게시물을 추가할 수 있습니다."
+          );
+          return;
+        }
+
+        const titleInput = document.getElementById("post-title");
+        const subtitleInput = document.getElementById("post-subtitle");
+        const contentInput = document.getElementById("post-content");
+        const videoUrlInput = document.getElementById("post-video-url"); // 영상 URL 입력 필드 가져오기
+
+        const newPostData = {
+          title: titleInput.value,
+          subtitle: subtitleInput.value,
+          content: contentInput.value,
+          video_url: videoUrlInput.value || null, // 영상 URL 저장 (값이 없으면 null)
+          // created_at은 Supabase 테이블의 기본값으로 자동 설정됩니다.
+        };
+
+        const { data, error } = await supabase
+          .from("posts")
+          .insert([newPostData]);
+
+        if (error) {
+          console.error("Error adding new post:", error.message);
+          showCustomAlert(
+            "새 게시물 추가 중 오류가 발생했습니다: " + error.message
+          );
+        } else {
+          console.log("New post added successfully:", data);
+          showCustomAlert("새 게시물이 성공적으로 추가되었습니다!");
+          // Supabase 실시간 리스너가 변경 사항을 감지하여 renderPosts를 호출할 것입니다.
+          // 폼 필드 초기화
+          titleInput.value = "";
+          subtitleInput.value = "";
+          contentInput.value = "";
+          videoUrlInput.value = ""; // 영상 URL 필드 초기화
+        }
+      });
+
+      /**
+       * 게시물을 Supabase에서 삭제합니다.
+       * Deletes a post from Supabase.
+       * @param {string} id - 삭제할 게시물의 ID. ID of the post to delete.
+       */
+      async function deletePost(id) {
+        if (!isAdminMode) {
+          showCustomAlert(
+            "관리자 모드를 활성화해야 게시물을 삭제할 수 있습니다."
+          );
+          return;
+        }
+
+        showCustomConfirm(
+          "이 게시물을 정말 삭제하시겠습니까?",
+          async () => {
+            // 사용자가 '확인'을 클릭했을 때 실행될 로직
+            const { error } = await supabase
+              .from("posts")
+              .delete()
+              .eq("id", id); // id가 일치하는 게시물 삭제
+
+            if (error) {
+              console.error("Error deleting post:", error.message);
+              showCustomAlert(
+                "게시물 삭제 중 오류가 발생했습니다: " + error.message
+              );
+            } else {
+              console.log("Post deleted successfully.");
+              showCustomAlert("게시물이 성공적으로 삭제되었습니다!");
+              // Supabase 실시간 리스너가 변경 사항을 감지하여 renderPosts를 호출할 것입니다.
+            }
+          },
+          () => {
+            // 사용자가 '취소'를 클릭했을 때 실행될 로직 (선택 사항)
+            console.log("게시물 삭제가 취소되었습니다.");
+          }
+        );
+      }
+
+      /**
+       * 관리자 모드를 활성화/비활성화합니다.
+       */
+      toggleAdminModeButton.addEventListener("click", () => {
+        const enteredPassword = adminPasswordInput.value;
+        if (enteredPassword === ADMIN_PASSWORD) {
+          isAdminMode = !isAdminMode; // 상태 토글
+          adminPasswordInput.value = ""; // 비밀번호 입력 필드 초기화
+          renderPosts(); // UI를 다시 렌더링하여 버튼 가시성 업데이트
+          showCustomAlert(
+            `관리자 모드가 ${isAdminMode ? "활성화" : "비활성화"}되었습니다.`
+          );
+        } else {
+          showCustomAlert("비밀번호가 올바르지 않습니다.");
+        }
+      });
+
+      /**
+       * 관리자 모드에 따라 UI 요소를 업데이트합니다.
+       */
+      function updateAdminModeUI() {
+        if (isAdminMode) {
+          adminModeControls.style.display = "none"; // 관리자 모드 컨트롤 숨기기
+          addPostFormContainer.style.display = "block";
+          adminStatusText.textContent = "관리자 모드: 활성화됨";
+          adminStatusText.classList.remove("text-yellow-800");
+          adminStatusText.classList.add("text-green-800");
+        } else {
+          adminModeControls.style.display = "block"; // 관리자 모드 컨트롤 표시
+          addPostFormContainer.style.display = "none";
+          adminStatusText.textContent = "관리자 모드: 비활성화됨";
+          adminStatusText.classList.remove("text-green-800");
+          adminStatusText.classList.add("text-yellow-800");
+        }
+        // 게시물 목록의 수정/삭제 버튼은 renderPosts에서 개별적으로 처리됩니다.
+      }
+
+      /**
+       * Supabase에서 게시물을 불러오고 실시간 리스너를 설정합니다.
+       * Fetches posts from Supabase and sets up a real-time listener.
+       */
+      async function fetchAndSubscribePosts() {
+        loadingSpinner.style.display = "block"; // 로딩 스피너 표시
+
+        // 초기 데이터 로드
+        const { data, error } = await supabase
+          .from("posts")
+          .select("*")
+          .order("created_at", { ascending: false }); // 최신 게시물이 먼저 오도록 정렬
+
+        if (error) {
+          console.error("Error fetching initial posts:", error.message);
+          postsList.innerHTML =
+            '<p class="text-center text-red-500 mt-8">게시물을 불러오는 중 오류가 발생했습니다: ' +
+            error.message +
+            "</p>";
+        } else {
+          posts = data;
+          renderPosts();
+        }
+        loadingSpinner.style.display = "none"; // 로딩 스피너 숨기기
+
+        // 실시간 변경 사항 구독
+        supabase
+          .channel("public:posts") // 'posts' 테이블의 모든 변경 사항 구독
+          .on(
+            "postgres_changes",
+            { event: "*", schema: "public", table: "posts" },
+            (payload) => {
+              console.log("Change received!", payload);
+              // 변경 사항이 발생하면 전체 게시물을 다시 불러와 렌더링
+              // (간단한 예시를 위해 전체를 다시 불러오지만, 실제 앱에서는 payload를 활용하여 효율적으로 업데이트할 수 있습니다)
+              fetchAndSubscribePosts();
+            }
+          )
+          .subscribe();
+      }
+
+      // 페이지 로드 시 게시물 불러오기 및 실시간 구독 시작
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchAndSubscribePosts();
+      });
+    </script>
+  </body>
+</html>

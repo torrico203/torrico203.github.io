@@ -11,6 +11,7 @@
         margin: 0;
         padding: 0;
         color: #1f2937;
+        -webkit-print-color-adjust: exact; /* 인쇄 시 배경색 유지 */
       }
 
       .container {
@@ -32,6 +33,7 @@
 
       section {
         margin-bottom: 50px;
+        page-break-inside: avoid; /* 인쇄 시 섹션 중간이 잘리지 않도록 */
       }
 
       section h2 {
@@ -46,6 +48,7 @@
         margin-bottom: 60px;
         padding-bottom: 30px;
         border-bottom: 1px solid #e5e7eb;
+        page-break-inside: avoid; /* 프로젝트 단위로 페이지 끊기 */
       }
 
       .project h3 {
@@ -73,6 +76,7 @@
       .video-wrapper {
         margin-top: 16px;
       }
+
       .buttons {
         position: absolute;
         top: 10px;
@@ -94,11 +98,64 @@
       .buttons button:hover {
         background: #1e40af;
       }
+
       iframe {
         width: 100%;
         height: 380px;
         border: none;
         border-radius: 10px;
+      }
+
+      /* --- [핵심] 인쇄 전용 링크 스타일 (화면에서는 안 보임) --- */
+      .print-video-link {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        background-color: #f9fafb;
+        text-align: center;
+      }
+      .print-video-link p {
+        margin: 0 0 5px 0;
+        font-weight: bold;
+        color: #555;
+      }
+      .print-video-link a {
+        color: #2563eb;
+        text-decoration: underline;
+        word-break: break-all; /* URL이 길면 줄바꿈 */
+        font-size: 0.9em;
+      }
+
+      /* --- [핵심] 인쇄 시 적용되는 스타일 (@media print) --- */
+      @media print {
+        body {
+          background-color: #fff;
+        }
+        .container {
+          box-shadow: none;
+          margin: 0;
+          padding: 20px;
+          width: 100%;
+          max-width: 100%;
+        }
+        /* 인쇄할 때 버튼, 비디오 플레이어(iframe) 숨김 */
+        .buttons,
+        .video-wrapper iframe {
+          display: none !important;
+        }
+        /* 인쇄할 때 대체 링크 박스 보임 */
+        .print-video-link {
+          display: block !important;
+        }
+        /* 링크 텍스트에 실제 URL이 보이도록 강제 (일부 브라우저 대응) */
+        a[href]:after {
+          content: " (" attr(href) ")";
+          font-size: 0.8em;
+          color: #666;
+        }
+        /* 위 코드는 모든 a 태그에 붙으므로, 비디오 링크는 이미 텍스트로 넣을거라 제외하고 싶다면 아래 JS 방식만 써도 됨 */
       }
     </style>
   </head>
@@ -114,23 +171,38 @@
           11년차 기획 및 개발 경력 | HTML5, Unity 게임 16종 개발 및 퍼블리싱
         </p>
       </header>
-      <!--       <section>
-        <h2>소개</h2>
-        <p>
-          11년간 공동대표로서 다양한 게임을 직접 기획하고 개발해 왔으며,
-          퍼블리싱 계약, 글로벌 런칭, 투자 유치 등 스타트업 개발 전 과정을
-          리딩했던 경험이 있습니다.
-        </p>
-      </section> -->
 
       <section>
         <h2>기술 스택</h2>
-        <p>Unity (C#), HTML5, JavaScript, Firebase, Git, WebGL, Node.js</p>
+        <p>
+          Unity (C#), HTML5, JavaScript, TypeScript, Firebase, Git, WebGL,
+          Node.js
+        </p>
       </section>
 
       <section>
         <h2>개발 프로젝트</h2>
-        <div class="project"></div>
+        <div class="project">
+          <h3>벨리곰 버블팝 (2025)</h3>
+          <p class="highlight">
+            버블 슈팅 / phaser & TypeScript / 스마트 TV & 모바일
+          </p>
+          <p>
+            <span class="label">특징:</span> phaser & TypeScript 기반 HTML5
+            캐주얼 게임
+          </p>
+          <p>
+            <span class="label">참여 내용:</span> 구글 플레이, Toss, IPTV 런칭
+            및 서비스 다양한 디바이스(Mobile, Web, smartTV) 환경 대응 및 최적화
+          </p>
+          <div class="video-wrapper">
+            <iframe
+              src="https://drive.google.com/file/d/1BtxwHBqJPwcMGO9lKKcPM0oorQQsDBE8/view?usp=sharing"
+              allow="autoplay"
+            ></iframe>
+          </div>
+        </div>
+
         <div class="project">
           <h3>까먹는 용사 (2025) - 개인(팀) 프로젝트</h3>
           <p class="highlight">로그라이크 액션 RPG / 유니티 / 모바일</p>
@@ -272,5 +344,30 @@
         </div>
       </section>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const videoWrappers = document.querySelectorAll(".video-wrapper");
+
+        videoWrappers.forEach((wrapper) => {
+          const iframe = wrapper.querySelector("iframe");
+          if (iframe) {
+            const url = iframe.src;
+            // 인쇄용 링크 박스 생성
+            const printLinkDiv = document.createElement("div");
+            printLinkDiv.className = "print-video-link";
+
+            // 텍스트와 링크 추가
+            printLinkDiv.innerHTML = `
+              <p>📺 데모 영상 보기</p>
+              <a href="${url}" target="_blank">${url}</a>
+            `;
+
+            // iframe 뒤에 추가
+            wrapper.appendChild(printLinkDiv);
+          }
+        });
+      });
+    </script>
   </body>
 </html>

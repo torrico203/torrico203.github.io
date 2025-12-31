@@ -6,10 +6,13 @@
     <title>임재균 요약</title>
     <style>
       body {
-        font-family: "Segoe UI", sans-serif;
+        font-family: "Segoe UI", "Malgun Gothic", sans-serif; /* 맑은 고딕 추가 (PDF 호환성) */
         margin: 0;
         background-color: #f8f8f8;
         color: #333;
+        /* [핵심] 인쇄 시 배경색 강제 출력 설정 */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
       header {
         background-color: #222;
@@ -43,6 +46,8 @@
       h3 {
         margin-bottom: 1rem;
       }
+
+      /* 박스 디자인 통일 */
       .summary,
       .project,
       .award,
@@ -54,6 +59,7 @@
         margin-bottom: 1rem;
         background-color: #fafafa;
       }
+
       .project h3 {
         margin: 0.2rem 0;
       }
@@ -63,7 +69,10 @@
       .history p,
       .government p {
         margin: 0.2rem 0;
+        line-height: 1.5;
       }
+
+      /* 웹에서는 말줄임표(...) 처리 */
       .ellipsis {
         max-width: 100%;
         overflow: hidden;
@@ -72,15 +81,35 @@
         display: inline-block;
         vertical-align: top;
       }
+
       table {
-        table-layout: fixed;
+        table-layout: fixed; /* 고정 레이아웃 */
         width: 100%;
         border-collapse: collapse;
       }
       td {
         padding: 6px 8px;
         font-size: 0.95rem;
+        vertical-align: top; /* 텍스트 상단 정렬 */
       }
+
+      /* 링크 버튼 스타일 별도 클래스로 분리 (제어하기 쉽게) */
+      .action-button {
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .btn-red {
+        background-color: #cc0e00;
+      }
+      .btn-blue {
+        background-color: #0066cc;
+      }
+
       footer {
         text-align: center;
         font-size: 0.9rem;
@@ -120,6 +149,71 @@
           padding: 4px 8px;
         }
       }
+
+      /* ========================================= */
+      /* [핵심] 인쇄(PDF) 전용 스타일 (CSS Media Query) */
+      /* ========================================= */
+      @media print {
+        body {
+          background-color: #fff; /* 전체 배경 흰색 */
+          color: #000;
+        }
+
+        .container {
+          width: 100%;
+          max-width: 100%; /* 너비 제한 해제 */
+          margin: 0;
+          padding: 0;
+          box-shadow: none; /* 그림자 제거 */
+          border: none;
+        }
+
+        /* 1. 버튼 및 불필요한 요소 숨김 */
+        .button-wrapper,
+        .action-button {
+          display: none !important;
+        }
+
+        /* 2. 링크 텍스트 처리 (버튼이 사라진 자리에 텍스트도 숨길지, URL을 보여줄지 결정) */
+        /* 여기서는 깔끔하게 버튼 자체를 없애는 것으로 처리했습니다. */
+
+        /* 3. 박스 디자인 유지 및 페이지 넘김 방지 */
+        .summary,
+        .project,
+        .award,
+        .history,
+        .government {
+          background-color: #f5f5f5 !important; /* 회색 배경 강제 적용 */
+          border: 1px solid #bbb !important; /* 테두리 조금 더 진하게 */
+          page-break-inside: avoid; /* 박스 중간에서 페이지 잘림 방지 */
+          color: #000;
+        }
+
+        /* 4. 테이블(정부과제) 텍스트 잘림 해결 */
+        .ellipsis {
+          white-space: normal !important; /* 줄바꿈 허용 */
+          overflow: visible !important; /* 내용 다 보여주기 */
+          display: block !important;
+          text-overflow: clip !important; /* 말줄임표 제거 */
+        }
+
+        table {
+          font-size: 11pt; /* 글자 크기 조정 */
+        }
+
+        th,
+        td {
+          border-bottom: 1px solid #ddd; /* 줄 구분선 추가 */
+        }
+
+        /* 5. 섹션 제목이 페이지 맨 아래에 혼자 남지 않도록 설정 */
+        h2 {
+          page-break-after: avoid;
+        }
+        section {
+          page-break-inside: avoid;
+        }
+      }
     </style>
   </head>
   <body>
@@ -141,33 +235,35 @@
         <div class="summary">
           <p>
             11년간 공동대표로서 다양한 게임을 직접 기획하고 개발해 왔으며,
-            퍼블리싱 계약·글로벌 런칭·투자 유치 등 게임 스타트업의 전 과정을
-            리딩했던 경험이 있습니다.
+            퍼블리싱 계약·글로벌 런칭·투자 유치 등
+            <strong>게임 스타트업의 전 과정을 리딩</strong>했던 경험이 있습니다.
           </p>
+
+          <hr style="border: 0; border-top: 1px dashed #bbb; margin: 15px 0" />
+
           <p>
-            <a
-              href="resume.html"
-              style="
-                display: inline-block;
-                margin-top: 0.5rem;
-                padding: 0.5rem 1rem;
-                background-color: #cc0e00;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                font-weight: bold;
-              "
-              onmouseover="this.style.backgroundColor='#a00'"
-              onmouseout="this.style.backgroundColor='#cc0e00'"
-              >자세한 이력서 확인하기</a
-            >
+            스타트업 대표 출신이라는 이력은 '주도성'이라는 강점이기도 했지만,
+            재취업 시장에서는 "실무 감각이 무뎌졌을 것"이라는 편견이기도
+            했습니다.
+            <br /><br />
+            저는 이를 불식시키고자 직전 회사 입사 당시
+            <strong>신입에 준하는 처우를 감수</strong>하고 도전을 선택했습니다.
+            그 결과, 입사 <strong>4개월 만에 '팀장 승진'</strong>이라는 성과를
+            거두었으며, <strong>모바일·웹·TV 3개 플랫폼 동시 런칭</strong>을
+            성공시키며 실력을 입증했습니다.
           </p>
+
+          <a href="resume.html" class="action-button btn-red"
+            >자세한 이력서 확인하기</a
+          >
         </div>
       </section>
 
       <section>
         <h2>기술 스택</h2>
-        <p>Unity (C#), HTML5, JavaScript, Git, WebGL, Node.js</p>
+        <div class="summary">
+          <p>Unity (C#), HTML5, TypeScript, JavaScript, Git, WebGL, Node.js</p>
+        </div>
       </section>
 
       <section>
@@ -176,24 +272,9 @@
           <p>
             Unity 및 HTML5 기반 프로젝트들을 개발하고 출시한 경험이 있습니다.
           </p>
-          <p>
-            <a
-              href="portfolio_projects.html"
-              style="
-                display: inline-block;
-                margin-top: 0.5rem;
-                padding: 0.5rem 1rem;
-                background-color: #0066cc;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                font-weight: bold;
-              "
-              onmouseover="this.style.backgroundColor='#005bb5'"
-              onmouseout="this.style.backgroundColor='#0066cc'"
-              >자세한 프로젝트 확인하기</a
-            >
-          </p>
+          <a href="portfolio_projects.html" class="action-button btn-blue"
+            >자세한 프로젝트 확인하기</a
+          >
         </div>
       </section>
 
@@ -204,8 +285,7 @@
             <strong>2024.07</strong> |
             <span
               class="ellipsis"
-              title="JustClick과 글로벌 퍼블리싱 계약 《서울
-            좀비 : 용병 키우기》"
+              title="JustClick과 글로벌 퍼블리싱 계약 《서울 좀비 : 용병 키우기》"
               >JustClick과 글로벌 퍼블리싱 계약 《서울 좀비 : 용병
               키우기》</span
             >
@@ -214,8 +294,7 @@
             <strong>2022.03</strong> |
             <span
               class="ellipsis"
-              title="Daeri Soft와 IP 양도 계약 《잡캐 키우기
-            온라인》"
+              title="Daeri Soft와 IP 양도 계약 《잡캐 키우기 온라인》"
               >Daeri Soft와 IP 양도 계약 《잡캐 키우기 온라인》</span
             >
           </p>
@@ -231,8 +310,7 @@
             <strong>2021.08</strong> |
             <span
               class="ellipsis"
-              title="Daeri Soft와 글로벌 퍼블리싱 계약 《잡캐
-            키우기 온라인》"
+              title="Daeri Soft와 글로벌 퍼블리싱 계약 《잡캐 키우기 온라인》"
               >Daeri Soft와 글로벌 퍼블리싱 계약 《잡캐 키우기 온라인》</span
             >
           </p>
@@ -240,8 +318,7 @@
             <strong>2020.09</strong> |
             <span
               class="ellipsis"
-              title="위잉스튜디오와 글로벌 퍼블리싱 계약
-            《드랍팝 - 크러시 더 블럭》"
+              title="위잉스튜디오와 글로벌 퍼블리싱 계약 《드랍팝 - 크러시 더 블럭》"
               >위잉스튜디오와 글로벌 퍼블리싱 계약 《드랍팝 - 크러시 더
               블럭》</span
             >
@@ -250,8 +327,7 @@
             <strong>2020.04</strong> |
             <span
               class="ellipsis"
-              title="바나나톡과 사업 제휴(퍼블리싱, 라이센싱
-            등) 《HTML5 게임 플랫폼 APP》"
+              title="바나나톡과 사업 제휴(퍼블리싱, 라이센싱 등) 《HTML5 게임 플랫폼 APP》"
               >바나나톡과 사업 제휴(퍼블리싱, 라이센싱 등) 《HTML5 게임 플랫폼
               APP》</span
             >
@@ -260,8 +336,7 @@
             <strong>2020.02</strong> |
             <span
               class="ellipsis"
-              title="BREVE Co.Ltd(일본)와 글로벌 퍼블리싱 계약
-            《이노센트 워리어》"
+              title="BREVE Co.Ltd(일본)와 글로벌 퍼블리싱 계약 《이노센트 워리어》"
               >BREVE Co.Ltd(일본)와 글로벌 퍼블리싱 계약 《이노센트
               워리어》</span
             >
@@ -270,8 +345,7 @@
             <strong>2019.12</strong> |
             <span
               class="ellipsis"
-              title="ENP Games와 한국 & 일본 퍼블리싱 계약
-            《메이헴의 유산》"
+              title="ENP Games와 한국 & 일본 퍼블리싱 계약 《메이헴의 유산》"
               >ENP Games와 한국 & 일본 퍼블리싱 계약 《메이헴의 유산》</span
             >
           </p>
@@ -279,8 +353,7 @@
             <strong>2019.11</strong> |
             <span
               class="ellipsis"
-              title="OverGames(러시아)와 러시아 및 러시아 연방
-            퍼블리싱 계약《메이헴의 유산》"
+              title="OverGames(러시아)와 러시아 및 러시아 연방 퍼블리싱 계약《메이헴의 유산》"
               >OverGames(러시아)와 러시아 및 러시아 연방 퍼블리싱 계약《메이헴의
               유산》</span
             >
@@ -295,8 +368,7 @@
             <strong>2018.08</strong> |
             <span
               class="ellipsis"
-              title="게임 조선과 채널링 사업 계약《HTML5 게임
-            플랫폼 APP》"
+              title="게임 조선과 채널링 사업 계약《HTML5 게임 플랫폼 APP》"
               >게임 조선과 채널링 사업 계약《HTML5 게임 플랫폼 APP》</span
             >
           </p>
@@ -304,8 +376,7 @@
             <strong>2018.03</strong> |
             <span
               class="ellipsis"
-              title="컬쳐랜드와 채널링 사업 계약《HTML5 게임
-            플랫폼 APP》"
+              title="컬쳐랜드와 채널링 사업 계약《HTML5 게임 플랫폼 APP》"
               >컬쳐랜드와 채널링 사업 계약《HTML5 게임 플랫폼 APP》</span
             >
           </p>
@@ -313,8 +384,7 @@
             <strong>2017.05</strong> |
             <span
               class="ellipsis"
-              title="Funizen(인도)과 글로벌 퍼블리싱
-            계약《캐주얼 게임 5종》"
+              title="Funizen(인도)과 글로벌 퍼블리싱 계약《캐주얼 게임 5종》"
               >Funizen(인도)과 글로벌 퍼블리싱 계약《캐주얼 게임 5종》</span
             >
           </p>
@@ -322,8 +392,7 @@
             <strong>2016.07</strong> |
             <span
               class="ellipsis"
-              title="SPIL Games(네덜란드)와 글로벌 퍼블리싱
-            계약《코즈믹 온라인》"
+              title="SPIL Games(네덜란드)와 글로벌 퍼블리싱 계약《코즈믹 온라인》"
               >SPIL Games(네덜란드)와 글로벌 퍼블리싱 계약《코즈믹
               온라인》</span
             >
@@ -332,8 +401,7 @@
             <strong>2015.08</strong> |
             <span
               class="ellipsis"
-              title="Esprit Games(러시아)와 러시아 및 러시아
-            연방 퍼블리싱 계약《코즈믹 온라인》"
+              title="Esprit Games(러시아)와 러시아 및 러시아 연방 퍼블리싱 계약《코즈믹 온라인》"
               >Esprit Games(러시아)와 러시아 및 러시아 연방 퍼블리싱
               계약《코즈믹 온라인》</span
             >
@@ -372,14 +440,15 @@
         >
           <thead>
             <tr
-              style="background-color: #f5f5f5; border-bottom: 2px solid #000"
+              style="
+                background-color: #f5f5f5 !important;
+                border-bottom: 2px solid #000;
+              "
             >
               <th style="padding: 8px; text-align: left; width: 8%">년도</th>
               <th style="padding: 8px; text-align: left; width: 20%">과제명</th>
               <th style="padding: 8px; text-align: left; width: 24%">
-                <span class="ellipsis" title="시행부처/기관">
-                  시행부처/기관</span
-                >
+                시행부처/기관
               </th>
               <th style="padding: 8px; text-align: left; width: 36%">
                 주요 내용

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>임종건 돌잔치 초대장</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --point-color: #8d775f;
+            --text-color: #333;
+            --soft-bg: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f7f3ee;
+            background-image: url("https://www.transparenttextures.com/patterns/p6.png");
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: var(--soft-bg);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            position: relative;
+            border-left: 1px solid #e0dcd5;
+            border-right: 1px solid #e0dcd5;
+            overflow: hidden;
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+
+        /* 메인 상단 디자인 수정 */
+        header {
+            padding: 100px 20px 60px; /* 위쪽 여백을 넓혀 꽃 공간 확보 */
+            text-align: center;
+            border-top: 8px solid var(--point-color);
+            position: relative;
+        }
+
+        /* 수묵화 꽃 왼쪽 배치 및 크기 확대 */
+        header::before {
+            content: "";
+            position: absolute;
+            top: -35px;    /* 살짝 위로 걸치게 */
+            left: -45px;   /* 왼쪽으로 붙임 */
+            width: 280px;  /* 기존보다 훨씬 크게 조절 */
+            height: 280px;
+            background: url("https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/flower_top.webp") no-repeat;
+            background-size: contain;
+            opacity: 0.8;  /* 원본 느낌 살려 선명도 조절 */
+            pointer-events: none;
+            /* 왼쪽에서 뻗어 나오는 느낌을 위해 좌우 반전 필요시 아래 주석 해제 */
+            /* transform: scaleX(-1); */
+        }
+
+        .title-sub { font-size: 0.9rem; letter-spacing: 5px; color: var(--point-color); margin-bottom: 10px; display: block; position: relative; z-index: 10; }
+        .title-main { 
+            font-family: 'Nanum Myeongjo', serif; 
+            font-size: 2.8rem; 
+            margin: 15px 0; 
+            font-weight: 700;
+            color: #2a241f;
+            position: relative;
+            z-index: 10;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 사진 슬라이드 */
+        .gallery-container { padding: 40px 0; background: rgba(255,255,255,0.5); }
+        .gallery-wrapper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 15px;
+            padding: 0 20px;
+            scrollbar-width: none;
+        }
+        .gallery-wrapper::-webkit-scrollbar { display: none; }
+        .gallery-item {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 3/4;
+            background: #eee;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 정보 섹션 */
+        .info-section { padding: 60px 30px; text-align: center; position: relative; }
+        .info-box { margin-bottom: 45px; }
+        .info-label { font-size: 0.85rem; color: var(--point-color); font-weight: bold; margin-bottom: 8px; display: block; }
+        .info-value { font-size: 1.15rem; line-height: 1.8; }
+        
+        .map-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            border: 1px solid var(--point-color);
+            color: var(--point-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 4px;
+        }
+
+        /* 영상 섹션 */
+        .video-section { padding: 50px 20px; background: rgba(141, 119, 95, 0.05); }
+        .vertical-video-wrapper {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto 30px;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            aspect-ratio: 9 / 16;
+        }
+        .vertical-video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        footer {
+            padding: 50px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px dashed #dcd8d3;
+        }
+        .seal { width: 50px; margin-top: 20px; opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="title-sub">첫 번째 생일 초대</span>
+        <h1 class="title-main">임 종 건</h1>
+        <p style="margin-top:20px; color: #555;">
+            종건이의 첫 걸음을 축하해 주시는<br>
+            소중한 분들을 모십니다.
+        </p>
+    </header>
+
+    <div class="gallery-container">
+        <div class="gallery-wrapper">
+            <div class="gallery-item"><img src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun1.jpg" alt="사진1"></div>
+            <div class="gallery-item"><img src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun2.jpg" alt="사진2"></div>
+            <div class="gallery-item"><img src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun3.jpg" alt="사진3"></div>
+            <div class="gallery-item"><img src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun4.jpg" alt="사진4"></div>
+            <div class="gallery-item"><img src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun5.jpg" alt="사진5"></div>
+            <div class="gallery-item"><img src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun6.jpg" alt="사진6"></div>
+        </div>
+        <p style="text-align:center; font-size:0.75rem; color:#999; margin-top:15px;">← 옆으로 밀어서 사진을 확인하세요 →</p>
+    </div>
+
+    <div class="info-section">
+        <div class="info-box">
+            <span class="info-label">WHEN</span>
+            <div class="info-value"><strong>2026년 3월 29일 일요일</strong></div>
+            <div class="info-value">오전 12:00 (이호당)</div>
+            <p style="font-size:0.85rem; color:#888; margin-top:5px;">* 사진 촬영은 11:30부터 진행됩니다.</p>
+        </div>
+
+        <div class="info-box">
+            <span class="info-label">WHERE</span>
+            <div class="info-value"><strong>필경재 (必敬齋)</strong></div>
+            <div class="info-value" style="font-size:0.95rem; margin-top:5px;">서울특별시 강남구 광평로 205</div>
+            <a href="https://map.kakao.com/?q=필경재" class="map-btn" target="_blank">지도 보기</a>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <span class="info-label" style="text-align:center; display:block; margin-bottom:25px;">GROWTH VIDEO</span>
+        <div class="vertical-video-wrapper">
+            <video controls playsinline preload="metadata">
+                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun0.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="vertical-video-wrapper">
+            <video controls playsinline preload="metadata">
+                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun1.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="vertical-video-wrapper">
+            <video controls playsinline preload="metadata">
+                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun2.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <footer>
+        <p>아빠 임재균 · 엄마 김혜림 드림</p>
+        <img src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/seal.webp" class="seal" alt="인장">
+        <p style="margin-top:25px; font-size:0.75rem;">© 2026 Jong-gun's 1st Birthday</p>
+    </footer>
+</div>
+
+</body>
+</html>

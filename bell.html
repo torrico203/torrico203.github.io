@@ -34,28 +34,26 @@
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
         }
 
-        /* 메인 상단 디자인 수정 */
         header {
-            padding: 100px 20px 60px; /* 위쪽 여백을 넓혀 꽃 공간 확보 */
+            padding: 110px 20px 60px;
             text-align: center;
             border-top: 8px solid var(--point-color);
             position: relative;
         }
 
-        /* 수묵화 꽃 왼쪽 배치 및 크기 확대 */
         header::before {
             content: "";
             position: absolute;
-            top: -35px;    /* 살짝 위로 걸치게 */
-            left: -45px;   /* 왼쪽으로 붙임 */
-            width: 280px;  /* 기존보다 훨씬 크게 조절 */
-            height: 280px;
+            top: -40px;
+            left: -50px;
+            width: 320px;
+            height: 320px;
             background: url("https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/flower_top.webp") no-repeat;
             background-size: contain;
-            opacity: 0.8;  /* 원본 느낌 살려 선명도 조절 */
+            mix-blend-mode: multiply;
+            opacity: 0.8;
             pointer-events: none;
-            /* 왼쪽에서 뻗어 나오는 느낌을 위해 좌우 반전 필요시 아래 주석 해제 */
-            /* transform: scaleX(-1); */
+            z-index: 1;
         }
 
         .title-sub { font-size: 0.9rem; letter-spacing: 5px; color: var(--point-color); margin-bottom: 10px; display: block; position: relative; z-index: 10; }
@@ -70,7 +68,6 @@
             text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.8);
         }
 
-        /* 사진 슬라이드 */
         .gallery-container { padding: 40px 0; background: rgba(255,255,255,0.5); }
         .gallery-wrapper {
             display: flex;
@@ -92,7 +89,6 @@
         }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 정보 섹션 */
         .info-section { padding: 60px 30px; text-align: center; position: relative; }
         .info-box { margin-bottom: 45px; }
         .info-label { font-size: 0.85rem; color: var(--point-color); font-weight: bold; margin-bottom: 8px; display: block; }
@@ -109,19 +105,41 @@
             border-radius: 4px;
         }
 
-        /* 영상 섹션 */
-        .video-section { padding: 50px 20px; background: rgba(141, 119, 95, 0.05); }
-        .vertical-video-wrapper {
+        /* 영상 섹션 가로 스와이프 스타일 */
+        .video-section { padding: 50px 0; background: rgba(141, 119, 95, 0.05); }
+        .video-swipe-wrapper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 0 30px;
+            scrollbar-width: none;
+        }
+        .video-swipe-wrapper::-webkit-scrollbar { display: none; }
+        
+        .video-card {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+            text-align: center;
+        }
+
+        .video-box {
             width: 100%;
-            max-width: 300px;
-            margin: 0 auto 30px;
+            aspect-ratio: 9 / 16;
             background: #000;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            aspect-ratio: 9 / 16;
         }
-        .vertical-video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .video-box video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .video-title {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: var(--point-color);
+            font-weight: 700;
+            font-family: 'Nanum Myeongjo', serif;
+        }
 
         footer {
             padding: 50px 20px;
@@ -175,36 +193,57 @@
 
     <div class="video-section">
         <span class="info-label" style="text-align:center; display:block; margin-bottom:25px;">GROWTH VIDEO</span>
-        <div class="vertical-video-wrapper">
-            <video controls playsinline preload="metadata">
-                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun0.mp4" type="video/mp4">
-            </video>
+        <div class="video-swipe-wrapper">
+            <div class="video-card">
+                <div class="video-box">
+                    <video controls playsinline preload="metadata">
+                        <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun0.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-title">#1. 빠르게 기는 종건</div>
+            </div>
+            <div class="video-card">
+                <div class="video-box">
+                    <video controls playsinline preload="metadata">
+                        <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun1.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-title">#2. 두 다리로 서서 박수!</div>
+            </div>
+            <div class="video-card">
+                <div class="video-box">
+                    <video controls playsinline preload="metadata">
+                        <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun2.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-title">#3. 졸린데 배고파</div>
+            </div>
+            <div class="video-card">
+                <div class="video-box">
+                    <video controls playsinline preload="metadata">
+                        <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun3.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-title">#4. 바운서에서 둠칫둠칫</div>
+            </div>
+            <div class="video-card">
+                <div class="video-box">
+                    <video controls playsinline preload="metadata">
+                        <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun4.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-title">#5. 물놀이 종건</div>
+            </div>
+            <div class="video-card">
+                <div class="video-box">
+                    <video controls playsinline preload="metadata">
+                        <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun5.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-title">#6. 머리숱이 많은 시절</div>
+            </div>
         </div>
-        <div class="vertical-video-wrapper">
-            <video controls playsinline preload="metadata">
-                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun1.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div class="vertical-video-wrapper">
-            <video controls playsinline preload="metadata">
-                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun2.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div class="vertical-video-wrapper">
-            <video controls playsinline preload="metadata">
-                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun3.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div class="vertical-video-wrapper">
-            <video controls playsinline preload="metadata">
-                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun4.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div class="vertical-video-wrapper">
-            <video controls playsinline preload="metadata">
-                <source src="https://pub-5533e69cbca94ce98bc1b16dab3e82a8.r2.dev/bellGun5.mp4" type="video/mp4">
-            </video>
-        </div>
+        <p style="text-align:center; font-size:0.75rem; color:#999; margin-top:15px;">← 옆으로 밀어서 영상을 확인하세요 →</p>
     </div>
 
     <footer>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Documentation - Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #8b949e;
+      font-size: 1.1rem;
+    }
+
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .doc-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .doc-card:hover {
+      transform: translateY(-5px);
+      border-color: #58a6ff;
+      box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15);
+    }
+
+    .doc-title {
+      font-size: 1.5rem;
+      color: #58a6ff;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .doc-icon {
+      font-size: 1.8rem;
+    }
+
+    .doc-description {
+      color: #8b949e;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .tag {
+      background: #21262d;
+      color: #58a6ff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      border: 1px solid #30363d;
+    }
+
+    .metrics {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #30363d;
+    }
+
+    .metric {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .metric-value {
+      color: #3fb950;
+      font-weight: 600;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: #58a6ff;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .docs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="https://torrico203.github.io/portfolio_projects.html" class="back-link" target="_blank">← Back to Portfolio</a>
+    
+    <header>
+      <h1>📚 Technical Documentation</h1>
+      <p class="subtitle">심층 기술 분석 및 아키텍처 설계 문서</p>
+    </header>
+
+    <div class="docs-grid">
+
+      <!-- BodyCheck -->
+      <a href="https://github.com/torrico203/bodyCheck" class="doc-card" target="_blank">
+        <div class="doc-title">
+          <span class="doc-icon">⚔️</span>
+          BodyCheck
+        </div>
+        <div class="doc-description">
+          Unity 2D RPG 액션 게임. Object Pooling, Addressable Assets 기반 메모리 최적화 및 확장 가능한 스탯 시스템 설계.
+        </div>
+        <div class="tech-tags">
+          <span class="tag">Unity</span>
+          <span class="tag">C#</span>
+          <span class="tag">Object Pool</span>
+          <span class="tag">Addressable</span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <span>GC 호출:</span>
+            <span class="metric-value">-80%</span>
+          </div>
+          <div class="metric">
+            <span>메모리:</span>
+            <span class="metric-value">-60%</span>
+          </div>
+          <div class="metric">
+            <span>로딩:</span>
+            <span class="metric-value">비동기</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Bellygom Bubble Pop -->
+      <a href="./tech/bubblepop.html" class="doc-card" target="_blank">
+        <div class="doc-title">
+          <span class="doc-icon">🎮</span>
+          Bellygom Bubble Pop
+        </div>
+        <div class="doc-description">
+          webOS TV 플랫폼 최적화 사례 연구. LED TV 저사양 환경에서의 메모리 관리 및 성능 개선 전략.
+        </div>
+        <div class="tech-tags">
+          <span class="tag">Phaser 3</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">webOS</span>
+          <span class="tag">Optimization</span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <span>메모리:</span>
+            <span class="metric-value">-70%</span>
+          </div>
+          <div class="metric">
+            <span>로딩:</span>
+            <span class="metric-value">-62%</span>
+          </div>
+          <div class="metric">
+            <span>번들:</span>
+            <span class="metric-value">-68%</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Armii & Macovill Game Zone -->
+      <a href="./tech/platform.html" class="doc-card" target="_blank">
+        <div class="doc-title">
+          <span class="doc-icon">🗏</span>
+          Armii & Macovill Game Zone
+        </div>
+        <div class="doc-description">
+          자체 구축 HTML5 미니게임 포털. Vite MPA 빌드, Firebase 실시간 연동, 광고 매니징 시스템, Phaser.js 게임 개발 A to Z.
+        </div>
+        <div class="tech-tags">
+          <span class="tag">Vite</span>
+          <span class="tag">Phaser.js</span>
+          <span class="tag">Firebase V9</span>
+          <span class="tag">Spine 2D</span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <span>번들 크기:</span>
+            <span class="metric-value">-40%</span>
+          </div>
+          <div class="metric">
+            <span>로딩 속도:</span>
+            <span class="metric-value">-60%</span>
+          </div>
+          <div class="metric">
+            <span>애니메이션:</span>
+            <span class="metric-value">-92%</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</body>
+</html>

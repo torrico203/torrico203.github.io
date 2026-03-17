@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>임재균</title>
@@ -47,6 +47,15 @@
         margin: 0;
         padding: 0 0 0 10px;
         list-style-type: square;
+      }
+
+      ul li {
+        margin-bottom: 6px;
+      }
+
+      .special-subtitle {
+        display: block;
+        margin-bottom: 8px;
       }
 
       a {
@@ -259,8 +268,8 @@
   <body class="lang-ko">
     <div id="main">
       <div class="buttons">
-        <button onclick="location.href='resume.html'">KO</button>
-        <button onclick="location.href='resume_en.html'">EN</button>
+        <button onclick="location.href = 'resume.html'">KO</button>
+        <button onclick="location.href = 'resume_en.html'">EN</button>
       </div>
       <div id="photo">
         <img src="images/임재균.png" alt="프로필 사진" />
@@ -279,7 +288,11 @@
             <div class="r">
               <p class="email">
                 <label>전자우편<span class="colon">:</span></label>
-                <span class="value">torrico203@gmail.com</span>
+                <span class="value"
+                  ><a href="mailto:torrico203@gmail.com"
+                    >torrico203@gmail.com</a
+                  ></span
+                >
               </p>
               <p class="website">
                 <label>웹사이트<span class="colon">:</span></label>
@@ -385,8 +398,50 @@
               <div>- 2025.12 ~ 현재 : 캐주얼게임팀 팀장 (승진)</div>
               <div>- 2025.08 ~ 2025.11 : 게임 클라이언트 개발자</div>
               <br />
-              <div>벨리곰 버블팝, 신규 머지 게임(가제) 개발</div>
+              <div>벨리곰 버블팝, 아르미 공작소(웹서비스 플랫폼) 개발</div>
             </div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="separator"></div>
+
+      <div class="section section-webservice">
+        <h2 class="title">웹서비스</h2>
+        <div class="set">
+          <div class="item">
+            <h3>
+              <span class="special-title l"
+                >아르미 공작소: IP 기반 콘텐츠 플랫폼 구축 및 운영</span
+              >
+              <span class="date r">2026.01 — 현재</span>
+            </h3>
+            <div class="clear"></div>
+            <span class="special-subtitle"
+              >IP 비즈니스의 디지털 전환(Digital Transformation) 및 수익화
+              설계</span
+            >
+            <div class="info">
+              <ul>
+                <li>
+                  <strong>IP 플랫폼화:</strong> 네이버 블로그 기반 IP 자산을
+                  독립 웹 플랫폼으로 전환, 월간 활성 사용자 지표 관리
+                </li>
+                <li>
+                  <strong>수익 모델 구축:</strong> Google AdSense 및 자체
+                  AdManager를 통한 보상형 광고 수익화 시스템 설계
+                </li>
+                <li>
+                  <strong>글로벌 서비스 설계:</strong> i18n 자동 감지 및
+                  Cloudflare R2를 활용한 글로벌 콘텐츠 배포 아키텍처 구축
+                </li>
+                <li>
+                  <strong>비즈니스 확장:</strong> HTML5 게임 엔진(Phaser.js)
+                  통합을 통한 사용자 체류 시간 및 리텐션 극대화
+                </li>
+              </ul>
+            </div>
+            <div class="clear"></div>
           </div>
         </div>
         <div class="clear"></div>
@@ -396,19 +451,6 @@
       <div class="section section-projects">
         <h2 class="title">개발 게임</h2>
         <div class="set">
-          <div class="item">
-            <h3>
-              <span class="special-title l">신규 머지(Merge) 게임 (가제)</span>
-              <span class="date r">2025.12 — </span>
-            </h3>
-            <div class="clear"></div>
-            <span class="special-subtitle">캐주얼 머지 퍼즐</span>
-            <div class="info">
-              Unity 기반 / 팀장으로서 기획 및 클라이언트 리딩 / 개발 중
-            </div>
-            <div class="clear"></div>
-          </div>
-
           <div class="item">
             <h3>
               <span class="special-title l"
@@ -425,7 +467,7 @@
                   &lt;영상 보기&gt;
                 </a></span
               >
-              <span class="date r">2025.08 — 2025.11</span>
+              <span class="date r">2025.08 — 2025.12</span>
             </h3>
             <div class="clear"></div>
             <div class="info">
@@ -696,7 +738,7 @@
         <h2 class="title">기타</h2>
         <div class="set">
           <div class="item">
-            <span class="info">요청시 증빙 서류 첨부 가능.</span>
+            <span class="info">요청시 증빙 서류 첨부</span>
           </div>
         </div>
         <div class="clear"></div>

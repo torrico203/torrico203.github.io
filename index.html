@@ -3,646 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>임재균 요약</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Malgun Gothic", sans-serif; /* 맑은 고딕 추가 (PDF 호환성) */
-        margin: 0;
-        background-color: #f8f8f8;
-        color: #333;
-        /* [핵심] 인쇄 시 배경색 강제 출력 설정 */
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      header {
-        background-color: #222;
-        color: white;
-        padding: 2rem 1rem;
-        text-align: center;
-        position: relative;
-      }
-      .button-wrapper {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        z-index: 10;
-        display: flex;
-        gap: 5px;
-      }
+    <title data-i18n="site.title">임재균 — 게임 기획·개발 포트폴리오</title>
+    <meta name="description" content="임재균 (JaeGyun Lim) — 11년차 게임 기획·개발자. 16종 프로젝트를 PD/PM/PO로 리딩." />
 
-      .container {
-        max-width: 800px;
-        margin: 2rem auto;
-        padding: 1rem;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        border-radius: 8px;
-      }
-      section {
-        margin-bottom: 3rem;
-      }
-      h1,
-      h2,
-      h3 {
-        margin-bottom: 1rem;
-      }
-
-      /* 박스 디자인 통일 */
-      .summary,
-      .project,
-      .award,
-      .history,
-      .government {
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        background-color: #fafafa;
-      }
-
-      .project h3 {
-        margin: 0.2rem 0;
-      }
-      .summary p,
-      .project p,
-      .award p,
-      .history p,
-      .government p {
-        margin: 0.2rem 0;
-        line-height: 1.5;
-      }
-
-      /* 웹에서는 말줄임표(...) 처리 */
-      .ellipsis {
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        display: inline-block;
-        vertical-align: top;
-      }
-
-      table {
-        table-layout: fixed; /* 고정 레이아웃 */
-        width: 100%;
-        border-collapse: collapse;
-      }
-      td {
-        padding: 6px 8px;
-        font-size: 0.95rem;
-        vertical-align: top; /* 텍스트 상단 정렬 */
-      }
-
-      /* 링크 버튼 스타일 별도 클래스로 분리 (제어하기 쉽게) */
-      .action-button {
-        display: inline-block;
-        margin-top: 0.5rem;
-        padding: 0.5rem 1rem;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-      }
-      .btn-red {
-        background-color: #cc0e00;
-      }
-      .btn-blue {
-        background-color: #0066cc;
-      }
-
-      footer {
-        text-align: center;
-        font-size: 0.9rem;
-        padding: 2rem;
-        color: #888;
-      }
-      a {
-        color: #0066cc;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      .button-wrapper button {
-        padding: 6px 12px;
-        background: white;
-        color: black;
-        border: none;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.3s;
-      }
-      .button-wrapper button:hover {
-        background: rgb(74, 75, 75);
-      }
-
-      @media (max-width: 480px) {
-        .button-wrapper {
-          top: 10px;
-          left: 10px;
-          gap: 3px;
-        }
-        .button-wrapper button {
-          font-size: 12px;
-          padding: 4px 8px;
-        }
-      }
-
-      /* ========================================= */
-      /* [핵심] 인쇄(PDF) 전용 스타일 (CSS Media Query) */
-      /* ========================================= */
-      @media print {
-        body {
-          background-color: #fff; /* 전체 배경 흰색 */
-          color: #000;
-        }
-
-        .container {
-          width: 100%;
-          max-width: 100%; /* 너비 제한 해제 */
-          margin: 0;
-          padding: 0;
-          box-shadow: none; /* 그림자 제거 */
-          border: none;
-        }
-
-        /* 1. 버튼 및 불필요한 요소 숨김 */
-        .button-wrapper,
-        .action-button {
-          display: none !important;
-        }
-
-        /* 2. 링크 텍스트 처리 (버튼이 사라진 자리에 텍스트도 숨길지, URL을 보여줄지 결정) */
-        /* 여기서는 깔끔하게 버튼 자체를 없애는 것으로 처리했습니다. */
-
-        /* 3. 박스 디자인 유지 및 페이지 넘김 방지 */
-        .summary,
-        .project,
-        .award,
-        .history,
-        .government {
-          background-color: #f5f5f5 !important; /* 회색 배경 강제 적용 */
-          border: 1px solid #bbb !important; /* 테두리 조금 더 진하게 */
-          page-break-inside: avoid; /* 박스 중간에서 페이지 잘림 방지 */
-          color: #000;
-        }
-
-        /* 4. 테이블(정부과제) 텍스트 잘림 해결 */
-        .ellipsis {
-          white-space: normal !important; /* 줄바꿈 허용 */
-          overflow: visible !important; /* 내용 다 보여주기 */
-          display: block !important;
-          text-overflow: clip !important; /* 말줄임표 제거 */
-        }
-
-        table {
-          font-size: 11pt; /* 글자 크기 조정 */
-        }
-
-        th,
-        td {
-          border-bottom: 1px solid #ddd; /* 줄 구분선 추가 */
-        }
-
-        /* 5. 섹션 제목이 페이지 맨 아래에 혼자 남지 않도록 설정 */
-        h2 {
-          page-break-after: avoid;
-        }
-        section {
-          page-break-inside: avoid;
-        }
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
   </head>
   <body>
-    <header>
-      <div class="button-wrapper">
-        <button onclick="location.href='index.html'">KO</button>
-        <button onclick="location.href='index_en.html'">EN</button>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a href="#top" class="topbar__brand" data-content="profile.name">임재균</a>
+        <nav class="topbar__nav" aria-label="primary">
+          <a href="#about"        data-i18n="nav.about">소개</a>
+          <a href="#experience"   data-i18n="nav.experience">경력</a>
+          <a href="#projects"     data-i18n="nav.projects">프로젝트</a>
+          <a href="#publishing"   data-i18n="nav.publishing">사업 이력</a>
+          <a href="#contact"      data-i18n="nav.contact">연락처</a>
+        </nav>
+        <button id="lang-toggle" class="lang-toggle" type="button" aria-label="language">
+          <span data-i18n="lang.toggle">EN</span>
+        </button>
       </div>
-      <h1>임재균</h1>
-      <p>
-        11년차 게임 기획 및 개발 경력 |
-        <strong>PD·PM·PO</strong>로 16종 프로젝트 리딩
-      </p>
     </header>
 
-    <div class="container">
-      <section>
-        <h2>소개</h2>
-        <div class="summary">
-          <p>
-            11년간 공동대표로서 다양한 게임을 직접 기획하고 개발해 왔으며,
-            퍼블리싱 계약·글로벌 런칭·투자 유치 등
-            <strong>게임 스타트업의 전 과정을 리딩</strong>했던 경험이 있습니다.
-          </p>
-
-          <hr style="border: 0; border-top: 1px dashed #bbb; margin: 15px 0" />
-
-          <p>
-            스타트업 대표 출신이라는 이력은 '주도성'이라는 강점이기도 했지만,
-            재취업 시장에서는 "실무 감각이 무뎌졌을 것"이라는 편견이기도
-            했습니다.
-            <br /><br />
-            저는 이러한 편견을 불식시키고자 직전 회사 입사 당시
-            <strong>신입에 준하는 처우를 감수</strong>하고 <br />
-            현장 중심의 역할부터 다시 시작했습니다.<br /><br />
-            그 과정에서 팀 운영과 실행력을 인정받아 입사
-            <strong>4개월 만에 팀장 역할을 맡게 되었고</strong>,<br />
-            이후 <strong>모바일·웹·TV 3개 플랫폼의 동시 런칭</strong>을
-            주도적으로 수행하며 조직에 <strong>실질적인 기여</strong>를 할 수
-            있었습니다.
-          </p>
-
-          <a href="resume.html" class="action-button btn-red"
-            >자세한 이력서 확인하기</a
-          >
+    <main id="top">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container hero__inner">
+          <img class="hero__photo" alt="" data-attr-src="profile.photo" />
+          <div class="hero__text">
+            <h1 class="hero__name">
+              <span data-content="profile.name">임재균</span>
+              <span class="hero__hanja" data-content="profile.nameHanja">任宰均</span>
+            </h1>
+            <p class="hero__headline" data-content="profile.headline"></p>
+            <div class="hero__actions">
+              <button type="button" class="btn btn--primary" onclick="window.print()" data-i18n="hero.printResume">이력서 PDF로 인쇄</button>
+              <a href="#contact" class="btn btn--ghost" data-i18n="hero.contact">연락하기</a>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section>
-        <h2>기술 스택</h2>
-        <div class="summary">
-          <p>Unity (C#), HTML5, TypeScript, JavaScript, Git, WebGL, Node.js</p>
+      <!-- About -->
+      <section id="about" class="section">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.about">소개</h2>
+          <div class="tabs" role="tablist">
+            <button class="tab is-active" role="tab" data-tab="summary" data-i18n="intro.tabs.summary">요약</button>
+            <button class="tab"           role="tab" data-tab="pm"      data-i18n="intro.tabs.pm">PM 자기소개</button>
+            <button class="tab"           role="tab" data-tab="dev"     data-i18n="intro.tabs.dev">개발자 자기소개</button>
+          </div>
+          <div class="tab-panels">
+            <div class="tab-panel is-active" data-panel="summary" data-render="aboutSummary"></div>
+            <div class="tab-panel"           data-panel="pm"      data-render="aboutPM"></div>
+            <div class="tab-panel"           data-panel="dev"     data-render="aboutDev"></div>
+          </div>
         </div>
       </section>
 
-      <section>
-        <h2>개발 프로젝트</h2>
-        <div class="project">
-          <p>
-            Unity 및 HTML5 기반 프로젝트들을 개발하고 출시한 경험이 있습니다.
-          </p>
-          <a href="portfolio_projects.html" class="action-button btn-blue"
-            >자세한 프로젝트 확인하기</a
-          >
+      <!-- Skills -->
+      <section id="skills" class="section section--alt">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.skills">기술 스택</h2>
+          <ul class="chips" data-render="skills"></ul>
         </div>
       </section>
 
-      <section>
-        <h2>퍼블리싱 및 투자 유치 이력</h2>
-        <div class="history">
-          <p>
-            <strong>2024.07</strong> |
-            <span
-              class="ellipsis"
-              title="JustClick과 글로벌 퍼블리싱 계약 《서울 좀비 : 용병 키우기》"
-              >JustClick과 글로벌 퍼블리싱 계약 《서울 좀비 : 용병
-              키우기》</span
-            >
-          </p>
-          <p>
-            <strong>2022.03</strong> |
-            <span
-              class="ellipsis"
-              title="Daeri Soft와 IP 양도 계약 《잡캐 키우기 온라인》"
-              >Daeri Soft와 IP 양도 계약 《잡캐 키우기 온라인》</span
-            >
-          </p>
-          <p>
-            <strong>2022.01</strong> |
-            <span
-              class="ellipsis"
-              title="Pre-Series A 투자 유치《개인엔젤투자자》"
-              >Pre-Series A 투자 유치《개인엔젤투자자》</span
-            >
-          </p>
-          <p>
-            <strong>2021.08</strong> |
-            <span
-              class="ellipsis"
-              title="Daeri Soft와 글로벌 퍼블리싱 계약 《잡캐 키우기 온라인》"
-              >Daeri Soft와 글로벌 퍼블리싱 계약 《잡캐 키우기 온라인》</span
-            >
-          </p>
-          <p>
-            <strong>2020.09</strong> |
-            <span
-              class="ellipsis"
-              title="위잉스튜디오와 글로벌 퍼블리싱 계약 《드랍팝 - 크러시 더 블럭》"
-              >위잉스튜디오와 글로벌 퍼블리싱 계약 《드랍팝 - 크러시 더
-              블럭》</span
-            >
-          </p>
-          <p>
-            <strong>2020.04</strong> |
-            <span
-              class="ellipsis"
-              title="바나나톡과 사업 제휴(퍼블리싱, 라이센싱 등) 《HTML5 게임 플랫폼 APP》"
-              >바나나톡과 사업 제휴(퍼블리싱, 라이센싱 등) 《HTML5 게임 플랫폼
-              APP》</span
-            >
-          </p>
-          <p>
-            <strong>2020.02</strong> |
-            <span
-              class="ellipsis"
-              title="BREVE Co.Ltd(일본)와 글로벌 퍼블리싱 계약 《이노센트 워리어》"
-              >BREVE Co.Ltd(일본)와 글로벌 퍼블리싱 계약 《이노센트
-              워리어》</span
-            >
-          </p>
-          <p>
-            <strong>2019.12</strong> |
-            <span
-              class="ellipsis"
-              title="ENP Games와 한국 & 일본 퍼블리싱 계약 《메이헴의 유산》"
-              >ENP Games와 한국 & 일본 퍼블리싱 계약 《메이헴의 유산》</span
-            >
-          </p>
-          <p>
-            <strong>2019.11</strong> |
-            <span
-              class="ellipsis"
-              title="OverGames(러시아)와 러시아 및 러시아 연방 퍼블리싱 계약《메이헴의 유산》"
-              >OverGames(러시아)와 러시아 및 러시아 연방 퍼블리싱 계약《메이헴의
-              유산》</span
-            >
-          </p>
-          <p>
-            <strong>2018.10</strong> |
-            <span class="ellipsis" title="시드라운드 투자 유치《NEOPLY》"
-              >시드라운드 투자 유치《NEOPLY》</span
-            >
-          </p>
-          <p>
-            <strong>2018.08</strong> |
-            <span
-              class="ellipsis"
-              title="게임 조선과 채널링 사업 계약《HTML5 게임 플랫폼 APP》"
-              >게임 조선과 채널링 사업 계약《HTML5 게임 플랫폼 APP》</span
-            >
-          </p>
-          <p>
-            <strong>2018.03</strong> |
-            <span
-              class="ellipsis"
-              title="컬쳐랜드와 채널링 사업 계약《HTML5 게임 플랫폼 APP》"
-              >컬쳐랜드와 채널링 사업 계약《HTML5 게임 플랫폼 APP》</span
-            >
-          </p>
-          <p>
-            <strong>2017.05</strong> |
-            <span
-              class="ellipsis"
-              title="Funizen(인도)과 글로벌 퍼블리싱 계약《캐주얼 게임 5종》"
-              >Funizen(인도)과 글로벌 퍼블리싱 계약《캐주얼 게임 5종》</span
-            >
-          </p>
-          <p>
-            <strong>2016.07</strong> |
-            <span
-              class="ellipsis"
-              title="SPIL Games(네덜란드)와 글로벌 퍼블리싱 계약《코즈믹 온라인》"
-              >SPIL Games(네덜란드)와 글로벌 퍼블리싱 계약《코즈믹
-              온라인》</span
-            >
-          </p>
-          <p>
-            <strong>2015.08</strong> |
-            <span
-              class="ellipsis"
-              title="Esprit Games(러시아)와 러시아 및 러시아 연방 퍼블리싱 계약《코즈믹 온라인》"
-              >Esprit Games(러시아)와 러시아 및 러시아 연방 퍼블리싱
-              계약《코즈믹 온라인》</span
-            >
-          </p>
+      <!-- Experience + Education -->
+      <section id="experience" class="section">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.experience">경력</h2>
+          <ol class="timeline" data-render="experience"></ol>
+
+          <h2 class="section__title section__title--sub" data-i18n="section.education">학력</h2>
+          <ol class="timeline" data-render="education"></ol>
         </div>
       </section>
 
-      <section>
-        <h2>주요 수상 내역</h2>
-        <div class="award">
-          <p>
-            <strong>2022.12</strong> | 충남 게임상 1위 (충남정보문화산업진흥원)
-          </p>
-          <p>
-            <strong>2019.08</strong> | 인디게임 상반기 이달의 우수게임 선정
-            (문화체육관광부)
-          </p>
-          <p><strong>2018.03</strong> | Global IR Day 1위 (한국콘텐츠진흥원)</p>
-          <p><strong>2015.12</strong> | 창업경진대회 1위 (주식회사 코나아이)</p>
-          <p>
-            <strong>2015.12</strong> | 2회 게임창조 오디션 3위
-            (경기콘텐츠진흥원)
-          </p>
+      <!-- Projects -->
+      <section id="projects" class="section section--alt">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.projects">프로젝트</h2>
+          <div class="cards" data-render="projects"></div>
         </div>
       </section>
 
-      <section>
-        <h2>정부과제 수행 이력</h2>
-        <table
-          style="
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1em;
-            font-size: 0.95rem;
-          "
-        >
-          <thead>
-            <tr
-              style="
-                background-color: #f5f5f5 !important;
-                border-bottom: 2px solid #000;
-              "
-            >
-              <th style="padding: 8px; text-align: left; width: 8%">년도</th>
-              <th style="padding: 8px; text-align: left; width: 20%">과제명</th>
-              <th style="padding: 8px; text-align: left; width: 24%">
-                시행부처/기관
-              </th>
-              <th style="padding: 8px; text-align: left; width: 36%">
-                주요 내용
-              </th>
-              <th style="padding: 8px; text-align: left; width: 12%">역할</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>’23</td>
-              <td>
-                <span class="ellipsis" title="신규게임 제작지원"
-                  >신규게임 제작지원</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="충남정보문화산업진흥원"
-                  >충남정보문화산업진흥원</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="코즈믹 서바이벌"
-                  >코즈믹 서바이벌</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="과제 책임자">과제 책임자</span>
-              </td>
-            </tr>
-            <tr>
-              <td>’22</td>
-              <td>
-                <span class="ellipsis" title="신규게임 제작지원"
-                  >신규게임 제작지원</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="충남정보문화산업진흥원"
-                  >충남정보문화산업진흥원</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="서울 좀비 - 용병키우기"
-                  >서울 좀비 - 용병키우기</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="과제 책임자">과제 책임자</span>
-              </td>
-            </tr>
-            <tr>
-              <td>’21</td>
-              <td>
-                <span class="ellipsis" title="창구 - 글로벌 협업 프로그램"
-                  >창구 - 글로벌 협업 프로그램</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="창업진흥원">창업진흥원</span>
-              </td>
-              <td>
-                <span class="ellipsis" title="잡캐 키우기">잡캐 키우기</span>
-              </td>
-              <td>
-                <span class="ellipsis" title="과제 책임자">과제 책임자</span>
-              </td>
-            </tr>
-            <tr>
-              <td>’21</td>
-              <td>
-                <span class="ellipsis" title="신규게임 제작지원 (2차)"
-                  >신규게임 제작지원 (2차)</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="충남정보문화산업진흥원"
-                  >충남정보문화산업진흥원</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="잡캐 키우기">잡캐 키우기</span>
-              </td>
-              <td>
-                <span class="ellipsis" title="과제 책임자">과제 책임자</span>
-              </td>
-            </tr>
-            <tr>
-              <td>’20</td>
-              <td>
-                <span class="ellipsis" title="신규게임 제작지원 (2차)"
-                  >신규게임 제작지원 (2차)</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="충남정보문화산업진흥원"
-                  >충남정보문화산업진흥원</span
-                >
-              </td>
-              <td><span class="ellipsis" title="아이아란">아이아란</span></td>
-              <td>
-                <span class="ellipsis" title="과제 책임자">과제 책임자</span>
-              </td>
-            </tr>
-            <tr>
-              <td>’19</td>
-              <td>
-                <span class="ellipsis" title="산학연 기술개발사업"
-                  >산학연 기술개발사업</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="중소벤처기업부"
-                  >중소벤처기업부</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="HTML5 웹 데이터 게임화 라이브러리"
-                  >HTML5 웹 데이터 게임화 라이브러리</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="과제 책임자">과제 책임자</span>
-              </td>
-            </tr>
-            <tr>
-              <td>’18</td>
-              <td>
-                <span class="ellipsis" title="창업성장 기술개발사업"
-                  >창업성장 기술개발사업</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="중소벤처기업부"
-                  >중소벤처기업부</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="WebGL 기반 웹 게임 엔진"
-                  >WebGL 기반 웹 게임 엔진</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="과제 책임자">과제 책임자</span>
-              </td>
-            </tr>
-            <tr>
-              <td>’18</td>
-              <td>
-                <span class="ellipsis" title="산학연 기술개발사업"
-                  >산학연 기술개발사업</span
-                >
-              </td>
-              <td>
-                <span class="ellipsis" title="중소벤처기업부"
-                  >중소벤처기업부</span
-                >
-              </td>
-              <td>
-                <span
-                  class="ellipsis"
-                  title="HTML5 기반의 인스턴트 웹 게임 프레임워크"
-                  >HTML5 기반의 인스턴트 웹 게임 프레임워크</span
-                >
-              </td>
-              <td><span class="ellipsis" title="수행자">과제 수행자</span></td>
-            </tr>
-            <tr>
-              <td>’17</td>
-              <td>
-                <span class="ellipsis" title="창업선도대학">창업선도대학</span>
-              </td>
-              <td>
-                <span class="ellipsis" title="창업진흥원">창업진흥원</span>
-              </td>
-              <td>
-                <span class="ellipsis" title="코즈믹 온라인"
-                  >코즈믹 온라인</span
-                >
-              </td>
-              <td><span class="ellipsis" title="수행자">과제 수행자</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Business: Publishing / Awards / Gov projects -->
+      <section id="publishing" class="section">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.publishing">퍼블리싱·투자 이력</h2>
+          <ol class="event-list" data-render="publishing"></ol>
+
+          <h2 class="section__title section__title--sub" data-i18n="section.awards">수상 내역</h2>
+          <ol class="cred-cards" data-render="awards"></ol>
+
+          <h2 class="section__title section__title--sub" data-i18n="section.govProjects">정부과제 수행 이력</h2>
+          <div class="table-wrap"><table class="data-table" data-render="govProjects"></table></div>
+        </div>
       </section>
 
-      <section>
-        <h2>연락처</h2>
-        <p><a href="mailto:torrico203@gmail.com">torrico203@gmail.com</a></p>
-      </section>
-    </div>
+      <!-- Resume extras: Certs / Military -->
+      <section id="resume-extras" class="section section--alt">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.certifications">자격증</h2>
+          <ol class="cred-cards" data-render="certifications"></ol>
 
-    <footer>&copy; 2025 torrico203. All rights reserved.</footer>
+          <h2 class="section__title section__title--sub" data-i18n="section.military">병역</h2>
+          <p data-render="military"></p>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="section">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.contact">연락처</h2>
+          <dl class="contact" data-render="contact"></dl>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span data-i18n="footer.copyright">© 2025 torrico203</span>
+      </div>
+    </footer>
+
+    <script src="assets/data.js"></script>
+    <script src="assets/i18n.js"></script>
+    <script src="assets/app.js"></script>
   </body>
 </html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아르미 공작소 — 기술 상세 | 임재균 포트폴리오</title>
+    <meta name="description" content="아르미 공작소 (armiicraft.com) 의 결제·수익화·서버리스·운영 거버넌스 기술 상세 노트." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/style.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <div class="container">
+        <a class="page-header__back" href="../index.html#projects">
+          <span aria-hidden="true">←</span> 임재균 · 포트폴리오로
+        </a>
+        <h1 class="page-header__title">아르미 공작소 — 기술 상세</h1>
+        <p class="page-header__lede">
+          IP 기반 콘텐츠 플랫폼의 결제·수익화·서버리스·운영 거버넌스 노트
+        </p>
+        <div class="page-header__meta">
+          <span>2026.01 — 현재</span>
+          <span>·</span>
+          <a href="https://www.armiicraft.com/" target="_blank" rel="noopener">www.armiicraft.com ↗</a>
+        </div>
+        <div>
+          <span class="page-header__notice">한국어 전용 · Korean only</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <article class="container prose">
+
+        <h2>1. 글로벌 결제 및 수익화 인프라 구축</h2>
+
+        <h3>Xsolla PayStation v3 직접 연동 <code>functions/xsolla.js (627 LOC)</code> · <code>managers/xsollaManager.js (424 LOC)</code></h3>
+        <ul>
+          <li>
+            결제 토큰 발급 / Webhook / 재화 소비의 3단 파이프라인을 Firebase Cloud Functions
+            (<code>asia-southeast1</code>, concurrency 80) 로 직접 구현.
+            4개 엔드포인트: <code>createXsollaToken</code>, <code>xsollaWebhook</code>,
+            <code>consumeGemForContent</code>, <code>consumePointForContent</code>.
+          </li>
+          <li>
+            <strong>PG v2→v3 마이그레이션 트러블슈팅 실적</strong>: 한국 결제수단에서 발생한 Xsolla v2
+            <code>Error 2002 (item not found)</code> 이슈를 <code>purchase.virtual_items</code> SKU 처리 방식의
+            v3 차이를 분석해 <code>purchase.items[].sku/quantity</code> 기반 + sandbox top-level 플래그 +
+            Basic Auth (<code>project_id:api_key</code>) 구조로 전환하여 해결
+            (<code>xsolla.js:98-111</code> 주석에 트러블슈팅 로그 보존).
+          </li>
+          <li>
+            <strong>Fraud Prevention / 무결성 설계 4종</strong>:
+            <ol>
+              <li><strong>클라이언트 가격 불신 원칙</strong> — 가격·수량은 Firestore <code>gem_packages/{id}</code>
+                  단일 출처(SSOT)에서 강제 조회 (<code>xsolla.js:81-87</code>).</li>
+              <li><strong>Sandbox 모드 서버 단일 진실 공급원</strong> — 클라이언트가 sandbox 플래그를
+                  송신할 수 없도록 차단 (<code>xsolla.js:24-25</code>).</li>
+              <li><strong>SHA-1 Webhook 서명 검증</strong> — <code>XSOLLA_PROJECT_KEY</code> Firebase Secret 기반
+                  서명 매칭 후에만 재화 지급 (<code>xsolla.js:210-227</code>).</li>
+              <li><strong>밴 계정·중지 상품 사전 차단</strong> + <code>externalId = uid_${timestamp}</code>
+                  멱등성 키로 중복 지급 방지.</li>
+            </ol>
+          </li>
+          <li>
+            <strong>국가/통화 처리</strong>: <code>user.country</code> (KR 기본) +
+            <code>billing.purchase.total.currency</code> (KRW 기본) — Xsolla 가 200+ 국가 결제수단을 핸들링하는
+            구조에 맞춰 <code>user.id/email/country</code> 페이로드를 표준화.
+          </li>
+        </ul>
+
+        <h3>AdSense × Xsolla 듀얼 수익화 전략</h3>
+        <ul>
+          <li>
+            AdSense 는 <code>managers/adManager.js (440 LOC)</code> 에서 8개 슬롯 매핑
+            (top/mid/content/bottom/side-left/right…) 을 객체 기반 설정 맵으로 단일화.
+            fluid layout key 를 컨테이너 폭에 따라 auto/fluid 로 동적 전환
+            (<code>adManager.js:48-72</code>), shimmer placeholder + sessionStorage 5분 캐시로 LCP 보호.
+          </li>
+          <li>
+            <strong>전략적 가치</strong>: 저ARPU 트래픽(동남아·국내)은 AdSense 로 수익화,
+            고LTV 사용자는 Xsolla 젬 결제로 전환시키는 이중 funnel 을 단일 사용자 세션에서
+            동시 운영 가능한 구조. CFR-protected 콘텐츠는 <code>consumeGemForContent</code> callable 로
+            게이팅하여 광고 회피 사용자에게서도 매출이 발생하도록 설계.
+          </li>
+        </ul>
+
+        <h2>2. 기술적 고도화 및 최적화 성과</h2>
+
+        <h3>스택 (실측 기반)</h3>
+        <ul>
+          <li>
+            Vite 7.3 + Firebase v12 (Modular API) + Firebase Functions v2 (2nd gen) +
+            Cloudflare Workers + Phaser 3 + Spine v3.
+          </li>
+        </ul>
+
+        <h3>빌드/번들 최적화</h3>
+        <ul>
+          <li>Vite <code>rollupOptions.input</code> 에 16개 HTML 엔트리 등록 (MPA 구조).</li>
+          <li>
+            <code>manualChunks</code> 로 Firebase 를 <code>firebase</code> (app/firestore/auth/storage) 와
+            <code>firebase-extra</code> (analytics/database) 로 분리 — Auth 가 필요 없는
+            board/download 페이지에서 analytics 청크 다운로드를 회피.
+          </li>
+          <li>
+            <code>viteStaticCopy</code> 로 <code>games/</code> 폴더(Phaser 빌드)를 별도 번들 라이프사이클로
+            격리하여, 메인 SPA 빌드 변경이 게임 자산에 영향 주지 않도록 함.
+          </li>
+        </ul>
+
+        <h3>SEO/SSR 하이브리드 <code>functions/index.js viewSSR</code></h3>
+        <ul>
+          <li>
+            콘텐츠 상세 페이지 (<code>view.html</code>) 에 대해 Cloud Function 기반 SSR 렌더러 구현:
+            Firestore 5초 타임아웃 + 메모리 LRU (200건/TTL 5분) + 디스크 스냅샷 (33개) 3중 캐시 fallback.
+            CDN <code>s-maxage=3600</code> 을 헤더에 설정해 Cloud Function 호출 단가를 최소화
+            (<code>functions/index.js:24-79, 304-305</code> 주석).
+          </li>
+          <li>
+            <strong>사전 렌더링</strong>: <code>npm run build:snapshots</code> 빌드 단계에서 33개 콘텐츠
+            스냅샷을 <code>view-snapshots/</code> 로 정적 출력 → AdSense 심사·구글봇 호환을 SPA 의 단점 없이 확보.
+          </li>
+        </ul>
+
+        <h3>아키텍처 계층화</h3>
+        <ul>
+          <li><code>src/</code> (4,973 LOC) — UI/유틸/Firebase 어댑터 (<code>firebase/{auth, config, rtdb}.js</code>)</li>
+          <li><code>managers/</code> (1,179 LOC) — 도메인 매니저 (Ad/Badge/Xsolla) 로 횡단 관심사 격리</li>
+          <li><code>functions/</code> (1,403 LOC) — 10개 Cloud Function (결제/SSR/관리자/배치/감사로그)</li>
+          <li><code>data/</code> — 콘텐츠/번역/뱃지 메타데이터 (SSOT)</li>
+        </ul>
+
+        <h3>5차에 걸친 점진적 리팩토링 <em>(메모리 기록 기반, 18일 전 시점 검증 필요)</em></h3>
+        <ul>
+          <li><code>adManager.js</code> 478→300 LOC (-37%, if-else→객체맵, 헬퍼 5개 추출)</li>
+          <li><code>doll.css</code> 392→0 LOC (override 분리 후 완전 제거)</li>
+          <li><code>auth.js initAuth()</code> 78 LOC → 3개 단일 책임 함수로 분해</li>
+          <li>메모리 누수 5건, 인라인 컬러→CSS Custom Property 6종, <code>transition: all</code> 34곳,
+              font-family 144개 중복 제거</li>
+          <li><code>pushIfReady()</code> Firebase RTDB 가드 래퍼 도입으로 레이스 컨디션 차단</li>
+        </ul>
+
+        <h2>3. 글로벌 서비스 운영 및 비용 효율화</h2>
+
+        <h3>Cloudflare Workers 에셋 게이트웨이 <code>cloudflareWorker.js</code></h3>
+        <ul>
+          <li>
+            <strong>Hot-link / 무단 다운로드 차단</strong>: Referer 화이트리스트
+            (<code>armii-treasure.com</code>, <code>armii-paper.com</code>, <code>armiicraft.com</code> …)
+            통과 시에만 오리진 히트.
+          </li>
+          <li>
+            <strong>Edge Rate Limiting</strong>: IP당 분당 2회 (Map 기반, 10,000 엔트리 초과 시 자동 GC) —
+            DDOS·크롤러 비용 누수를 Cloud Function 진입 전 차단.
+          </li>
+          <li>
+            <strong>Path Obfuscation</strong>: base64 인코딩된 <code>?q=</code> 파라미터로 오리진 경로 마스킹
+            → 정적 자산 URL 추측 공격 무력화.
+          </li>
+          <li>
+            <strong>Origin Header Hardening</strong>: <code>X-Powered-By</code>/<code>Server</code> 제거,
+            <code>Content-Disposition</code> 동적 주입으로 다운로드 UX 와 보안 동시 확보.
+          </li>
+        </ul>
+
+        <h3>서버리스 비용 최적화 4종</h3>
+        <ol>
+          <li>
+            <strong><code>viewSSR</code> 3중 캐시</strong> (CDN edge 1h → Function 메모리 LRU 5분 →
+            Firestore 5s timeout → 정적 스냅샷) → cold path 만 Firestore read 발생
+            (<code>functions/index.js:304-305</code>).
+          </li>
+          <li>
+            <strong><code>flushAnalyticsBuffer</code> + <code>scheduledFlush</code></strong>: 클라이언트 분석 이벤트를
+            RTDB 버퍼에 누적 후 스케줄 함수로 일괄 Firestore commit → 쓰기 비용을 N→1 로 압축.
+          </li>
+          <li>
+            <strong>Firestore manual chunk + lazy <code>firebase/database</code></strong>: 페이지별로 SDK 모듈 동적 로딩.
+          </li>
+          <li>
+            <strong>Region 단일화 (<code>asia-southeast1</code>)</strong> — 한국·일본·동남아 타겟에 최저 RTT 인
+            싱가포르 리전으로 확정.
+          </li>
+        </ol>
+
+        <h3>보안·운영 거버넌스</h3>
+        <ul>
+          <li>
+            Firestore Rules (8.1 KB, phase1 백업 보존), <code>admins/{uid}</code> + role-claim 기반 RBAC,
+            <code>assertAdmin()</code> 헬퍼로 중요 함수 7개 진입점 통합 검증, <code>adminWriteAuditLog</code> 로 감사 추적.
+          </li>
+          <li>
+            ko/en/ja 3개 로캘 i18n + <code>getLang()</code> 단일 진입점 통합으로 다국어 분기 누수 차단.
+          </li>
+        </ul>
+
+        <h2>4. AI 기반 생산성 및 자동화 역량</h2>
+
+        <h3>검증된 사실</h3>
+        <ul>
+          <li>
+            Claude Code 기반의 영구 메모리 시스템 (<code>.claude/projects/.../memory/</code>) 을 도입하여
+            5차에 걸친 리팩토링 이력 (완료 일자·LOC 변화·보류 항목·Why/How to apply 메타데이터 포함) 을 자가 누적.
+            후임 인계·세션 간 컨텍스트 손실 방지.
+          </li>
+          <li>
+            AdSense 심사 정책과 충돌하는 인라인 스크립트 분리 작업을 "심사 통과 전까지 보류" 라는 정책 메모리로
+            명시적으로 게이트 — AI 가 작업 우선순위 판단까지 위임받는 구조.
+          </li>
+          <li>
+            16개 HTML 엔트리·1,400 LOC Cloud Functions·600 LOC PG 통합 등 MPA + 서버리스 + PG 통합의
+            풀스택 범위를 1인이 운영 — AI 페어 프로그래밍 없이 통상 다인 팀 규모.
+          </li>
+        </ul>
+
+        <div class="callout">
+          <strong>주의 — 정직 모드</strong>
+          <ul>
+            <li>
+              "리드타임 N% 단축" 같은 수치는 측정 인프라가 없어 임의 수치 기재는 위험. 면접에서 백업 자료 요구
+              받으면 무너짐. <em>"AI 페어 프로그래밍 워크플로우를 통해 5차 리팩토링 사이클을 단독으로 완수"</em>
+              정도로 사실 기반 톤다운 권장.
+            </li>
+            <li>
+              Bedrock·Gemini CLI 는 사용 흔적이 없으니 이력서에서 제외, 만약 실제로 사용했다면 그 결과물
+              (생성된 자산/스크립트) 을 레포에 커밋해 증거로 남기는 게 우선.
+            </li>
+          </ul>
+        </div>
+
+        <p class="prose-footer">
+          <a class="page-header__back" href="../index.html#projects">
+            <span aria-hidden="true">←</span> 임재균 · 포트폴리오로
+          </a>
+        </p>
+
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="container">© 2025 torrico203 — 모든 권리 보유</div>
+    </footer>
+  </body>
+</html>

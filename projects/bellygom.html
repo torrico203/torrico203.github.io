@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>벨리곰 버블팝 — 기술 상세 | 임재균 포트폴리오</title>
+    <meta name="description" content="벨리곰 버블팝의 크로스 플랫폼 추상화·저사양 디바이스 최적화·빌드 자동화·플랫폼 승인 대응 기술 노트." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/style.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <div class="container">
+        <a class="page-header__back" href="../index.html#projects">
+          <span aria-hidden="true">←</span> 임재균 · 포트폴리오로
+        </a>
+        <h1 class="page-header__title">벨리곰 버블팝 — 기술 상세</h1>
+        <p class="page-header__lede">
+          단일 TypeScript/Phaser 코드베이스 → LG webOS Smart TV · Toss 미니앱 · Android · Web
+          4개 플랫폼 동시 출시
+        </p>
+        <div class="page-header__meta">
+          <span>2025.08 — 2025.12</span>
+          <span>·</span>
+          <span>webOS 앱 v1.3.37 (<code>com.macovill.bellygombp.iptv</code>)</span>
+        </div>
+        <div>
+          <span class="page-header__notice">한국어 전용 · Korean only</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <article class="container prose">
+
+        <h2>1. 크로스 플랫폼 추상화 전략</h2>
+
+        <h3>단일 진입점 추상화 (PlatformManager 싱글톤)</h3>
+        <p>
+          <code>src/managers/PlatformManager.ts</code> — 빌드타임 (<code>VITE_TARGET_ENV</code>) → 런타임
+          (<code>navigator.userAgent</code>) 2-tier 폴백 전략. 환경변수가 우선이라 트리쉐이킹과 정적 분석이
+          가능하고, <code>build:web</code> 으로 빌드된 번들도 모바일 웹/PC 를 자동 분기. <strong>21개 파일에
+          걸친 105곳의 분기 처리</strong>가 모두 이 단일 소스에서 출발.
+        </p>
+
+        <h3>입력 추상화 (Adapter 패턴)</h3>
+        <p>
+          <code>src/systems/InputSystem.ts</code> — TV 리모컨 (keyCode 461 BACK, numpad 97-102), 키보드,
+          포인터(터치/마우스) 를 하나의 이벤트 (<code>shootRequested</code>, <code>confirmActionRequested</code>,
+          <code>backPressed</code>) 로 통일. 화면 좌표를 발사 각도로 환산하는 <code>updateAimAngle</code> 은
+          X축은 그대로, Y축에 최소 거리 (40px) 를 강제해 터치/마우스 vs 키보드 회전 입력을 동일한
+          <code>aimAngle</code> 상태머신으로 흡수.
+        </p>
+
+        <h3>TV 전용 포커스 시스템 (Bridge 패턴)</h3>
+        <p>
+          <code>src/managers/FocusManager.ts</code> — <code>IScrollableScene</code> 인터페이스 +
+          타입 가드 <code>isScrollable(scene)</code> 로 씬마다 다른 스크롤 동작을 제네릭하게 위임.
+          UP/DOWN/ENTER/SPACE 4개 키만으로 <code>Container | Text | Image</code> 어떤 GameObject 든
+          포커스 이동 가능. <code>confirm</code> 이벤트를 발행해 버튼 객체가 자체 클릭처럼 처리하도록 추상화.
+        </p>
+
+        <h3>결제 / 광고 다형성</h3>
+        <ul>
+          <li>
+            <code>src/managers/AdManager.ts</code>: <code>@capacitor-community/admob</code> (Android) ↔
+            <code>@apps-in-toss/web-framework</code> 의 GoogleAdMob (Toss) 을 단일
+            <code>showRewardVideoAd(): Promise&lt;boolean&gt;</code> API 로 캡슐화. Toss 는 콜백 기반
+            (<code>onEvent/onError</code>), Android 는 listener handle 기반인데 Promise 로 모두 통일.
+          </li>
+          <li>
+            <code>src/managers/PaymentManager.ts</code>: <code>cordova-plugin-purchase</code> (Google Play) ↔
+            Toss IAP 두 결제 SDK 를 동일한 <code>purchase(productId)</code> 인터페이스로 통합.
+            <code>coinPkg.tossId</code> 필드로 Google ID ↔ Toss SKU 매핑 (<code>priceConfig.ts:43-56</code>).
+          </li>
+        </ul>
+
+        <h3>TypeScript Generic / Interface 활용</h3>
+        <ul>
+          <li>
+            <code>src/utils/GameObjectPool.ts:5-18</code>: <code>Phaser.GameObjects.GameObject &amp; Visible</code>
+            컴포넌트를 교집합 타입으로 강제, 풀 재사용 시 <code>setActive/setVisible</code> 안전 호출 보장.
+          </li>
+          <li>
+            <code>src/interfaces/PlayerData.ts</code>: <code>keyof PlayerItems</code> 를 <code>Record</code> 로
+            활용해 가격표 누락을 컴파일타임에 차단.
+          </li>
+          <li>
+            <code>src/scenes/ShopScene.ts:23</code> — 동적 ID 리스트로 만든 type predicate 로 런타임/컴파일
+            타입 동기화.
+          </li>
+        </ul>
+
+        <h2>2. 저사양 / 제한적 환경 최적화 (webOS &amp; Toss)</h2>
+
+        <h3>TV 한정 렌더 다운그레이드</h3>
+        <p>
+          <code>src/game.ts</code> — Phaser 설정에서 <code>maxTextures: 1</code>, target FPS 30,
+          <code>forceSetTimeOut: true</code>, <code>resolution: 1</code> 을 TV 에서만 활성화.
+          <code>forceSetTimeOut</code> 은 <code>requestAnimationFrame</code> 대신 <code>setTimeout</code> 으로
+          강제 휴식을 만들어 webOS 브라우저의 GPU 점유를 줄이는 결정적 트릭.
+          (commit <code>e6d695a</code>: 해상도 절반, 압축 텍스쳐 → png, 프레임 30 제한)
+        </p>
+
+        <h3>에셋 로딩 분할 + 동적 import</h3>
+        <ul>
+          <li>
+            <code>src/loaders/gameLoader.ts</code> — <code>getFXPath/getFrameConfig</code> 로 TV 는 이펙트
+            스프라이트시트를 1/2 해상도 (64×64, 21×54…) 로 자동 치환.
+          </li>
+          <li>
+            <code>vite.config.ts</code> — <code>manualChunks</code> 로 <code>vendor_phaser</code> 를 분리
+            (Phaser 만 1MB 이상) 하여 초기 로드 차단 시간 단축.
+          </li>
+          <li>
+            <code>src/main.ts</code> — <code>await import('./game')</code> 로 게임 엔진을 동적 import 해서,
+            초기 HTML 파싱과 webOS 시스템 readiness 확인을 엔진 로딩과 병렬화.
+          </li>
+          <li>
+            <code>src/scenes/LoadingScene.ts</code> — TV 는 팩 사이 1000ms 휴식, 모바일은 50ms 로 차등
+            → TV 의 메인스레드 stall 회피.
+          </li>
+        </ul>
+
+        <h3>메모리 풋프린트 관리</h3>
+        <ul>
+          <li>
+            <code>src/managers/StageManager.ts</code> — Endless 모드에서 TV 는 이미 로드된 chapter atlas
+            중에서만 랜덤 선택해 텍스처 메모리 누적 차단 (모바일은 1~13 자유 랜덤).
+          </li>
+          <li>
+            <code>src/utils/GameObjectPool.ts</code> — Bubble/FX/Tween 모두 풀링,
+            <code>release()</code> 에서 <code>tweens.killTweensOf(obj)</code> 로 dangling tween 까지 정리.
+          </li>
+          <li>
+            <code>src/managers/SoundManager.ts:128-141</code> — 동시 사운드 10개 cap. WebAudio 풀 폭주로 인한
+            webOS audio crash 방지.
+          </li>
+          <li>
+            <code>src/managers/SoundManager.ts:34-42</code> — <code>visibilitychange</code> 로 백그라운드 시 mute
+            (Toss 정책 + 배터리 절감).
+          </li>
+        </ul>
+
+        <h3>빌드 사이즈 최적화</h3>
+        <ul>
+          <li>
+            terser <code>drop_console/drop_debugger</code> 활성, <code>assetsInlineLimit: 4096</code> 로
+            small asset 만 base64 인라인 (HTTP 핸드셰이크 비용 감소).
+          </li>
+          <li>(commit <code>27c6579</code>: 이펙트 1/2, GPU 압축 처리), (commit <code>4c947b6</code>: 메모리 한계 이슈로 이미지 1/2)</li>
+        </ul>
+
+        <h2>3. 빌드 시스템 및 배포 자동화</h2>
+
+        <h3>단일 코드베이스 → 4개 타겟 분기</h3>
+        <p><code>package.json</code>:</p>
+        <ul>
+          <li><code>build:web</code> → <code>vite build</code> (PC/모바일 웹)</li>
+          <li><code>build:tv</code> → <code>TARGET_ENV=tv vite build</code> (LG webOS .ipk 패키징용)</li>
+          <li><code>build:toss</code> → <code>TARGET_ENV=toss vite build --outDir dist-toss</code></li>
+          <li><code>build:android</code> → <code>TARGET_ENV=android vite build --outDir dist-android</code> (→ Capacitor sync)</li>
+        </ul>
+        <ul>
+          <li><code>cross-env</code> 로 OS-agnostic 환경변수 주입.</li>
+          <li>
+            <code>vite.config.ts:13-16</code> 에서 <code>define</code> 으로 빌드 타임에
+            <code>VITE_TARGET_ENV</code> 상수 치환 → 사용하지 않는 플랫폼 코드는 트리쉐이킹.
+          </li>
+          <li>
+            <code>postbuild:tv</code>/<code>postbuild:toss</code> 로 dev 전용 docs/editor 디렉토리 자동 제거.
+          </li>
+        </ul>
+
+        <h3>멀티 SDK 통합</h3>
+        <ul>
+          <li>
+            Vite (웹/번들링) + Capacitor 7 (<code>capacitor.config.ts</code> 로 Android 네이티브 래핑) +
+            Granite (<code>granite.config.ts</code> 로 Toss 미니앱 빌드) — 세 SDK 가 같은 <code>dist*</code>
+            산출물을 소비하도록 정렬.
+          </li>
+          <li>Capacitor 가 <code>dist-android</code> 를, Granite 가 <code>dist-toss</code> 를, <code>ares-package</code> 가 <code>dist</code> 를 각각 패키징.</li>
+        </ul>
+
+        <h3>webOS 24 호환 레거시 파이프라인</h3>
+        <p>
+          <code>vite.config.ts</code> — <code>@vitejs/plugin-legacy</code> (<code>targets: ['chrome 79']</code>) +
+          커스텀 <code>'webos-24-fix'</code> 플러그인 자체 작성. modern script 태그를 HTML 후처리로 제거,
+          <code>nomodule</code> 속성 제거로 webOS 24 가 legacy chunk 를 단일 실행하도록 강제.
+          (commit <code>ceb95d4</code>: legacy 문법 처리)
+        </p>
+
+        <h2>4. 플랫폼 승인 및 컴플라이언스 대응</h2>
+
+        <h3>Tellurium (LG 자동화 테스트) 회피</h3>
+        <p>
+          <code>src/main.ts</code> — LG 심사장의 Tellurium 자동화 도구가 가짜 Tellurium 객체를 주입해
+          비결정적 race condition 유발. <code>getStatus</code> 메서드 존재 여부로 DevMode 빈 객체 vs 실제
+          자동화 환경을 구분, 자동화 환경에서만 3000ms dwell time 을 두는 전용 코드 패스로 안정화
+          (commit <code>97969c5</code>).
+        </p>
+
+        <h3>webOS 24 Chrome 79 호환</h3>
+        <ul>
+          <li>위 §3 의 <code>webos-24-fix</code> 플러그인이 핵심.</li>
+          <li>
+            <code>appinfo.json</code>: <code>requiredWebOSSystemEnvironment: "webOS 8.0.0"</code>,
+            <code>disableBackHistoryAPI: true</code> (BACK 키를 keyCode 461 로 직접 받음 —
+            <code>InputSystem.ts:268-275</code>).
+          </li>
+          <li>
+            HTML 레벨 전역 <code>window.onerror</code> 에서 <em>minified is not a function</em> 오류는 무시
+            (<code>index.html:79-83</code>) — webOS 의 비치명적 minification 충돌 회피.
+          </li>
+        </ul>
+
+        <h3>Toss 리젝 대응</h3>
+        <ul>
+          <li>
+            (commit <code>100c3bc</code>: 토스 리젝 수정 (공포 표기 및 3초)) —
+            <code>src/scenes/LoadingScene.ts</code> 에서 GRAC + 공포 등급 이미지를 첫 진입에만 노출.
+          </li>
+          <li>백그라운드 동작 시 사운드 자동 음소거 (commit <code>cc09281</code>).</li>
+          <li>
+            미지급 주문 복구: 앱 시작 시 <code>IAP.getPendingOrders()</code> →
+            <code>completeProductGrant()</code> 자동 grant (<code>src/managers/PaymentManager.ts</code>).
+          </li>
+        </ul>
+
+        <h3>TV 환경의 IAP 부재 — 자체 결제 인프라 구축</h3>
+        <p>
+          <code>src/utils/QrCodePopup.ts</code> — webOS 는 인앱결제 SDK 가 없어 자체 서버
+          (<code>bellygom.macovill.com/payment/bubblepop</code>) 에 Xsolla 연동, QR 코드 생성 후 3초 폴링으로
+          결제 완료 감지. TV 사용자 결제 경로를 모바일 웹으로 위임하는 cross-device 결제 플로우.
+        </p>
+
+        <p class="prose-footer">
+          <a class="page-header__back" href="../index.html#projects">
+            <span aria-hidden="true">←</span> 임재균 · 포트폴리오로
+          </a>
+        </p>
+
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="container">© 2025 torrico203 — 모든 권리 보유</div>
+    </footer>
+  </body>
+</html>

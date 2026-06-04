@@ -62,7 +62,11 @@ window.__DATA__ = {
 
   skills: [
     "Unity (C#)", "TypeScript", "JavaScript", "HTML5",
-    "Phaser.js", "Node.js", "WebGL", "Firebase", "Git"
+    "Phaser.js", "Node.js", "PHP", "WebGL", "Firebase", "AWS", "Git",
+    { ai: true, ko: "Claude · Gemini · GPT — 기획/문서", en: "Claude · Gemini · GPT — design & docs" },
+    { ai: true, ko: "Claude Code · Codex — 코딩", en: "Claude Code · Codex — coding" },
+    { ai: true, ko: "Suno — 사운드", en: "Suno — audio" },
+    { ai: true, ko: "Midjourney · Nano Banana — 이미지", en: "Midjourney · Nano Banana — image" }
   ],
 
   experience: [

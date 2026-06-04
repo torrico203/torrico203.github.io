@@ -65,8 +65,11 @@
       return DATA.intros.dev[lang].map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
     },
 
-    skills: function () {
-      return DATA.skills.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("");
+    skills: function (lang) {
+      return DATA.skills.map(function (s) {
+        var cls = s && s.ai ? " class=\"chip--ai\"" : "";
+        return "<li" + cls + ">" + esc(pick(s, lang)) + "</li>";
+      }).join("");
     },
 
     experience: function (lang) {

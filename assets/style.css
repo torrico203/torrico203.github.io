@@ -281,6 +281,11 @@ body {
   color: var(--text-secondary);
   font-weight: 500;
 }
+.chips li.chip--ai {
+  background: var(--accent-soft);
+  border-color: #c7d2fe;          /* indigo-200 */
+  color: var(--accent-hover);
+}
 
 /* ============================================================
    Timeline — experience / education

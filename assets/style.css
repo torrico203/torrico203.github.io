@@ -45,6 +45,14 @@ body {
   padding: 0 1.5rem;
 }
 
+/* 모바일 가독성: rem 기반 크기를 전체적으로 한 단계 키우고,
+   좌우 여백을 줄여 좁은 화면에서 본문 폭을 확보 */
+@media (max-width: 640px) {
+  html { font-size: 17px; }
+  .container { padding: 0 1.25rem; }
+  .card__meta { font-size: 0.875rem; }
+}
+
 /* ============================================================
    Topbar
    ============================================================ */
@@ -99,8 +107,21 @@ body {
   color: var(--accent);
 }
 
+/* 모바일: 네비를 숨기는 대신 가로 스와이프로 전환 */
 @media (max-width: 720px) {
-  .topbar__nav { display: none; }
+  .topbar__brand, .lang-toggle { flex-shrink: 0; }
+  .topbar__nav {
+    min-width: 0;                      /* flex 안에서 줄어들 수 있게 */
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    gap: 1.25rem;
+    margin-right: 0.75rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;             /* Firefox */
+  }
+  .topbar__nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+  .topbar__nav a { flex-shrink: 0; padding: 0.5rem 0; } /* 터치 타깃 확보 */
 }
 
 /* ============================================================

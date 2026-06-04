@@ -251,8 +251,8 @@ window.__DATA__ = {
                  en: "Collect-strategy idle RPG · HTML5" },
       stack: "HTML5 + JavaScript",
       results: {
-        ko: ["연 매출 5천만 원", "문체부 이달의 우수게임 (인디 상반기)", "일본 퍼블리싱"],
-        en: ["₩50M annual revenue", "Indie Game of the Month (Ministry of Culture)", "Japan publishing deal"]
+        ko: ["연 매출 5천만 원", "문체부 이달의 우수게임 (인디 상반기)", "일본·러시아 퍼블리싱"],
+        en: ["₩50M annual revenue", "Indie Game of the Month (Ministry of Culture)", "Japan & Russia publishing deals"]
       },
       bullets: {
         ko: ["주식회사 집연구소. 전체 기획·PM, 글로벌 퍼블리셔 대응, 수익모델 설계 및 운영."],

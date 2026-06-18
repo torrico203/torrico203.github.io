@@ -24,11 +24,11 @@ window.__DATA__ = {
   about: {
     ko: [
       "11년간 공동대표로서 다양한 게임을 직접 기획·개발하고, 퍼블리싱 계약·글로벌 런칭·투자 유치 등 게임 스타트업의 전 과정을 리딩했습니다.",
-      "스타트업 대표 출신이라는 이력은 '주도성'이라는 강점이기도 했지만 재취업 시장에서는 \"실무 감각이 무뎌졌을 것\"이라는 편견이기도 했습니다. 직전 회사 입사 당시 신입에 준하는 처우를 감수하고 현장 중심의 역할부터 다시 시작했고, 입사 4개월 만에 팀장 역할을 맡으며 모바일·웹·TV 3개 플랫폼 동시 런칭을 주도했습니다."
+      "스타트업 대표 출신이라는 이력은 '주도성'이라는 강점이기도 했지만, 재취업 시장에서는 \"실무 감각이 무뎌졌을 것\"이라는 편견이기도 했습니다. 그래서 직함보다 실무로 증명하는 길을 택해 현장 중심의 역할부터 다시 시작했고, 입사 4개월 만에 팀장을 맡으며 모바일·웹·TV 3개 플랫폼 동시 런칭을 주도했습니다."
     ],
     en: [
       "For 11 years I co-led a game studio, planning and developing titles end-to-end and driving the full lifecycle of a game startup — publishing deals, global launches, and investment.",
-      "Coming from a CEO background was both an asset (ownership) and a liability in re-employment (\"out of touch with hands-on work\"). I took a near-entry-level role at my previous company and started over from the ground up — and within four months had been promoted to team lead, going on to drive a simultaneous launch across mobile, web, and TV."
+      "Coming from a CEO background was both an asset (ownership) and, in re-employment, a bias to overcome (\"out of touch with hands-on work\"). So I chose to prove it through the work rather than a title — starting over in a hands-on role and, within four months, earning a promotion to team lead while driving a simultaneous launch across mobile, web, and TV."
     ]
   },
 
@@ -73,7 +73,7 @@ window.__DATA__ = {
     {
       period: "2025.08 — Present",
       company: { ko: "(주)마코빌", en: "Macovill Inc." },
-      role:    { ko: "캐주얼게임팀 팀장", en: "Casual Game Team Lead" },
+      role:    { ko: "게임·웹 통합 개발 · 캐주얼게임팀 팀장", en: "Game & Web Development · Casual Game Team Lead" },
       details: {
         ko: [
           "2025.12 — 현재: 캐주얼게임팀 팀장 (승진)",

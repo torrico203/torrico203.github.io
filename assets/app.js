@@ -222,8 +222,7 @@
         [label["label.email"],   "<a href=\"mailto:" + esc(c.email) + "\">" + esc(c.email) + "</a>"],
         [label["label.phone"],   esc(c.phone)],
         [label["label.website"], "<a href=\"" + esc(c.website) + "\" target=\"_blank\" rel=\"noopener\">" + esc(c.website) + "</a>"],
-        [label["label.github"],  "<a href=\"" + esc(c.github)  + "\" target=\"_blank\" rel=\"noopener\">" + esc(c.github)  + "</a>"],
-        [label["label.address"], esc(pick(c.address, lang))]
+        [label["label.github"],  "<a href=\"" + esc(c.github)  + "\" target=\"_blank\" rel=\"noopener\">" + esc(c.github)  + "</a>"]
       ];
       return rows.map(function (r) {
         return "<dt>" + esc(r[0]) + "</dt><dd>" + r[1] + "</dd>";

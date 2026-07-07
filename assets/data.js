@@ -13,11 +13,7 @@ window.__DATA__ = {
       email:   "torrico203@gmail.com",
       phone:   "010-7268-1012",
       website: "http://zip-lab.co.kr",
-      github:  "https://github.com/torrico203",
-      address: {
-        ko: "서울특별시 강남구 율현동 밤고개로21길 25",
-        en: "Bamgogae-ro 21-gil 25, Yulhyeon-dong, Gangnam-gu, Seoul"
-      }
+      github:  "https://github.com/torrico203"
     }
   },
 

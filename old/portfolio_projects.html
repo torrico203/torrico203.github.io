@@ -4,9 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>게임 포트폴리오 | 임재균</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Noto Sans KR", "Segoe UI", "Malgun Gothic", sans-serif;
         background-color: #f3f4f6;
         margin: 0;
         padding: 0;
@@ -132,11 +138,15 @@
       @media print {
         body {
           background-color: #fff;
+          font-size: 10.5pt;
+          line-height: 1.55;
+          color: #111;
         }
         .container {
           box-shadow: none;
+          border-radius: 0;
           margin: 0;
-          padding: 20px;
+          padding: 0;
           width: 100%;
           max-width: 100%;
         }
@@ -145,17 +155,87 @@
         .video-wrapper iframe {
           display: none !important;
         }
-        /* 인쇄할 때 대체 링크 박스 보임 */
+
+        /* 헤더: 이름 + 한 줄 소개, 굵은 밑줄로 문서 머리 구성 */
+        header {
+          border-bottom: 2pt solid #111827;
+          padding-bottom: 10pt;
+          margin-bottom: 18pt;
+        }
+        h1 {
+          font-size: 19pt;
+          margin: 0 0 4pt;
+        }
+        header p {
+          font-size: 10pt;
+          color: #4b5563;
+          margin: 0;
+        }
+
+        section {
+          margin-bottom: 22pt;
+        }
+        section h2 {
+          font-size: 13pt;
+          color: #111827;
+          border-left: none;
+          padding-left: 0;
+          border-bottom: 1pt solid #111827;
+          padding-bottom: 3pt;
+          margin-bottom: 10pt;
+          page-break-after: avoid;
+        }
+
+        .project {
+          margin-bottom: 14pt;
+          padding-bottom: 12pt;
+          border-bottom: 0.5pt solid #d1d5db;
+        }
+        .project:last-child {
+          border-bottom: none;
+        }
+        .project h3 {
+          font-size: 11.5pt;
+          color: #111827;
+          margin-bottom: 3pt;
+          page-break-after: avoid;
+        }
+        .highlight {
+          font-style: normal;
+          font-weight: 500;
+          font-size: 9.5pt;
+          color: #4f46e5;
+          margin-bottom: 5pt;
+        }
+        .project p {
+          margin: 2pt 0;
+          line-height: 1.5;
+        }
+        .label {
+          color: #111827;
+        }
+
+        /* 대체 영상 링크: 박스 대신 본문과 같은 결의 한 줄 표기 */
         .print-video-link {
           display: block !important;
+          margin-top: 5pt;
+          padding: 0;
+          border: none;
+          background: none;
+          text-align: left;
         }
-        /* 링크 텍스트에 실제 URL이 보이도록 강제 (일부 브라우저 대응) */
-        a[href]:after {
-          content: " (" attr(href) ")";
-          font-size: 0.8em;
-          color: #666;
+        .print-video-link p {
+          display: inline;
+          font-weight: 600;
+          font-size: 9pt;
+          color: #111827;
+          margin: 0;
         }
-        /* 위 코드는 모든 a 태그에 붙으므로, 비디오 링크는 이미 텍스트로 넣을거라 제외하고 싶다면 아래 JS 방식만 써도 됨 */
+        .print-video-link a {
+          font-size: 8.5pt;
+          color: #4b5563;
+          text-decoration: none;
+        }
       }
     </style>
   </head>
@@ -175,15 +255,20 @@
       <section>
         <h2>기술 스택</h2>
         <p>
-          Unity (C#), HTML5, JavaScript, TypeScript, Firebase, Git, WebGL,
-          Node.js
+          Unity (C#), TypeScript, JavaScript, HTML5, Phaser.js, Node.js, PHP,
+          WebGL, Firebase, AWS, Git
+        </p>
+        <p>
+          <span class="label">AI:</span> Claude · Gemini · GPT (기획/문서),
+          Claude Code · Codex (코딩), Suno (사운드), Midjourney · Nano Banana
+          (이미지)
         </p>
       </section>
 
       <section>
         <h2>개발 프로젝트</h2>
         <div class="project">
-          <h3>벨리곰 버블팝 (2025)</h3>
+          <h3>벨리곰 버블팝 (2025) - 주식회사 마코빌</h3>
           <p class="highlight">
             버블 슈팅 / phaser & TypeScript / 스마트 TV & 모바일
           </p>
@@ -358,9 +443,9 @@
             const printLinkDiv = document.createElement("div");
             printLinkDiv.className = "print-video-link";
 
-            // 텍스트와 링크 추가
+            // 텍스트와 링크 추가 (인쇄 시 한 줄로 표기)
             printLinkDiv.innerHTML = `
-              <p>📺 데모 영상 보기</p>
+              <p>▶ 데모 영상:</p>
               <a href="${url}" target="_blank">${url}</a>
             `;
 

@@ -72,11 +72,13 @@ window.__DATA__ = {
       role:    { ko: "게임·웹 통합 개발 · 캐주얼게임팀 팀장", en: "Game & Web Development · Casual Game Team Lead" },
       details: {
         ko: [
+          "2026.05 — 현재: 육아휴직 (개인 프로젝트 병행)",
           "2025.12 — 현재: 캐주얼게임팀 팀장 (승진)",
           "2025.08 — 2025.11: 게임 클라이언트 개발자",
           "벨리곰 버블팝, 아르미 공작소(웹서비스 플랫폼) 개발"
         ],
         en: [
+          "2026.05 — Present: On parental leave (building personal projects)",
           "2025.12 — Present: Promoted to Casual Game Team Lead",
           "2025.08 — 2025.11: Game Client Developer",
           "Built Bellygom Bubble Pop and Armi Workshop (web service platform)"
@@ -120,8 +122,37 @@ window.__DATA__ = {
     }
   ],
 
-  // 프로젝트: 웹서비스(아르미 공작소) + 게임 8종
+  // 프로젝트: 개인 플랫폼(쿼터턴) + 웹서비스(아르미 공작소) + 게임 8종
   projects: [
+    {
+      id: "quarterturn",
+      year: "2026",
+      period: "2026.05 — Present",
+      kind: { ko: "웹 서비스", en: "Web Service" },
+      name: { ko: "QUARTER TURN: HTML5 미니게임 플랫폼",
+              en: "QUARTER TURN: HTML5 Mini-game Platform" },
+      tagline: { ko: "게임 포털 + 통합 화폐 SDK + 레거시 리마스터 파이프라인 · 1인 개발",
+                 en: "Game portal + unified-currency SDK + legacy remaster pipeline · solo build" },
+      stack: "Vite MPA · Phaser 3 · PixiJS v8 · TypeScript · Firebase (Auth/Firestore) · Cloudflare Pages",
+      liveUrl: "https://quarterturn.pages.dev/",
+      caseStudyUrl: "projects/quarterturn.html",
+      results: {
+        ko: ["게임 14종 등록 (완성 5종)", "dia 통합 지갑 SDK", "iframe 브리지 ~16ms", "Firestore 세이브·랭킹", "ko/en i18n", "1인 개발"],
+        en: ["14 games registered (5 complete)", "Unified dia wallet SDK", "~16ms iframe bridge", "Firestore saves & rankings", "ko/en i18n", "Solo build"]
+      },
+      bullets: {
+        ko: [
+          "호스트가 지갑·세이브·랭킹을 소유하고 게임은 iframe으로 얹는 구조. postMessage 브리지와 Pakedev SDK(818 LOC)를 사이에 둬서, 게임 코드 변경 0건으로 로컬 스토리지 백엔드를 Firestore로 교체했다.",
+          "Unity·구형 웹 레거시를 TypeScript + PixiJS v8로 이식하는 절차를 재현 가능한 추출 스크립트와 플레이북으로 정리해, 리마스터·신작 9종을 같은 파이프라인으로 진행 중.",
+          "런칭 체크리스트·무결성 감사·권리 정리 게이트를 문서와 코드로 선행 관리. 서버 권위 전환 전까지 점수성 랭킹은 '켜되 신뢰하지 않는' 등급으로 명시했다. 디테일은 기술 상세 참고."
+        ],
+        en: [
+          "The host owns the wallet, saves, and rankings; games mount as iframes. A postMessage bridge plus the Pakedev SDK (818 LOC) sit in between, so swapping the localStorage backend for Firestore required zero changes to game code.",
+          "Codified porting Unity and legacy web titles to TypeScript + PixiJS v8 as reproducible extraction scripts and a written playbook — 9 remasters and new titles now run through the same pipeline.",
+          "Launch checklist, integrity audit, and rights-clearance gates are managed up front in both docs and code; score-based boards are explicitly rated \"on but not trusted\" until server authority lands. See tech notes for details."
+        ]
+      }
+    },
     {
       id: "armi",
       year: "2026",

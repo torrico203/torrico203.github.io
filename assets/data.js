@@ -129,28 +129,20 @@ window.__DATA__ = {
       year: "2026",
       period: "2026.05 — Present",
       kind: { ko: "웹 서비스", en: "Web Service" },
-      name: { ko: "QUARTER TURN: HTML5 미니게임 플랫폼",
-              en: "QUARTER TURN: HTML5 Mini-game Platform" },
+      name: { ko: "QUARTER TURN: HTML5 게임 플랫폼",
+              en: "QUARTER TURN: HTML5 Game Platform" },
       tagline: { ko: "게임 포털 + 통합 화폐 SDK + 레거시 리마스터 파이프라인 · 1인 개발",
                  en: "Game portal + unified-currency SDK + legacy remaster pipeline · solo build" },
       stack: "Vite MPA · Phaser 3 · PixiJS v8 · TypeScript · Firebase (Auth/Firestore) · Cloudflare Pages",
       liveUrl: "https://quarterturn.pages.dev/",
       caseStudyUrl: "projects/quarterturn.html",
       results: {
-        ko: ["게임 14종 등록 (완성 5종)", "dia 통합 지갑 SDK", "iframe 브리지 ~16ms", "Firestore 세이브·랭킹", "ko/en i18n", "1인 개발"],
-        en: ["14 games registered (5 complete)", "Unified dia wallet SDK", "~16ms iframe bridge", "Firestore saves & rankings", "ko/en i18n", "Solo build"]
+        ko: ["게임 15종 등록 (완성 5종)", "dia 통합 지갑 SDK", "iframe 브리지 ~16ms", "Firestore 세이브·랭킹", "ko/en i18n", "1인 개발"],
+        en: ["15 games registered (5 complete)", "Unified dia wallet SDK", "~16ms iframe bridge", "Firestore saves & rankings", "ko/en i18n", "Solo build"]
       },
       bullets: {
-        ko: [
-          "호스트가 지갑·세이브·랭킹을 소유하고 게임은 iframe으로 얹는 구조. postMessage 브리지와 Pakedev SDK(818 LOC)를 사이에 둬서, 게임 코드 변경 0건으로 로컬 스토리지 백엔드를 Firestore로 교체했다.",
-          "Unity·구형 웹 레거시를 TypeScript + PixiJS v8로 이식하는 절차를 재현 가능한 추출 스크립트와 플레이북으로 정리해, 리마스터·신작 9종을 같은 파이프라인으로 진행 중.",
-          "런칭 체크리스트·무결성 감사·권리 정리 게이트를 문서와 코드로 선행 관리. 서버 권위 전환 전까지 점수성 랭킹은 '켜되 신뢰하지 않는' 등급으로 명시했다. 디테일은 기술 상세 참고."
-        ],
-        en: [
-          "The host owns the wallet, saves, and rankings; games mount as iframes. A postMessage bridge plus the Pakedev SDK (818 LOC) sit in between, so swapping the localStorage backend for Firestore required zero changes to game code.",
-          "Codified porting Unity and legacy web titles to TypeScript + PixiJS v8 as reproducible extraction scripts and a written playbook — 9 remasters and new titles now run through the same pipeline.",
-          "Launch checklist, integrity audit, and rights-clearance gates are managed up front in both docs and code; score-based boards are explicitly rated \"on but not trusted\" until server authority lands. See tech notes for details."
-        ]
+        ko: ["호스트-게임 분리 아키텍처 (iframe + postMessage SDK) · dia 통합 지갑 · Firestore 세이브/랭킹 · Unity/웹 레거시 → TypeScript + PixiJS 리마스터 파이프라인까지 1인 구축. 디테일은 기술 상세 참고."],
+        en: ["Solo build: host–game split architecture (iframe + postMessage SDK), unified dia wallet, Firestore saves/rankings, and a Unity/legacy-web → TypeScript + PixiJS remaster pipeline. See tech notes for details."]
       }
     },
     {
@@ -162,16 +154,16 @@ window.__DATA__ = {
               en: "Armi Workshop: IP-based Content Platform" },
       tagline: { ko: "IP 콘텐츠 플랫폼 · 글로벌 결제 + 광고 듀얼 수익화",
                  en: "IP content platform · dual monetization (payments + ads)" },
-      stack: "Vite 7 · Firebase v12 · Cloudflare Workers · Xsolla · Phaser 3",
+      stack: "Vite 7 · Firebase v12 · Cloud Functions v2 · Cloudflare Workers · PortOne V2 · Phaser 3",
       liveUrl: "https://www.armiicraft.com/",
       caseStudyUrl: "projects/armi.html",
       results: {
-        ko: ["Xsolla PG v3", "AdSense 8슬롯", "16 MPA 엔트리", "10 Cloud Functions", "1인 풀스택"],
-        en: ["Xsolla PG v3", "8-slot AdSense", "16 MPA entries", "10 Cloud Functions", "Solo full-stack"]
+        ko: ["포인트·젬 이코노미", "PG 교체 (Xsolla→PortOne)", "스냅샷+SSR SEO", "13 Cloud Functions", "자체 광고서버 + AdSense", "1인 풀스택"],
+        en: ["Point & gem economy", "PG swap (Xsolla→PortOne)", "Snapshot+SSR SEO", "13 Cloud Functions", "In-house ad server + AdSense", "Solo full-stack"]
       },
       bullets: {
-        ko: ["결제 (Xsolla v3) · 서버리스 (Firebase Functions) · 엣지 보안 (Cloudflare Workers) · SEO/SSR · RBAC + 감사 로그까지 풀스택 1인 운영. 디테일은 기술 상세 참고."],
-        en: ["Solo full-stack: payments (Xsolla v3), serverless (Firebase Functions), edge security (Cloudflare Workers), SEO/SSR, RBAC + audit logs. See tech notes for details."]
+        ko: ["포인트·젬 이중 재화 + 서버 검증 결제 · 스냅샷+SSR 하이브리드 SEO · 자체 광고 서버 + AdSense 이중 수익화 · RBAC/감사 로그까지 1인 풀스택 운영. 결제 레일을 Xsolla에서 PortOne V2로 교체하며 재화 소비 로직은 무변경 이전. 디테일은 기술 상세 참고."],
+        en: ["Solo full-stack: point & gem dual currency with server-verified payments, snapshot+SSR hybrid SEO, in-house ad server + AdSense dual monetization, RBAC & audit logs. Swapped the payment rail from Xsolla to PortOne V2 with zero changes to currency-consumption logic. See tech notes for details."]
       }
     },
     {

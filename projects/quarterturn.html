@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QUARTER TURN — 기술 상세 | 임재균 포트폴리오</title>
-    <meta name="description" content="QUARTER TURN (quarterturn.pages.dev) 의 호스트-게임 분리 아키텍처, dia 통합 화폐 SDK, 레거시 리마스터 파이프라인 기술 상세 노트." />
+    <meta name="description" content="QUARTER TURN (quarterturn.pages.dev) 의 호스트-게임 분리 아키텍처, dia 통합 화폐 SDK, 게임 라인업, 레거시 리마스터 파이프라인 기술 상세 노트." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,7 +22,7 @@
         </a>
         <h1 class="page-header__title">QUARTER TURN — 기술 상세</h1>
         <p class="page-header__lede">
-          호스트-게임 분리 아키텍처, dia 통합 화폐 SDK, 레거시 리마스터 파이프라인 노트
+          HTML5 게임 플랫폼의 호스트-게임 분리 아키텍처, dia 통합 화폐 SDK, 레거시 리마스터 파이프라인 노트
         </p>
         <div class="page-header__meta">
           <span>2026.05 — 현재</span>
@@ -39,183 +39,234 @@
       <article class="container prose">
 
         <blockquote>
-          육아휴직 기간에 시작한 1인 프로젝트. 브라우저에서 바로 실행되는 HTML5 게임 포털이지만,
-          실제로 만든 것은 게임 한 편이 아니라 <strong>게임을 계속 얹을 수 있는 파이프라인</strong>이다.
-          호스트가 지갑·세이브·랭킹을 소유하고 게임은 iframe 으로 붙는 구조를 잡아, 현재 14종이 같은 규약 위에서 돌아간다.
+          육아휴직 기간에 진행 중인 1인 개발 프로젝트. 브라우저에서 바로 실행되는 HTML5 게임 플랫폼으로,
+          <strong>호스트가 계정·지갑·세이브·랭킹을 소유하고 게임은 iframe 으로 연결</strong>되는 구조.
+          현재 등록 게임 15종 (공개 11종 — 완성 5 · 개발중 6) 이 같은 SDK 규약 위에서 동작하며,
+          Unity·웹 레거시 리마스터 파이프라인과 신작 개발을 병행.
         </blockquote>
 
         <h2>1. 호스트-게임 분리 아키텍처</h2>
 
-        <h3>왜 분리했나</h3>
+        <h3>구조 개요</h3>
         <ul>
           <li>
-            게임마다 저장 방식·화폐·랭킹을 따로 만들면 N개의 게임은 N개의 백엔드 결정이 된다.
-            대신 <strong>호스트가 계정·지갑·세이브·랭킹을 전부 소유</strong>하고, 게임은 정해진 API 만 호출하는 손님으로 두었다.
+            게임마다 저장·화폐·랭킹을 따로 구현하는 대신 <strong>호스트가 계정·지갑·세이브·랭킹을 단일 소유</strong>하고,
+            게임은 정해진 SDK API 만 호출하는 구조로 설계. 게임 수가 늘어도 백엔드 결정은 호스트 한 곳에서만 발생.
           </li>
           <li>
-            게임은 <code>iframe</code> 으로 마운트되고 호스트와는 <code>postMessage</code> 로만 대화한다
-            (<code>src/lib/walletBridge.js</code>). 요청마다 <code>reqId</code> 를 붙인 비동기 왕복 구조라,
-            나중에 백엔드가 동기 → 비동기로 바뀌어도 게임 쪽 코드는 그대로다.
+            게임은 <code>iframe</code> 으로 마운트되고 호스트와는 <code>postMessage</code> 로만 통신
+            (<code>src/lib/walletBridge.js</code>). 요청마다 <code>reqId</code> 를 부여한 비동기 왕복 구조라
+            백엔드가 동기 → 비동기로 바뀌어도 게임 측 코드는 무변경.
           </li>
           <li>
-            iframe → 호스트 왕복 실측 <strong>약 16ms</strong>. 결제 팝업(<code>autoShop</code>)이
-            브라우저의 user-gesture 컨텍스트를 잃지 않는지까지 popup blocker 환경에서 확인했다.
+            iframe ↔ 호스트 왕복 실측 <strong>약 16ms</strong>. 결제 팝업(<code>autoShop</code>)이
+            브라우저 user-gesture 컨텍스트를 유지하는지 popup blocker 환경에서 검증.
           </li>
         </ul>
 
         <h3>Pakedev SDK <code>public/vendor/pakedev-sdk.js (818 LOC)</code></h3>
         <ul>
           <li>
-            게임 작성자가 보는 유일한 표면. <code>Pakedev.wallet</code>(잔액 조회/차감/변경 구독),
-            <code>Pakedev.storage</code>(키 단위 세이브), <code>Pakedev.ranking</code>(점수 제출),
-            <code>Pakedev.shop</code>(충전 진입) 네 갈래로 정리했다.
+            게임 개발자에게 노출되는 유일한 인터페이스. <code>Pakedev.wallet</code> (잔액 조회/차감/변경 구독),
+            <code>Pakedev.storage</code> (키 단위 세이브), <code>Pakedev.ranking</code> (점수 제출),
+            <code>Pakedev.shop</code> (충전 진입) 4개 네임스페이스로 구성.
           </li>
           <li>
-            <strong>차감만 게임에게, 충전은 호스트에게.</strong> 화폐 발행 경로를 호스트 한 곳으로 묶어두면
-            나중에 서버 권위로 전환할 때 손댈 지점이 하나로 수렴한다.
+            <strong>차감은 게임, 충전은 호스트 전용</strong> — 화폐 발행 경로를 호스트 한 곳으로 고정해
+            서버 권위 전환 시 변경 지점을 단일화.
           </li>
           <li>
-            SDK 가 없는 환경(게임 단독 실행)에서도 게임이 죽지 않도록 dev 폴백을 규약에 포함.
-            게임 개발자는 호스트 없이 자기 게임만 띄워놓고 작업할 수 있다.
+            SDK 부재 환경(게임 단독 실행)용 dev 폴백을 규약에 포함 — 게임 개발자는 호스트 없이
+            자기 게임만 띄워 놓고 작업 가능.
           </li>
         </ul>
 
-        <h2>2. dia 통합 화폐와 백엔드 교체</h2>
+        <h2>2. 게임 라인업</h2>
+        <p>
+          포털 매니페스트(<code>data/gameData.js</code>) 기준 15종 등록.
+          완성 5종은 공개 서비스, 개발중 6종은 비밀번호 소프트 게이트로 잠금, 4종은 출시 스코프 조정으로 비공개 전환.
+          별도로 매니페스트 미등록 파이프라인 3종 진행 중.
+        </p>
 
-        <h3>단계적 전환 설계</h3>
+        <h3>완성 · 공개 서비스 (5종)</h3>
         <ul>
           <li>
-            <strong>Phase 1</strong> — 클라이언트 <code>localStorage</code> 권위. 지갑·거래내역·HUD·충전 페이지까지
-            먼저 완성해 UX 와 API 계약을 확정했다.
+            <strong>DROP POP</strong> — 공을 발사해 숫자 블록을 깨는 물리 벽돌깨기 (matter-js).
+            공 14종 수집, 하이스코어 랭킹.
           </li>
           <li>
-            <strong>Phase 3</strong> — Firebase Anonymous Auth + Firestore(<code>asia-northeast3</code>) 로 교체.
+            <strong>Gemstone Match</strong> — 500 스테이지 3매치 퍼즐. 특수 블록 조합, 스테이지 랭킹.
+          </li>
+          <li>
+            <strong>엽전맞고</strong> — 흔들·폭탄·뻑·고도리 정식 룰 기반 스테이지식 맞고.
+            난이도 3종 × 6단계, 엽전을 걸고 상대를 오링시키는 진행 구조.
+          </li>
+          <li>
+            <strong>Flappy Block</strong> — 블록을 부수며 나는 원버튼 아케이드.
+            캐릭터 60종 수집·강화, 스테이지/거리 2개 랭킹 보드.
+          </li>
+          <li>
+            <strong>COSMIC DEFENCE</strong> — 5종 함선 덱으로 침공을 막는 우주 타워디펜스.
+            PvP·협동 듀얼 모드, 합성·뽑기·배틀패스, 150ms 턴 단위 결정론 설계.
+          </li>
+        </ul>
+
+        <h3>개발중 · 비밀번호 게이트 (6종)</h3>
+        <ul>
+          <li>
+            <strong>BESTIARY</strong> — 몬스터를 사냥해 도감을 채우는 핵앤슬래시 수집 RPG
+            (맵 317 · 스킬 72 · 펫 27). 채팅·프레즌스용 실시간 백엔드를
+            <strong>Cloudflare Workers + Durable Objects</strong> 로 분리 구축 — egress 무과금 특성을 이용해 실시간 기능의 운영 비용을 절감.
+          </li>
+          <li>
+            <strong>RELIQUARY</strong> — 서버 의존형 웹 MMO 레거시를 서버리스 싱글 구조로 재설계한 클린 리마스터.
+            유닛·아티팩트 수집과 던전·미궁 공략.
+          </li>
+          <li>
+            <strong>RE:roll Chess</strong> — 헥사 보드 오토배틀러. PvE 캠페인 + 비동기 PvP(패왕전), 캐릭터 72종.
+          </li>
+          <li>
+            <strong>Flip and Fight</strong> — 뒤집기와 전투를 결합한 세로형 캐주얼 로그라이크.
+            라인업 중 유일한 Phaser 3 프로젝트이자 신규 오리지널.
+          </li>
+          <li>
+            <strong>BANE &amp; BOON</strong> — 저주를 받아들일수록 강해지는 던전 액션 로그라이크, 캐릭터 18종.
+            권리 정리 진행 중으로 코드네임 운영.
+          </li>
+          <li>
+            <strong>OUTBREAK</strong> — 실시간 액션 좀비 RPG, 640 스테이지, 장비·펫·스킬 수집.
+            권리 정리 진행 중으로 코드네임 운영.
+          </li>
+        </ul>
+
+        <h3>파이프라인 · 매니페스트 미등록 (3종)</h3>
+        <ul>
+          <li>
+            <strong>괴력난신</strong> — 한국 신화·민속 테마 오브매치 RPG (화·수·뇌·귀 4속성).
+            2018년 자사 원작의 기획서·리소스 기반 리마스터.
+          </li>
+          <li>
+            <strong>Hero404</strong> — 탑다운 액션 로그라이트 RPG.
+            Unity 2022 원본을 PixiJS 로 이식하는 UNITY-REMASTER-PLAYBOOK 의 적용 케이스.
+          </li>
+          <li>
+            <strong>신규 오토배틀러 1종</strong> — 기획 단계. RE:roll Chess 의 캐릭터 72종 자산을 재사용하는 설계.
+          </li>
+        </ul>
+
+        <h2>3. dia 통합 화폐와 백엔드 교체</h2>
+        <ul>
+          <li>
+            <strong>Phase 1</strong> — 클라이언트 <code>localStorage</code> 권위로 지갑·거래내역·HUD·충전 페이지까지
+            선구현하여 UX 와 API 계약을 확정.
+          </li>
+          <li>
+            <strong>Phase 3</strong> — Firebase Anonymous Auth + Firestore (<code>asia-northeast3</code>) 로 전환.
             <code>wallets/{uid}</code> 는 <code>onSnapshot</code> 라이브 구독,
-            거래는 <code>transactions/{uid}/items/{txId}</code> 에 <code>txId</code> 를 문서 ID 로 써서 멱등 보장,
+            거래는 <code>transactions/{uid}/items/{txId}</code> 에 <code>txId</code> 를 문서 ID 로 사용해 멱등성 보장,
             세이브는 <code>saves/{uid}/games/{gameId}</code> 게임당 1문서에 키 단위 merge / <code>deleteField</code>.
           </li>
           <li>
-            <strong>교체 결과 게임/SDK 코드 변경 0건.</strong> <code>wallet.js</code> 는 공개 API 의 동기 시그니처를
-            그대로 유지한 채 내부에만 Firestore 미러를 붙였고, 브리지가 이미 비동기라 게임 쪽은 차이를 느끼지 못한다.
-            HUD·상점·브리지 모두 무수정 통과.
+            <strong>전환 결과 게임/SDK 코드 변경 0건</strong> — <code>wallet.js</code> 가 공개 API 의 동기 시그니처를
+            유지한 채 내부에만 Firestore 미러를 추가. 브리지가 처음부터 비동기라 게임 측 영향 없음.
+            HUD·상점·브리지 전부 무수정 통과.
           </li>
           <li>
-            <strong>모든 store 는 DB 미설정 시 localStorage 폴백</strong>을 유지한다. 설정 하나로 오프라인/로컬 모드가 되고,
-            prod 전환은 Cloudflare Pages 환경변수(<code>VITE_FIREBASE_*</code>) 스왑만으로 이뤄진다 — 코드 분기 없음.
+            전체 store 에 <strong>DB 미설정 시 localStorage 폴백</strong> 유지 — 설정만으로 오프라인/로컬 모드 동작.
+            prod 전환은 Cloudflare Pages 환경변수 (<code>VITE_FIREBASE_*</code>) 스왑만으로 수행, 코드 분기 없음.
           </li>
           <li>
-            Firestore Security Rules 를 저장소에 수기로 관리하고
-            (<code>firebase deploy --only firestore:rules</code> 타깃 지정 배포),
-            양성(본인 지갑 읽기 허용) · 음성(타인 지갑 읽기 차단) 스모크 테스트로 규칙이 실제로 강제되는지 확인했다.
+            Firestore Security Rules 를 저장소에서 수기 관리 (<code>firebase deploy --only firestore:rules</code>),
+            양성(본인 지갑 읽기 허용)·음성(타인 지갑 읽기 차단) 스모크 테스트로 규칙의 실제 강제 여부 검증.
+          </li>
+        </ul>
+
+        <h2>4. 레거시 리마스터 파이프라인</h2>
+        <ul>
+          <li>
+            <strong>문제 정의</strong>: 되살릴 원본 다수가 소스·에셋만 남고 빌드 불가 상태
+            (엔진 버전 불일치, 유료 플러그인, 서비스 종료된 SDK). 원본 재빌드 대신 이식 절차를 표준화하는 방향으로 해결.
+          </li>
+          <li>
+            <strong>절차 문서화</strong> (<code>UNITY-REMASTER-PLAYBOOK.md</code>, <code>REMASTER_PROMPT.md</code>):
+            원작을 단일 진실 공급원(SSOT)으로 규정 — 스탯·가격·확률·UI 배치를 추측으로 재구현하지 않고
+            legacy 소스 grep/덤프에서 확인하는 것을 첫 번째 규칙으로 명문화.
+          </li>
+          <li>
+            <strong>추출 전부 스크립트화</strong>: Unity <code>*.prefab</code> (UI 앵커/좌표/스프라이트),
+            <code>*.cs</code> (전투식·비용 공식·스폰), 로컬라이제이션 테이블,
+            BGDatabase 바이너리(<code>*.bytes</code>) 파서까지 직접 구현해 <code>src/data/extracted/*.json</code> 생성.
+            재실행 시 동일 결과 보장. export 담당자 부재로 사장됐던 밸런스 수치를 바이너리에서 자체 복구한 것이 첫 성과.
+          </li>
+          <li>
+            <strong>프로젝트 표준 구조</strong>: <code>reMasterPlan.md</code> (계획 SSOT) +
+            <code>legacy/</code> (읽기 전용 원본) + <code>devNote/decisions/</code> (ADR).
+          </li>
+          <li>
+            <strong>이식 타깃 표준화</strong>: TypeScript strict + PixiJS v8 + DOM UI —
+            렌더링은 Pixi, UI 레이아웃은 웹 표준(DOM) 으로 분리.
+          </li>
+          <li>
+            검증 가능한 단위로 분할 커밋 — 한 커밋 = 한 기능 + 실제 게임 화면 검증. 현재 리마스터·신작
+            <strong>9종</strong>이 이 절차로 진행 중.
           </li>
         </ul>
 
-        <h2>3. 레거시 리마스터 파이프라인</h2>
-
-        <h3>문제</h3>
-        <p>
-          되살리고 싶은 옛 프로젝트는 대부분 <strong>소스와 에셋만 남고 빌드가 되지 않는 상태</strong>였다.
-          엔진 버전, 유료 플러그인, 사라진 SDK — 원본을 다시 빌드하는 길은 막혀 있었다.
-        </p>
-
-        <h3>해법 — 절차를 문서로 고정 <code>UNITY-REMASTER-PLAYBOOK.md</code></h3>
+        <h2>5. 랭킹 무결성 · 운영 게이트</h2>
         <ul>
           <li>
-            <strong>원작이 진실원이다.</strong> 스탯·가격·확률·UI 배치·스킬 동작을 추측으로 재구현하면 거의 다 틀린다는 걸
-            첫 프로젝트에서 확인하고, "막히면 legacy 를 grep/덤프부터" 를 첫 번째 규칙으로 박았다.
-            (보스 등장 조건이 "입장 즉시" 가 아니라 "잡몹 처치 게이지 충족 시" 였던 식의 실제 오답 사례를 함께 기록.)
-          </li>
-          <li>
-            <strong>추출은 전부 스크립트로.</strong> Unity 의 <code>*.prefab</code>(UI 앵커/좌표/스프라이트),
-            <code>Assets/Script/**/*.cs</code>(전투식·비용 공식·스폰), 로컬라이제이션 테이블, 그리고
-            BGDatabase 바이너리(<code>*.bytes</code>) 까지 파서를 직접 짜서 <code>src/data/extracted/*.json</code> 을 만든다.
-            legacy 를 다시 받아도 재실행하면 동일 결과가 나온다.
-          </li>
-          <li>
-            "export 해줄 사람이 없어서 못 살린다" 고 미뤄뒀던 밸런스 수치를 바이너리에서 자체 추출해 복구한 게
-            이 파이프라인의 첫 성과였다.
-          </li>
-          <li>
-            <strong>이식 타깃은 TypeScript + PixiJS v8 + DOM UI</strong>. 렌더링은 Pixi, UI 는 DOM 으로 갈라
-            레이아웃 작업을 웹 표준 쪽으로 넘겼다.
-          </li>
-          <li>
-            <strong>검증 가능한 단위로 쪼개고 청크마다 커밋.</strong> "폭발/투척 FX", "슬래시 FX" 처럼 한 커밋 = 한 기능 + 그 검증.
-            실제 게임 화면으로 눈으로 확인한 것만 완료로 친다.
-          </li>
-        </ul>
-        <p>
-          이 플레이북 덕분에 두 번째 이후 프로젝트는 같은 함정을 다시 밟지 않는다.
-          현재 리마스터·신작 <strong>9종</strong>이 이 절차 위에서 진행 중이다.
-        </p>
-
-        <h2>4. 랭킹 무결성 — 신뢰 등급을 먼저 정했다</h2>
-        <ul>
-          <li>
-            랭킹은 붙이기는 쉽지만 <strong>클라이언트 권위인 채로 "랭킹이 있다" 고 말하면 거짓말</strong>이 된다.
-            그래서 게임별 치트 표면을 먼저 감사해 보드를 <strong>검증가능성 클래스</strong>로 분류했다
+            <strong>검증가능성 클래스 분류</strong>: 게임별 치트 표면을 감사해 랭킹 보드를 등급화
             (<code>docs/INTEGRITY_AUDIT.md</code> → <code>docs/RANKING_AND_INTEGRITY.md</code>).
+            서버 검증이 깨끗한 progression 보드(도달 스테이지 등)를 우선 적용하고,
+            점수성 보드는 서버 권위 전환 전까지 <strong>"표시하되 신뢰하지 않음"</strong> 등급으로 명시.
           </li>
           <li>
-            <strong>progression 보드 우선</strong>(도달 스테이지 등). 점수성 보드보다 서버 검증이 깨끗하고,
-            나중에 서버 권위로 전환할 때 재작업 부담이 없다.
+            세이브 변조 위협 모델 문서화 — 호스트 단일 지점 서명, 거래 내역 기반 보유 재구성,
+            비정상 점프 감사 추적. 실행 일정은 서버 권위 전환과 연동.
           </li>
           <li>
-            서버 검증 전까지 점수성·P2W 보드는 <strong>"켜되 신뢰하지 않음"</strong> 으로 명시. 켜는 이유는 지표와 UI 확정이고,
-            그 상태로 순위의 정당성을 주장하지 않는다.
+            <strong>런칭 게이트</strong> (<code>docs/LAUNCH_CHECKLIST.md</code>): 개발 편의 장치
+            (초기 dia 자동 지급, 무료 충전, 전역 디버그 객체)를 파일:라인 단위로 목록화하고
+            항목별 제거 선후관계를 명시.
           </li>
           <li>
-            세이브 변조 위협 모델도 같은 방식으로 문서화 — 호스트 단일 지점 서명, 영수증 파생 보유(구매 아이템은 거래 내역에서 재구성),
-            비정상 점프 감사 추적. 실행은 서버 권위 전환과 묶여 있고, 그 전까지는 <strong>결정과 근거만 남겨두었다</strong>.
+            <strong>권리 정리 게이트</strong>: 권리 확인이 끝나지 않은 타이틀은 코드네임 격리 +
+            <code>locked: true</code> 소프트 게이트로 공개 목록에서 차단. 게임 내부 문자열·탭 제목의
+            구명 노출까지 제거. 정책을 데이터 필드로 만들어 배포 파이프라인이 강제하는 구조.
+          </li>
+          <li>
+            <strong>규제 선행 검토</strong>: 가상화폐(dia)의 선불전자지급수단 해당 여부·환불 규정·등급분류·PG 이슈를
+            실결제 연동 전 상담 체크리스트로 정리 (<code>docs/LEGAL_CONSULT_CHECKLIST.md</code>).
+          </li>
+          <li>
+            <strong>AI 운영 보조 권한 경계</strong> (<code>docs/AI_STAFF.md</code>):
+            읽기·분류·요약·초안 작성은 자동화하되, 공개 포스팅·제재·결제·외부 발송은 사람 승인 게이트로 분리.
+            공개용 산출물에는 <code>[DRAFT — 사람 검토 대기]</code> 머리표를 강제.
           </li>
         </ul>
 
-        <h2>5. 운영을 코드와 문서로 강제하기</h2>
+        <h2>6. 구현 메모</h2>
         <ul>
-          <li>
-            <strong>런칭 게이트</strong>(<code>docs/LAUNCH_CHECKLIST.md</code>) — 개발 편의 장치(초기 dia 자동 지급, 무료 충전,
-            전역 디버그 객체)가 실서비스로 새어나가지 않도록 파일:라인 단위로 목록화. 항목마다 "왜 지금은 못 지우는지" 의 선후관계까지 적었다.
-          </li>
-          <li>
-            <strong>권리 정리 게이트</strong> — 권리 확인이 끝나지 않은 타이틀은 코드네임으로 격리하고
-            <code>locked: true</code> 소프트 게이트로 공개 목록에서 차단한다. 게임 내부 문자열·탭 제목까지 구명 노출을 제거했다.
-            정책을 사람 기억이 아니라 <strong>데이터 필드로 만들어 배포 파이프라인이 강제</strong>하게 한 부분.
-          </li>
-          <li>
-            <strong>규제 선행 검토</strong> — 가상화폐(dia) 의 선불수단 포섭 여부·환불 강행규정·등급분류·PG 이슈를
-            실결제 연동 <em>전에</em> 상담 체크리스트로 정리(<code>docs/LEGAL_CONSULT_CHECKLIST.md</code>).
-          </li>
-          <li>
-            <strong>AI 운영 보조의 권한 경계 설계</strong>(<code>docs/AI_STAFF.md</code>) — LLM 은 복잡도 임계를 넘으면 붕괴하고
-            단일 환각이 멀티스텝을 깨뜨린다는 전제(95% 정확도 × 20스텝 = 36%)에서 출발해,
-            <strong>읽기·분류·요약·초안은 자동, 공개 포스팅·제재·결제·외부 발송은 전부 사람 게이트</strong>로 선을 그었다.
-            모든 공개용 산출물에는 <code>[DRAFT — 사람 검토 대기]</code> 머리표를 강제한다.
-          </li>
-        </ul>
-
-        <h2>6. 그 외 구현 메모</h2>
-        <ul>
-          <li>Vite MPA(vanilla JS) — 홈 / 게임뷰 / 상점 3 엔트리. 호스트 코드 약 3,700 LOC.</li>
-          <li>Phaser 3 를 <code>public/vendor/</code> 공유본으로 두고 iframe 마다 HTTP 캐시로 재사용 — 게임별 중복 번들 제거.</li>
-          <li>게임이 자체 FIT 스케일을 구현하지 않은 경우에만 호스트가 <code>baseViewport</code> 로 고정 크기 + transform scale 축소. 게임이 FIT 을 구현해 재납품하면 이 예외를 제거하는 방향.</li>
-          <li>모바일에서 게임 화면 스케일이 출렁이거나 가상 자판이 뷰포트를 줄이는 문제를 게임뷰 레이어에서 차단.</li>
-          <li>ko/en 런타임 i18n, PWA manifest, 신규 게임 스캐폴딩 CLI(<code>npm run new-game</code>)와 등록 검증 스크립트(<code>validate-games</code>).</li>
+          <li>호스트: Vite MPA (vanilla JS) — 홈 / 게임뷰 / 상점 3개 엔트리, 약 3,700 LOC. Cloudflare Pages 배포.</li>
+          <li>Phaser 3 를 <code>public/vendor/</code> 공유본으로 두고 iframe 간 HTTP 캐시로 재사용 — 게임별 중복 번들 제거.</li>
+          <li>게임이 자체 FIT 스케일 미구현인 경우에만 호스트가 <code>baseViewport</code> 고정 크기 + transform scale 로 대응. 게임 측 FIT 구현 재납품 시 예외 제거.</li>
+          <li>모바일에서 게임 화면 스케일 유동·가상 키보드로 인한 뷰포트 축소를 게임뷰 레이어에서 차단.</li>
+          <li>ko/en 런타임 i18n, PWA manifest, 신규 게임 스캐폴딩 CLI (<code>npm run new-game</code>) 와 등록 검증 스크립트 (<code>validate-games</code>).</li>
         </ul>
 
         <div class="callout">
-          <strong>주의 — 정직 모드</strong>
+          <strong>현재 상태 (정직 노트)</strong>
           <ul>
             <li>
-              <strong>서비스 중이 아니라 공개 개발 중이다.</strong> 등록 14종 중 완성 5종,
-              나머지 9종은 개발 중이며 그중 6종은 비밀번호 게이트로 잠겨 있다.
-              런칭 체크리스트도 아직 미완이라 개발 편의 장치가 코드에 남아 있다.
+              정식 서비스가 아니라 <strong>공개 개발 중</strong>. 공개 11종 중 완성 5종, 나머지 6종은
+              비밀번호 게이트 뒤의 개발 빌드. 런칭 체크리스트가 미완이라 개발 편의 장치가 코드에 남아 있음.
             </li>
             <li>
-              DAU·매출·리텐션 같은 지표는 <strong>없다</strong>. 실결제 연동 전이고 마케팅도 시작하지 않았다.
-              이 프로젝트에서 볼 것은 트래픽이 아니라 아키텍처 결정과 그 근거다.
+              DAU·매출·리텐션 지표 없음 — 실결제 연동·마케팅 전 단계.
+              이 프로젝트의 평가 포인트는 트래픽이 아니라 아키텍처 결정과 그 근거.
             </li>
             <li>
-              랭킹은 서버 검증 전이라 순위의 신뢰성을 주장하지 않는다. 위 4장의 분류가 그 이유다.
+              랭킹은 서버 검증 전으로 순위의 신뢰성을 주장하지 않음 (5장 분류 참조).
             </li>
           </ul>
         </div>

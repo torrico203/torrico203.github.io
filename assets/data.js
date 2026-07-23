@@ -158,12 +158,12 @@ window.__DATA__ = {
       liveUrl: "https://www.armiicraft.com/",
       caseStudyUrl: "projects/armi.html",
       results: {
-        ko: ["포인트·젬 이코노미", "PG 교체 (Xsolla→PortOne)", "스냅샷+SSR SEO", "13 Cloud Functions", "자체 광고서버 + AdSense", "1인 풀스택"],
-        en: ["Point & gem economy", "PG swap (Xsolla→PortOne)", "Snapshot+SSR SEO", "13 Cloud Functions", "In-house ad server + AdSense", "Solo full-stack"]
+        ko: ["포인트·젬 이코노미", "PG 전환 (Xsolla→PortOne·Toss)", "스냅샷+SSR SEO", "13 Cloud Functions", "자체 광고서버 + AdSense", "1인 풀스택"],
+        en: ["Point & gem economy", "PG swap (Xsolla→PortOne·Toss)", "Snapshot+SSR SEO", "13 Cloud Functions", "In-house ad server + AdSense", "Solo full-stack"]
       },
       bullets: {
-        ko: ["포인트·젬 이중 재화 + 서버 검증 결제 · 스냅샷+SSR 하이브리드 SEO · 자체 광고 서버 + AdSense 이중 수익화 · RBAC/감사 로그까지 1인 풀스택 운영. 결제 레일을 Xsolla에서 PortOne V2로 교체하며 재화 소비 로직은 무변경 이전. 디테일은 기술 상세 참고."],
-        en: ["Solo full-stack: point & gem dual currency with server-verified payments, snapshot+SSR hybrid SEO, in-house ad server + AdSense dual monetization, RBAC & audit logs. Swapped the payment rail from Xsolla to PortOne V2 with zero changes to currency-consumption logic. See tech notes for details."]
+        ko: ["포인트·젬 이중 재화 + 서버 검증 결제 · 스냅샷+SSR 하이브리드 SEO · 자체 광고 서버 + AdSense 이중 수익화 · RBAC/감사 로그까지 1인 풀스택 운영. 결제 레일을 Xsolla에서 PortOne V2(토스페이먼츠 채널)로 교체하며 재화 소비 로직은 무변경 이전. 디테일은 기술 상세 참고."],
+        en: ["Solo full-stack: point & gem dual currency with server-verified payments, snapshot+SSR hybrid SEO, in-house ad server + AdSense dual monetization, RBAC & audit logs. Swapped the payment rail from Xsolla to PortOne V2 (Toss Payments channel) with zero changes to currency-consumption logic. See tech notes for details."]
       }
     },
     {

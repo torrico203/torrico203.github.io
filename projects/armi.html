@@ -75,16 +75,31 @@
           </li>
         </ul>
 
-        <h3>결제 레일 교체 — Xsolla → PortOne V2 <code>docs/PORTONE_MIGRATION_PLAN.md</code></h3>
+        <h3>결제 레일 교체 — Xsolla → PortOne V2 × 토스페이먼츠 <code>functions/portone.js</code></h3>
         <ul>
           <li>
-            Xsolla 가맹 심사 거절로 결제 레일을 <strong>PortOne V2 (browser-sdk)</strong> 로 교체
-            (병행 유지). 마이그레이션 계획 문서에 MoR(Merchant of Record) vs 국내 PG 구조 비교 분석을 포함해
-            의사결정 근거를 저장소에 남김.
+            Xsolla 가맹 심사 거절로 결제 레일을 <strong>PortOne V2 + 토스페이먼츠 채널</strong>로 교체.
+            마이그레이션 계획 문서(<code>docs/PORTONE_MIGRATION_PLAN.md</code>)에 MoR(Merchant of Record) vs
+            국내 PG 구조 비교 분석을 포함해 의사결정 근거를 저장소에 보존.
+          </li>
+          <li>
+            <strong>3단 서버 검증 파이프라인</strong>:
+            <code>createPortoneOrder</code> (서버 발급 paymentId + 서버 가격 산정 pending 레코드) →
+            <code>verifyPortonePayment</code> (PortOne 재조회로 PAID·금액·통화·채널 모드 검증 후 멱등 지급) →
+            <code>portoneWebhook</code> (서명 검증 백업 지급 + 결제 취소 시 젬 자동 차감 환불).
+          </li>
+          <li>
+            <strong>전환 안전장치</strong>: <code>PORTONE_LIVE_MODE</code> 플래그로 테스트/라이브 교차 지급 차단,
+            프로덕션 빌드는 라이브 채널키 확보 전까지 기존 경로 유지 (<code>VITE_PAYMENT_PROVIDER</code> 스위치) —
+            실수 배포 방어. 토스 테스트 채널에서 결제/검증/지급·멱등성·웹훅 환불까지 검증 완료.
+          </li>
+          <li>
+            모바일 리다이렉트 복귀용 payment-result 페이지와 이용약관·개인정보처리방침의 결제사 교체를
+            3개 로캘(ko/en/ja) 동시 반영, 마이페이지에 충전 내역(환불 상태 포함) 노출.
           </li>
           <li>
             <strong>재화 소비 로직은 무변경 이전</strong> — <code>consumeGemForContent</code> 등 소비 계열 Functions 를
-            처음부터 결제사-무관하게 설계해 둔 덕에, PG 교체가 지급(웹훅) 계층에만 국한됨.
+            처음부터 결제사-무관하게 설계해 둔 덕에, PG 교체가 주문·지급 계층에만 국한됨.
             결제사 종속을 지급 경계 바깥으로 밀어낸 추상화의 실증 사례.
           </li>
         </ul>

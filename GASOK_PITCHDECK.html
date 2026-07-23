@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUARTER TURN × GIWA — GASOK Pitch Deck</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --panel: #171c24;
+    --panel2: #1e2530;
+    --ink: #e8ecf1;
+    --sub: #9aa5b1;
+    --accent: #4fd1c5;      /* teal */
+    --accent2: #f6ad55;     /* amber */
+    --line: #2a323e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--ink);
+    font-family: 'Pretendard', 'Malgun Gothic', system-ui, sans-serif; }
+
+  .slide {
+    display: none;
+    width: 100vw; height: 100vh;
+    padding: 6vh 7vw;
+    flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .slide.active { display: flex; }
+
+  .kicker { color: var(--accent); font-size: 1.05rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  h1 { font-size: 3.2rem; line-height: 1.25; font-weight: 800; }
+  h2 { font-size: 2.2rem; line-height: 1.3; font-weight: 800; margin-bottom: 2.2rem; }
+  h2 em { color: var(--accent); font-style: normal; }
+  p.lead { font-size: 1.25rem; color: var(--sub); line-height: 1.7; }
+  .accent { color: var(--accent); }
+  .amber { color: var(--accent2); }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .card { background: var(--panel); border: 1px solid var(--line);
+    border-radius: 14px; padding: 1.6rem 1.5rem; }
+  .card.hero { border-color: var(--accent); background: var(--panel2); }
+  .card .no { font-size: .85rem; font-weight: 700; color: var(--accent);
+    letter-spacing: .1em; margin-bottom: .7rem; }
+  .card h3 { font-size: 1.25rem; margin-bottom: .8rem; line-height: 1.4; }
+  .card p { font-size: 1.02rem; color: var(--sub); line-height: 1.65; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 1.08rem; }
+  th, td { text-align: left; padding: .95rem 1.1rem; border-bottom: 1px solid var(--line);
+    line-height: 1.55; vertical-align: top; }
+  th { color: var(--accent); font-size: .95rem; letter-spacing: .06em; }
+  td:first-child { font-weight: 700; width: 42%; }
+  td:last-child { color: var(--sub); }
+
+  .flow { display: flex; align-items: stretch; gap: .9rem; margin: 2rem 0; }
+  .flow .step { flex: 1; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 1.1rem 1rem; text-align: center; }
+  .flow .step b { display: block; font-size: 1.05rem; margin-bottom: .4rem; }
+  .flow .step span { font-size: .92rem; color: var(--sub); line-height: 1.5; display: block; }
+  .flow .arrow { align-self: center; color: var(--accent); font-size: 1.6rem; font-weight: 800; }
+  .step.chain { border-color: var(--accent2); }
+  .step.chain b { color: var(--accent2); }
+
+  .stats { display: flex; gap: 3.5rem; margin: 2.2rem 0; }
+  .stat .num { font-size: 3.4rem; font-weight: 800; color: var(--accent); line-height: 1.1; }
+  .stat .lab { font-size: 1.05rem; color: var(--sub); margin-top: .4rem; }
+
+  ul.big { list-style: none; }
+  ul.big li { font-size: 1.18rem; line-height: 1.75; padding-left: 1.6em; position: relative;
+    margin-bottom: 1rem; color: var(--ink); }
+  ul.big li::before { content: "—"; position: absolute; left: 0; color: var(--accent); font-weight: 800; }
+  ul.big li .sub { display: block; font-size: 1rem; color: var(--sub); }
+
+  .foot { position: absolute; bottom: 3.5vh; left: 7vw; right: 7vw;
+    display: flex; justify-content: space-between; font-size: .85rem; color: #5b6672; }
+
+  .titleWrap { text-align: left; }
+  .brand { font-size: 1.3rem; font-weight: 800; letter-spacing: .18em; color: var(--accent); margin-bottom: 2.6rem; }
+  .brand span { color: var(--sub); font-weight: 400; letter-spacing: .05em; }
+  .tagline { margin-top: 2.4rem; font-size: 1.15rem; color: var(--sub); }
+
+  @media print {
+    .slide { display: flex !important; page-break-after: always;
+      width: 100%; height: 100vh; }
+    body { background: var(--bg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .hint { display: none; }
+  }
+  @page { size: 338mm 190mm; margin: 0; }
+
+  .hint { position: fixed; bottom: 12px; right: 16px; font-size: .8rem;
+    color: #4a5561; z-index: 10; }
+</style>
+</head>
+<body>
+
+<!-- 1. 타이틀 -->
+<section class="slide active">
+  <div class="titleWrap">
+    <div class="brand">QUARTER TURN <span>× GIWA</span></div>
+    <h1>크립토를 모르는 웹게이머에게,<br>
+      <span class="accent">자기도 모르는 사이</span> GIWA 지갑을<br>쥐여주는 게임 포털</h1>
+    <p class="tagline">GASOK 2026 지원 · Track 05 MASS ADOPTION</p>
+  </div>
+  <div class="foot"><span>QUARTER TURN</span><span>1 / 9</span></div>
+</section>
+
+<!-- 2. 문제 -->
+<section class="slide">
+  <div class="kicker">Problem</div>
+  <h2>Web3 대중화의 병목은 기술이 아니라 <em>온보딩</em>이다</h2>
+  <ul class="big">
+    <li>시드 문구 · 가스비 · 지갑 익스텐션 — 일반인은 <b>첫 화면에서 이탈</b>한다
+      <span class="sub">"지갑을 만드세요"가 등장하는 순간 대중 서비스가 아니게 된다</span></li>
+    <li>기존 Web3 게임: <b>크립토 유저를 게임으로</b> 데려오는 방향 — 이미 지갑이 있는 사람들끼리의 시장
+      <span class="sub">우리는 반대로 간다: 이미 놀고 있는 <b>게임 유저를 크립토로</b></span></li>
+    <li>국내 게임 × 크립토 피치 대부분은 P2E 환전 금지 규제에 걸려 시작부터 좌초
+      <span class="sub">우리는 환전 배제를 설계 원칙으로 삼아 이 리스크를 차별화로 뒤집는다</span></li>
+  </ul>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>2 / 9</span></div>
+</section>
+
+<!-- 3. 솔루션 -->
+<section class="slide">
+  <div class="kicker">Solution</div>
+  <h2>게임을 했을 뿐인데, 온체인 자산과 기록이 생긴다</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="no">LAYER 01</div>
+      <h3>보이지 않는 지갑</h3>
+      <p>포털 소셜 로그인 시 GIWA 스마트 계정 자동 생성. 시드 문구 없음, 가스는 페이마스터 대납. "지갑 만들기"라는 단계 자체가 UX에서 사라진다.</p>
+    </div>
+    <div class="card hero">
+      <div class="no">LAYER 02 — 핵심</div>
+      <h3>시즌 랭킹 명예의 전당</h3>
+      <p>가동 중인 일간/주간 리더보드를 시즌제로 확장. 시즌 마감 → 상위 랭커에게 티어별 뱃지 SBT 자동 민팅 → 온체인 영구 박제. 시즌마다 반복되는 온체인 이벤트.</p>
+    </div>
+    <div class="card">
+      <div class="no">LAYER 03</div>
+      <h3>스테이블코인 온램프</h3>
+      <p>GIWA 스테이블코인 → 게임 재화 단방향 충전. 인출 경로는 의도적으로 없음 — 결제 수단 추가일 뿐 P2E가 아니다.</p>
+    </div>
+  </div>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>3 / 9</span></div>
+</section>
+
+<!-- 4. 핵심 아키텍처 -->
+<section class="slide">
+  <div class="kicker">Core Architecture</div>
+  <h2>검증된 결과만 체인에 오른다 — <em>시즌 확정 오라클</em></h2>
+  <div class="flow">
+    <div class="step"><b>클라이언트 제출</b><span>게임 플레이 · 점수 제출</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><b>서버 검증 · 집계</b><span>Cloud Functions 권위 검증<br>(오프체인, 치팅 필터)</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><b>시즌 마감</b><span>주간/월간 버킷 확정<br>상위 랭커 산출</span></div>
+    <div class="arrow">→</div>
+    <div class="step chain"><b>온체인 커밋</b><span>GIWA에 뱃지 SBT 배치 민팅<br>가스비: 시즌당 1회로 통제</span></div>
+  </div>
+  <ul class="big">
+    <li>뱃지는 <b>양도 불가(ERC-5192 계열) + 무가치</b> — 보상은 "명예의 박제"까지만
+      <span class="sub">무가치 SBT라 치팅의 금전 유인 자체가 구조적으로 낮다</span></li>
+    <li>업적 SBT를 더해 GIWA 생태계 전체에서 참조 가능한 <b>크로스게임 게이머 프로필</b> 구성</li>
+  </ul>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>4 / 9</span></div>
+</section>
+
+<!-- 5. 규제 적합성 -->
+<section class="slide">
+  <div class="kicker">Regulation-Compatible by Design</div>
+  <h2>규제 리스크를 <em>셀링 포인트</em>로</h2>
+  <table>
+    <tr><th>설계 결정</th><th>근거</th></tr>
+    <tr><td>게임 재화(다이아)는 오프체인 유지 — 토큰화하지 않음</td>
+        <td>재화의 시장 거래 가능성 원천 차단</td></tr>
+    <tr><td>업적·시즌 뱃지는 양도 불가 SBT + 무가치</td>
+        <td>환전·경품 조항 비해당</td></tr>
+    <tr><td>랭킹 보상으로 유가 토큰을 지급하지 않음</td>
+        <td>"경쟁 → 환금 보상" 루프 차단 — P2E 재해석 여지 제거</td></tr>
+    <tr><td>크립토 → 재화 단방향만 허용, 인출 경로 부재</td>
+        <td>게임산업법 환전 금지의 회피가 아닌 <b>준수</b></td></tr>
+  </table>
+  <p class="lead" style="margin-top:1.8rem">2026 게임산업법 전면개정안에서도 환전 금지는 유지 전망.
+    P2E성 피치가 규제 벽에 걸릴 때, 처음부터 규제-호환으로 설계된 팀이라는 포지션.</p>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>5 / 9</span></div>
+</section>
+
+<!-- 6. 트랙션 -->
+<section class="slide">
+  <div class="kicker">Traction</div>
+  <h2>"만들 예정"이 아니라 <em>이미 돌아간다</em></h2>
+  <div class="stats">
+    <div class="stat"><div class="num">15</div><div class="lab">자체 개발 HTML5 게임<br>(공개 9종 + 개발중 6종)</div></div>
+    <div class="stat"><div class="num">LIVE</div><div class="lab">계정 · 재화 · 실시간 랭킹<br>Firebase 기반 가동 중</div></div>
+    <div class="stat"><div class="num">0</div><div class="lab">설치 · 가입 장벽<br>브라우저에서 즉시 플레이</div></div>
+  </div>
+  <ul class="big">
+    <li>운영 포털 <b>QUARTER TURN</b> — 어드민 콘솔 · 애널리틱스 구축 완료, 운영 지표 즉시 제시 가능</li>
+    <li>지갑·재화·리더보드 시스템이 이미 있으므로, GIWA 연동은 신규 개발이 아닌 <b>기존 시스템의 온체인 확장</b></li>
+  </ul>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>6 / 9</span></div>
+</section>
+
+<!-- 7. MVP -->
+<section class="slide">
+  <div class="kicker">MVP Scope — GIWA Sepolia</div>
+  <h2>2라운드 요구물에 <em>1:1 대응</em>하는 실행 계획</h2>
+  <ul class="big">
+    <li><b>시즌 뱃지 / 업적 SBT 컨트랙트</b> GIWA Sepolia 배포
+      <span class="sub">→ 퍼블릭 스마트컨트랙트 링크 요건 충족</span></li>
+    <li><b>시즌 확정 데모 (핵심)</b>: 주간 랭킹 → 서버 검증 → 시즌 마감 → 배치 민팅 → 명예의 전당 온체인 조회</li>
+    <li><b>임베디드 지갑 플로우</b>: 소셜 로그인 → 스마트 계정 생성 (가스 대납)</li>
+    <li><b>테스트넷 스테이블코인 → 재화 충전</b> 데모 <span class="sub">시간 부족 시 아키텍처 문서로 대체</span></li>
+    <li><b>접속 가능한 사이트</b>: 운영 중인 포털 그 자체 <span class="sub">데모 영상 + 라이브 URL 동시 제출</span></li>
+  </ul>
+  <p class="lead" style="margin-top:1rem">공개 코드는 신규 저장소(컨트랙트 + 연동 레이어)로 격리 —
+    시크릿 제로 원칙, 기존 게임 IP는 비공개 유지.</p>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>7 / 9</span></div>
+</section>
+
+<!-- 8. 로드맵 -->
+<section class="slide">
+  <div class="kicker">Roadmap — GASOK 일정 정렬</div>
+  <h2>Demo Day에서 <em>라이브로 증명</em>한다</h2>
+  <table>
+    <tr><th>시기</th><th>단계</th><th>내용</th></tr>
+    <tr><td>~7/31</td><td>지원</td><td>아이디어 피치 제출 (본 덱)</td></tr>
+    <tr><td>진출 시</td><td>MVP Build</td><td>GIWA Sepolia — 컨트랙트 배포 · 시즌 확정 파이프라인 · 임베디드 지갑</td></tr>
+    <tr><td>8–9월</td><td>Productize</td><td>메인넷 전환 검토 · 지갑 UX 고도화 · 신규 게임 온체인 업적 기본 탑재</td></tr>
+    <tr><td>10월</td><td>Demo Day (KBW)</td><td>"게임하다 보니 지갑이 생겼다" 라이브 온보딩 + 현장 시즌 마감 → 실시간 민팅</td></tr>
+    <tr><td>이후</td><td>Growth</td><td>외부 인디게임 입점 SDK — 포털을 GIWA 온보딩 인프라로</td></tr>
+  </table>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>8 / 9</span></div>
+</section>
+
+<!-- 9. 클로징 -->
+<section class="slide">
+  <div class="kicker">Why Us</div>
+  <h1 style="font-size:2.6rem; margin-bottom:2.4rem">이미 돌아가는 포털 ×<br>규제-호환 설계 × GIWA 인프라</h1>
+  <ul class="big">
+    <li>유저·게임·재화·랭킹이 이미 있다 — GIWA 연동만이 남은 <b>마지막 조각</b></li>
+    <li>환전 배제 설계로 <b>국내에서 합법적으로 운영 가능한</b> 게임 × Web3의 드문 포지션</li>
+    <li>일반 게이머가 자기도 모르는 사이 Web3에 온보딩되는 <b>첫 사례</b>를 GIWA 위에서 증명</li>
+  </ul>
+  <p class="tagline" style="margin-top:3rem">QUARTER TURN · GASOK 2026 · Track 05 MASS ADOPTION</p>
+  <div class="foot"><span>QUARTER TURN × GIWA</span><span>9 / 9</span></div>
+</section>
+
+<div class="hint">← → 방향키 / 클릭으로 이동 · Ctrl+P로 PDF 저장</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  let cur = 0;
+  function go(n) {
+    cur = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+  }
+  addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') go(cur + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(cur - 1);
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+  });
+  addEventListener('click', (e) => {
+    if (e.clientX > innerWidth / 2) go(cur + 1); else go(cur - 1);
+  });
+</script>
+</body>
+</html>

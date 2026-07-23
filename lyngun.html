@@ -3,221 +3,663 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TEAM LYNGUN — 팀 소개 | 임재균</title>
+    <title>TEAM LYNGUN — 팀 소개</title>
     <meta name="description" content="TEAM LYNGUN 팀 소개 — 1인 팀 (임재균). HTML5 게임 플랫폼 QUARTER TURN. 이름·역할·국적·경력·핵심 강점 정리." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Darker+Grotesque:wght@700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/style.css" />
+
+    <style>
+      /* QUARTER TURN (quarterturn.pages.dev) 디자인 시스템 — Neo-Brutalism */
+      :root {
+        --bg: #F5F3EE;
+        --ink: #0A0A0A;
+        --border: 3px solid var(--ink);
+        --border-thick: 4px solid var(--ink);
+        --shadow-sm: 4px 4px 0 var(--ink);
+        --shadow-md: 6px 6px 0 var(--ink);
+        --shadow-lg: 8px 8px 0 var(--ink);
+
+        --c-yellow: #FFE500;
+        --c-blue: #4D7FFF;
+        --c-pink: #FF5C8A;
+        --c-purple: #A855F7;
+        --c-green: #6BE388;
+        --c-orange: #FF8C42;
+        --c-red: #E63946;
+
+        --font-display: 'Darker Grotesque', 'Noto Sans KR', sans-serif;
+        --font-body: 'Space Grotesk', 'Noto Sans KR', sans-serif;
+      }
+
+      * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--ink);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        padding: 30px 24px 60px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* === 배경 장식 (회색 윤곽선 기하 도형) === */
+      .deco { position: fixed; pointer-events: none; z-index: 0; opacity: 0.35; }
+      .deco-1 { top: 8%; right: 3%; width: 44px; height: 44px; border: 3px solid #999; transform: rotate(45deg); }
+      .deco-3 { bottom: 25%; right: 4%; width: 56px; height: 56px; border: 3px solid #999; border-radius: 50%; }
+      .deco-4 { bottom: 12%; left: 5%; width: 50px; height: 50px; border: 3px solid #999; transform: rotate(15deg); }
+      .deco-5 { top: 45%; right: 6%; width: 40px; height: 40px; border: 3px solid #aaa; transform: rotate(30deg); }
+      .deco-6 { top: 60%; left: 3%; width: 28px; height: 28px; border: 3px solid #999; border-radius: 50%; }
+
+      .container { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+
+      /* === 상단바 === */
+      .top-bar {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: white;
+        border: var(--border-thick);
+        border-radius: 8px;
+        padding: 14px 22px;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 30px;
+      }
+      .brand {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 1.6rem;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        text-decoration: none;
+        white-space: nowrap;
+        line-height: 1;
+      }
+      .brand .accent { color: var(--c-blue); }
+      .nav { display: flex; gap: 6px; margin-left: auto; }
+      .nav a {
+        font-family: var(--font-display);
+        font-weight: 900;
+        text-decoration: none;
+        color: var(--ink);
+        font-size: 0.95rem;
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: 2px solid transparent;
+        line-height: 1;
+      }
+      .nav a:hover { border-color: var(--ink); }
+
+      /* === 버튼 === */
+      .btn {
+        font-family: var(--font-display);
+        font-weight: 900;
+        border: 3px solid var(--ink);
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.1s, box-shadow 0.1s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--ink);
+        background: white;
+        padding: 10px 20px;
+        font-size: 1rem;
+        line-height: 1;
+      }
+      .btn--primary { background: var(--c-yellow); padding: 14px 32px; font-size: 1.15rem; box-shadow: var(--shadow-md); }
+      .btn--purple  { background: var(--c-purple); color: white; }
+      .btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+      .btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+
+      /* === 히어로 === */
+      .hero {
+        background: var(--c-yellow);
+        border: var(--border-thick);
+        border-radius: 8px;
+        padding: 34px 38px;
+        box-shadow: var(--shadow-lg);
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: '';
+        position: absolute;
+        right: 12%;
+        top: 58%;
+        width: 0; height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 34px solid var(--c-pink);
+        opacity: 0.9;
+        pointer-events: none;
+      }
+      .hero::after {
+        content: '';
+        position: absolute;
+        right: 6%;
+        top: 18%;
+        width: 24px; height: 24px;
+        background: var(--c-blue);
+        border: 3px solid var(--ink);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .hero-kicker {
+        display: inline-block;
+        background: var(--ink);
+        color: var(--c-yellow);
+        border-radius: 4px;
+        padding: 4px 10px 6px;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
+        margin-bottom: 12px;
+      }
+      .hero-title {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 3.4rem;
+        margin: 0;
+        letter-spacing: -0.01em;
+        line-height: 0.95;
+        color: var(--ink);
+      }
+      .hero-desc {
+        margin: 14px 0 22px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        max-width: 40rem;
+      }
+      .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+      /* === 섹션 === */
+      .section { margin-bottom: 44px; }
+      .section-title {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 1.9rem;
+        margin: 0 0 18px;
+        letter-spacing: -0.01em;
+        line-height: 1;
+      }
+      .section-title .tag {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        background: var(--c-pink);
+        border: 2px solid var(--ink);
+        border-radius: 4px;
+        padding: 2px 8px 4px;
+        font-size: 0.85rem;
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+
+      /* === 로스터 테이블 === */
+      .table-box {
+        background: white;
+        border: var(--border-thick);
+        border-radius: 8px;
+        box-shadow: var(--shadow-md);
+        overflow-x: auto;
+      }
+      .roster { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+      .roster th {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 1rem;
+        text-align: left;
+        background: var(--c-yellow);
+        padding: 12px 18px;
+        border-bottom: 3px solid var(--ink);
+        white-space: nowrap;
+      }
+      .roster td { padding: 12px 18px; border-bottom: 2px solid #ddd; font-weight: 500; }
+      .roster tr:last-child td { border-bottom: none; }
+      .roster td:first-child {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 1.05rem;
+        white-space: nowrap;
+        width: 8rem;
+        border-right: 2px solid #ddd;
+      }
+
+      /* === 멤버 프로필 === */
+      .member {
+        display: flex;
+        gap: 26px;
+        align-items: flex-start;
+        background: white;
+        border: var(--border-thick);
+        border-radius: 8px;
+        box-shadow: var(--shadow-md);
+        padding: 24px;
+      }
+      .member-photo {
+        width: 132px;
+        height: 132px;
+        object-fit: cover;
+        border: 3px solid var(--ink);
+        border-radius: 8px;
+        box-shadow: var(--shadow-sm);
+        flex-shrink: 0;
+        background: #1a1625;
+      }
+      .member-name {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 2.2rem;
+        line-height: 1;
+        margin: 0 0 4px;
+      }
+      .member-name small { font-size: 1.1rem; font-weight: 800; opacity: 0.55; margin-left: 8px; }
+      .member-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+      .badge {
+        border: 2px solid var(--ink);
+        border-radius: 4px;
+        padding: 3px 9px 4px;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 0.8rem;
+        background: white;
+        box-shadow: 2px 2px 0 var(--ink);
+        white-space: nowrap;
+      }
+      .badge--yellow { background: var(--c-yellow); }
+      .badge--blue   { background: var(--c-blue); color: white; }
+      .badge--pink   { background: var(--c-pink); }
+      .badge--green  { background: var(--c-green); }
+      .member-bio { margin: 0; font-size: 0.98rem; font-weight: 500; line-height: 1.65; }
+      .member-skills { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+      .member-skills span {
+        font-size: 0.78rem;
+        font-weight: 700;
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        padding: 3px 10px;
+        background: var(--bg);
+      }
+
+      /* === 강점 카드 그리드 === */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+      .card {
+        border: var(--border-thick);
+        border-radius: 8px;
+        box-shadow: var(--shadow-md);
+        padding: 20px;
+        color: var(--ink);
+        display: flex;
+        flex-direction: column;
+      }
+      .card[data-color="yellow"] { background: var(--c-yellow); }
+      .card[data-color="blue"]   { background: var(--c-blue); color: white; }
+      .card[data-color="pink"]   { background: var(--c-pink); }
+      .card[data-color="green"]  { background: var(--c-green); }
+      .card-title {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 1.45rem;
+        line-height: 1.05;
+        margin: 0 0 8px;
+        letter-spacing: -0.02em;
+      }
+      .card-body { margin: 0; font-size: 0.93rem; font-weight: 500; line-height: 1.6; }
+
+      /* === 경력 === */
+      .career { display: grid; gap: 18px; }
+      .career-item {
+        background: white;
+        border: var(--border-thick);
+        border-radius: 8px;
+        box-shadow: var(--shadow-md);
+        padding: 20px 24px;
+        display: grid;
+        grid-template-columns: 11rem 1fr;
+        gap: 18px;
+      }
+      .career-period {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 1.05rem;
+        line-height: 1.3;
+      }
+      .career-period .where {
+        display: block;
+        font-size: 0.85rem;
+        opacity: 0.6;
+        margin-top: 2px;
+      }
+      .career-role {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 1.3rem;
+        line-height: 1.05;
+        margin: 0 0 8px;
+      }
+      .career-details { margin: 0; padding-left: 1.1rem; font-size: 0.93rem; font-weight: 500; line-height: 1.7; }
+      .career-details li::marker { content: '▸ '; }
+
+      /* === 프로젝트 === */
+      .project {
+        background: var(--c-blue);
+        color: white;
+        border: var(--border-thick);
+        border-radius: 8px;
+        box-shadow: var(--shadow-lg);
+        padding: 28px 30px;
+        position: relative;
+        overflow: hidden;
+      }
+      .project::after {
+        content: '';
+        position: absolute;
+        right: -20px;
+        bottom: -20px;
+        width: 110px; height: 110px;
+        border: 3px solid rgba(255,255,255,0.35);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .project-title {
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 2.1rem;
+        margin: 0 0 10px;
+        line-height: 1;
+      }
+      .project p { font-size: 0.98rem; font-weight: 500; line-height: 1.65; margin: 0 0 12px; max-width: 46rem; }
+      .project ul { margin: 0 0 18px; padding-left: 1.1rem; font-size: 0.95rem; font-weight: 500; line-height: 1.7; }
+      .project .btn { box-shadow: 4px 4px 0 rgba(0,0,0,0.9); }
+
+      /* === 연락처 === */
+      .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .contact-item {
+        background: white;
+        border: var(--border);
+        border-radius: 8px;
+        box-shadow: var(--shadow-sm);
+        padding: 14px 18px;
+        text-decoration: none;
+        color: var(--ink);
+        transition: transform 0.1s, box-shadow 0.1s;
+      }
+      .contact-item:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+      .contact-item .k {
+        display: block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: 0.95rem;
+        margin-bottom: 2px;
+      }
+      .contact-item .v { font-size: 0.9rem; font-weight: 600; word-break: break-all; }
+
+      /* === 푸터 === */
+      .footer {
+        max-width: 1080px;
+        margin: 60px auto 0;
+        padding: 24px 4px 0;
+        border-top: 3px solid var(--ink);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .footer-brand { font-family: var(--font-display); font-weight: 900; font-size: 1.2rem; }
+
+      /* === 모바일 === */
+      @media (max-width: 768px) {
+        body { padding: 16px 14px 40px; }
+        .deco { display: none; }
+        .top-bar { flex-wrap: wrap; gap: 12px; padding: 12px 16px; }
+        .brand { font-size: 1.3rem; }
+        .nav { width: 100%; margin-left: 0; justify-content: center; flex-wrap: wrap; order: 3; }
+        .nav a { font-size: 0.8rem; padding: 5px 10px; }
+        .hero { padding: 22px 20px; box-shadow: var(--shadow-md); }
+        .hero::before, .hero::after { display: none; }
+        .hero-title { font-size: 2.2rem; }
+        .hero-desc { font-size: 0.95rem; }
+        .section-title { font-size: 1.5rem; }
+        .grid { grid-template-columns: 1fr; gap: 16px; }
+        .member { flex-direction: column; }
+        .member-photo { width: 104px; height: 104px; }
+        .career-item { grid-template-columns: 1fr; gap: 8px; padding: 16px 18px; }
+        .contact-grid { grid-template-columns: 1fr; }
+        .roster th, .roster td { padding: 10px 12px; }
+      }
+    </style>
   </head>
   <body>
-    <header class="page-header">
-      <div class="container">
-        <h1 class="page-header__title">TEAM LYNGUN</h1>
-        <p class="page-header__lede">
-          기획부터 런칭·운영까지 혼자서 완결하는 1인 팀 — HTML5 게임 플랫폼 <strong>QUARTER TURN</strong> 개발
+    <!-- 배경 장식 -->
+    <div class="deco deco-1"></div>
+    <div class="deco deco-3"></div>
+    <div class="deco deco-4"></div>
+    <div class="deco deco-5"></div>
+    <div class="deco deco-6"></div>
+
+    <div class="container">
+
+      <!-- 상단바 -->
+      <header class="top-bar">
+        <a class="brand" href="#">TEAM <span class="accent">LYNGUN</span></a>
+        <nav class="nav">
+          <a href="https://quarterturn.pages.dev/" target="_blank" rel="noopener">QUARTER TURN</a>
+          <a href="https://torrico203.github.io/" target="_blank" rel="noopener">PORTFOLIO</a>
+          <a href="https://github.com/torrico203" target="_blank" rel="noopener">GITHUB</a>
+        </nav>
+      </header>
+
+      <!-- 히어로 -->
+      <section class="hero">
+        <span class="hero-kicker">1-PERSON TEAM · SEOUL, KR</span>
+        <h1 class="hero-title">TEAM LYNGUN</h1>
+        <p class="hero-desc">
+          기획 → 개발 → 런칭 → 운영을 혼자서 완결하는 1인 팀.
+          HTML5 게임 플랫폼 <strong>QUARTER TURN</strong> 을 만들고 있습니다.
         </p>
-        <div class="page-header__meta">
-          <span>팀 소개 문서</span>
-          <span>·</span>
-          <a href="https://quarterturn.pages.dev/" target="_blank" rel="noopener">quarterturn.pages.dev ↗</a>
-        </div>
-      </div>
-    </header>
-
-    <main>
-
-      <!-- 한눈에 보기 -->
-      <section class="section">
-        <div class="container">
-          <h2 class="section__title">팀 구성 한눈에 보기</h2>
-          <div class="table-wrap">
-            <table class="data-table">
-              <thead>
-                <tr><th style="width: 9rem;">항목</th><th>내용</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>팀명</td><td>LYNGUN (린건)</td></tr>
-                <tr><td>구성</td><td>1인 팀 — 기획 · 개발 · 디자인 · 운영 전담</td></tr>
-                <tr><td>이름</td><td>임재균 (JaeGyun Lim)</td></tr>
-                <tr><td>역할</td><td>대표 / 풀스택 개발 — 게임 클라이언트 · 플랫폼(웹) · 백엔드 · 사업</td></tr>
-                <tr><td>국적</td><td>대한민국</td></tr>
-                <tr><td>경력</td><td>게임 기획·개발 11년차 — 게임 스타트업 공동대표 11년, 現 게임사 캐주얼게임팀 팀장. PD/PM/PO로 16종 프로젝트 리딩</td></tr>
-                <tr><td>핵심 강점</td><td>① 기획→개발→런칭→운영 1인 완결 실행력 ② HTML5 게임·플랫폼 10년 전문성 ③ 통합 지갑(가상화폐) SDK 아키텍처 설계 ④ 퍼블리싱·투자·글로벌 런칭 사업 경험</td></tr>
-                <tr><td>프로젝트</td><td>QUARTER TURN — HTML5 게임 플랫폼 (게임 15종 등록 · 통합 화폐 SDK · 1인 개발)</td></tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="https://quarterturn.pages.dev/" target="_blank" rel="noopener">PLAY QUARTER TURN →</a>
         </div>
       </section>
 
-      <!-- 멤버 프로필 -->
-      <section class="section section--alt">
-        <div class="container">
-          <h2 class="section__title">멤버 프로필</h2>
-          <div class="hero__inner">
-            <img class="hero__photo" src="images/임재균.png" alt="임재균 프로필 사진" />
-            <div class="hero__text">
-              <div class="hero__name">임재균 <span class="hero__hanja">JaeGyun Lim</span></div>
-              <p class="hero__headline">
-                11년차 게임 기획·개발자. 게임 스타트업을 11년간 공동대표로 운영하며 기획·개발·퍼블리싱·투자 유치까지
-                게임의 전 생애주기를 직접 실행했고, 현재는 게임사 캐주얼게임팀 팀장으로 모바일·웹·TV
-                3개 플랫폼 동시 런칭을 리드. 지금은 HTML5 게임 플랫폼 QUARTER TURN 을 1인 개발 중.
-              </p>
-              <div class="hero__actions">
-                <a class="btn btn--primary" href="https://quarterturn.pages.dev/" target="_blank" rel="noopener">QUARTER TURN ↗</a>
-                <a class="btn btn--ghost" href="https://torrico203.github.io/" target="_blank" rel="noopener">포트폴리오</a>
-                <a class="btn btn--ghost" href="https://github.com/torrico203" target="_blank" rel="noopener">GitHub</a>
-              </div>
+      <!-- 로스터 -->
+      <section class="section">
+        <h2 class="section-title">ROSTER <span class="tag">한눈에 보기</span></h2>
+        <div class="table-box">
+          <table class="roster">
+            <thead>
+              <tr><th>항목</th><th>내용</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>팀명</td><td>LYNGUN (린건)</td></tr>
+              <tr><td>구성</td><td>1인 팀 — 기획 · 개발 · 디자인 · 운영 전담</td></tr>
+              <tr><td>이름</td><td>임재균 (JaeGyun Lim)</td></tr>
+              <tr><td>역할</td><td>대표 / 풀스택 개발 — 게임 클라이언트 · 플랫폼(웹) · 백엔드 · 사업</td></tr>
+              <tr><td>국적</td><td>대한민국</td></tr>
+              <tr><td>경력</td><td>게임 기획·개발 11년차 — 게임 스타트업 공동대표 11년, 現 게임사 캐주얼게임팀 팀장. PD/PM/PO로 16종 프로젝트 리딩</td></tr>
+              <tr><td>핵심 강점</td><td>① 기획→개발→런칭→운영 1인 완결 실행력 ② HTML5 게임·플랫폼 10년 전문성 ③ 통합 지갑(가상화폐) SDK 아키텍처 설계 ④ 퍼블리싱·투자·글로벌 런칭 사업 경험</td></tr>
+              <tr><td>프로젝트</td><td>QUARTER TURN — HTML5 게임 플랫폼 (게임 15종 등록 · 통합 화폐 SDK · 1인 개발)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 멤버 -->
+      <section class="section">
+        <h2 class="section-title">MEMBER</h2>
+        <div class="member">
+          <img class="member-photo" src="images/임재균.png" alt="임재균 프로필 사진" />
+          <div>
+            <h3 class="member-name">임재균 <small>JaeGyun Lim</small></h3>
+            <div class="member-badges">
+              <span class="badge badge--yellow">대표 · 풀스택</span>
+              <span class="badge badge--blue">대한민국</span>
+              <span class="badge badge--pink">11 YEARS</span>
+              <span class="badge badge--green">16 PROJECTS LED</span>
+            </div>
+            <p class="member-bio">
+              11년차 게임 기획·개발자. 게임 스타트업을 11년간 공동대표로 운영하며 기획·개발·퍼블리싱·투자 유치까지
+              게임의 전 생애주기를 직접 실행했고, 게임사 캐주얼게임팀 팀장으로 모바일·웹·TV
+              3개 플랫폼 동시 런칭을 리드했습니다. 지금은 HTML5 게임 플랫폼 QUARTER TURN 을 1인 개발 중.
+            </p>
+            <div class="member-skills">
+              <span>TypeScript</span><span>JavaScript / HTML5</span><span>PixiJS</span><span>Phaser</span>
+              <span>Unity (C#)</span><span>Node.js</span><span>Firebase</span><span>Cloudflare</span>
+              <span>AWS</span><span>Claude Code · Codex</span>
             </div>
           </div>
-          <h3 class="section__title section__title--sub">기술 스택</h3>
-          <ul class="chips">
-            <li>TypeScript</li>
-            <li>JavaScript / HTML5</li>
-            <li>PixiJS</li>
-            <li>Phaser</li>
-            <li>Unity (C#)</li>
-            <li>Node.js</li>
-            <li>Firebase</li>
-            <li>Cloudflare (Pages · Workers)</li>
-            <li>AWS</li>
-            <li class="chip--ai">Claude Code · Codex — AI 페어 개발</li>
-          </ul>
         </div>
       </section>
 
-      <!-- 핵심 강점 -->
+      <!-- 강점 -->
       <section class="section">
-        <div class="container">
-          <h2 class="section__title">핵심 강점</h2>
-          <ul class="cred-cards">
-            <li class="cred-card">
-              <span class="cred-card__title">① 1인 완결 실행력</span>
-              <span class="cred-card__sub">
-                기획 → 개발 → 런칭 → 운영을 혼자서 완결. QUARTER TURN 은 개발 2개월 만에
-                게임 15종 등록(완성 5종), 통합 지갑 SDK, Firebase 백엔드, ko/en i18n 까지 1인 구축.
-              </span>
-            </li>
-            <li class="cred-card">
-              <span class="cred-card__title">② HTML5 게임 · 플랫폼 10년</span>
-              <span class="cred-card__sub">
-                WebGL 게임 엔진·HTML5 게임 프레임워크 국책과제 수행, HTML5 게임 허브(ROR) 채널링 운영,
-                HTML5 상용 게임으로 일 매출 7천만 원 달성. 웹에서 게임을 서비스하는 일을 10년째 하는 중.
-              </span>
-            </li>
-            <li class="cred-card">
-              <span class="cred-card__title">③ 통합 지갑 아키텍처</span>
-              <span class="cred-card__sub">
-                QUARTER TURN 의 화폐(dia)는 호스트가 발행·소유하고 게임은 SDK 로만 차감하는 단일 권위 구조.
-                지갑 백엔드를 무중단 교체한 실증(localStorage→Firestore, 게임 코드 변경 0건)이 있어
-                온체인 지갑·결제 연동에 바로 대응 가능한 설계.
-              </span>
-            </li>
-            <li class="cred-card">
-              <span class="cred-card__title">④ 사업 · 글로벌 런칭 경험</span>
-              <span class="cred-card__sub">
-                퍼블리싱·채널링 계약 13건(유럽·러시아·일본·인도 등), 투자 유치 2회(시드·Pre-A),
-                게임 수출 10만 유로. 만들기만 하는 게 아니라 계약하고 서비스하고 정산까지 해 본 경험.
-              </span>
-            </li>
-          </ul>
+        <h2 class="section-title">STRENGTHS</h2>
+        <div class="grid">
+          <div class="card" data-color="yellow">
+            <h3 class="card-title">① 1인 완결 실행력</h3>
+            <p class="card-body">
+              기획 → 개발 → 런칭 → 운영을 혼자서 완결. QUARTER TURN 은 개발 2개월 만에
+              게임 15종 등록(완성 5종), 통합 지갑 SDK, Firebase 백엔드, ko/en i18n 까지 1인 구축.
+            </p>
+          </div>
+          <div class="card" data-color="blue">
+            <h3 class="card-title">② HTML5 게임 · 플랫폼 10년</h3>
+            <p class="card-body">
+              WebGL 게임 엔진·HTML5 게임 프레임워크 국책과제 수행, HTML5 게임 허브 채널링 운영,
+              HTML5 상용 게임으로 일 매출 7천만 원 달성. 웹에서 게임을 서비스하는 일을 10년째 하는 중.
+            </p>
+          </div>
+          <div class="card" data-color="pink">
+            <h3 class="card-title">③ 통합 지갑 아키텍처</h3>
+            <p class="card-body">
+              QUARTER TURN 의 화폐(dia)는 호스트가 발행·소유하고 게임은 SDK 로만 차감하는 단일 권위 구조.
+              지갑 백엔드를 무중단 교체한 실증(localStorage→Firestore, 게임 코드 변경 0건)이 있어
+              온체인 지갑·결제 연동에 바로 대응 가능한 설계.
+            </p>
+          </div>
+          <div class="card" data-color="green">
+            <h3 class="card-title">④ 사업 · 글로벌 런칭 경험</h3>
+            <p class="card-body">
+              퍼블리싱·채널링 계약 13건(유럽·러시아·일본·인도 등), 투자 유치 2회(시드·Pre-A),
+              게임 수출 10만 유로. 만들기만 하는 게 아니라 계약하고 서비스하고 정산까지 해 본 경험.
+            </p>
+          </div>
         </div>
       </section>
 
       <!-- 경력 -->
-      <section class="section section--alt">
-        <div class="container">
-          <h2 class="section__title">경력</h2>
-          <ul class="timeline">
-            <li class="timeline__item">
-              <div class="timeline__period">2026.05 — 현재</div>
-              <div>
-                <div class="timeline__company">QUARTER TURN</div>
-                <div class="timeline__role">1인 개발 (기획 · 개발 · 운영)</div>
-                <div class="timeline__details">
-                  <div>HTML5 게임 플랫폼: 게임 포털 + 통합 화폐(dia) SDK + 레거시 리마스터 파이프라인</div>
-                  <div>게임 15종 등록 (완성 5종 공개 서비스 중), 리마스터·신작 9종 파이프라인 진행</div>
-                  <div>Vite · PixiJS v8 · Phaser 3 · TypeScript · Firebase · Cloudflare Pages</div>
-                </div>
-              </div>
-            </li>
-            <li class="timeline__item">
-              <div class="timeline__period">2025.08 — 현재</div>
-              <div>
-                <div class="timeline__company">(주)마코빌</div>
-                <div class="timeline__role">게임·웹 통합 개발 · 캐주얼게임팀 팀장</div>
-                <div class="timeline__details">
-                  <div>입사 4개월 만에 팀장 승진, 게임·웹 통합 개발 리드</div>
-                  <div>벨리곰 버블팝: 단일 코드베이스로 Google Play · Toss 미니앱 · webOS TV · Web 4개 플랫폼 동시 출시</div>
-                  <div>아르미 공작소: 결제(PG)·서버리스·광고 수익화를 갖춘 IP 콘텐츠 플랫폼 1인 풀스택 구축</div>
-                </div>
-              </div>
-            </li>
-            <li class="timeline__item">
-              <div class="timeline__period">2015.01 — 2025.05</div>
-              <div>
-                <div class="timeline__company">(주)집연구소</div>
-                <div class="timeline__role">공동대표</div>
-                <div class="timeline__details">
-                  <div>HTML5 게임·플랫폼 전문 스타트업을 11년 운영 — 기획·개발·퍼블리싱·투자·정산·청산까지 전 과정 실행</div>
-                  <div>잡캐 키우기 온라인: 계약금 5억 · 일 매출 7천만 원 · 구글 창구 3기 · 충남 게임상 1위</div>
-                  <div>서울 좀비: Google Play 50만+ 다운로드, 글로벌 퍼블리싱</div>
-                  <div>코즈믹 온라인(HTML5 MMORPG): 유럽·러시아 서비스, 10만 유로 수출</div>
-                  <div>메이헴의 유산: 문체부 이달의 우수게임, 일본·러시아 퍼블리싱</div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- 출품 프로젝트 -->
       <section class="section">
-        <div class="container">
-          <h2 class="section__title">프로젝트 — QUARTER TURN</h2>
-          <div class="prose">
-            <p>
-              브라우저에서 바로 실행되는 <strong>HTML5 게임 플랫폼</strong>.
-              호스트가 계정·지갑·세이브·랭킹을 소유하고, 게임은 iframe + postMessage SDK 로 연결되는
-              호스트-게임 분리 아키텍처. 게임 15종 등록 (완성 5종 공개 서비스), 통합 화폐 dia,
-              Unity·웹 레거시를 되살리는 리마스터 파이프라인까지 전부 1인 개발.
-            </p>
-            <ul>
-              <li><strong>지갑 단일 권위</strong> — 화폐 발행은 호스트 전용, 게임은 SDK 로 차감만. 백엔드 교체(localStorage→Firestore)를 게임 코드 변경 0건으로 완료한 구조라, 온체인 지갑 연동 시에도 게임들은 그대로.</li>
-              <li><strong>확장 파이프라인</strong> — 신규 게임 스캐폴딩 CLI 와 등록 검증 스크립트로 게임을 계속 얹는 구조. 리마스터·신작 9종 진행 중.</li>
-              <li><strong>로드맵</strong> — 개발중 게임 완성·공개, 실결제 연동, 서버 권위 전환, 자체 도메인 연결 후 정식 런칭.</li>
-            </ul>
-            <p>
-              <a href="https://quarterturn.pages.dev/" target="_blank" rel="noopener">quarterturn.pages.dev ↗</a>
-              &nbsp;·&nbsp;
-              <a href="https://torrico203.github.io/projects/quarterturn.html" target="_blank" rel="noopener">기술 상세 노트 ↗</a>
-            </p>
+        <h2 class="section-title">CAREER</h2>
+        <div class="career">
+          <div class="career-item">
+            <div class="career-period">2026.05 — 현재<span class="where">QUARTER TURN</span></div>
+            <div>
+              <h3 class="career-role">1인 개발 (기획 · 개발 · 운영)</h3>
+              <ul class="career-details">
+                <li>HTML5 게임 플랫폼: 게임 포털 + 통합 화폐(dia) SDK + 레거시 리마스터 파이프라인</li>
+                <li>게임 15종 등록 (완성 5종 공개 서비스 중), 리마스터·신작 9종 파이프라인 진행</li>
+                <li>Vite · PixiJS v8 · Phaser 3 · TypeScript · Firebase · Cloudflare Pages</li>
+              </ul>
+            </div>
+          </div>
+          <div class="career-item">
+            <div class="career-period">2025.08 — 현재<span class="where">(주)마코빌</span></div>
+            <div>
+              <h3 class="career-role">게임·웹 통합 개발 · 캐주얼게임팀 팀장</h3>
+              <ul class="career-details">
+                <li>입사 4개월 만에 팀장 승진, 게임·웹 통합 개발 리드</li>
+                <li>벨리곰 버블팝: 단일 코드베이스로 Google Play · Toss 미니앱 · webOS TV · Web 4개 플랫폼 동시 출시</li>
+                <li>아르미 공작소: 결제(PG)·서버리스·광고 수익화를 갖춘 IP 콘텐츠 플랫폼 1인 풀스택 구축</li>
+              </ul>
+            </div>
+          </div>
+          <div class="career-item">
+            <div class="career-period">2015.01 — 2025.05<span class="where">(주)집연구소</span></div>
+            <div>
+              <h3 class="career-role">공동대표</h3>
+              <ul class="career-details">
+                <li>HTML5 게임·플랫폼 전문 스타트업을 11년 운영 — 기획·개발·퍼블리싱·투자·정산·청산까지 전 과정 실행</li>
+                <li>잡캐 키우기 온라인: 계약금 5억 · 일 매출 7천만 원 · 구글 창구 3기 · 충남 게임상 1위</li>
+                <li>서울 좀비: Google Play 50만+ 다운로드, 글로벌 퍼블리싱</li>
+                <li>코즈믹 온라인(HTML5 MMORPG): 유럽·러시아 서비스, 10만 유로 수출</li>
+                <li>메이헴의 유산: 문체부 이달의 우수게임, 일본·러시아 퍼블리싱</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- 연락처 -->
-      <section class="section section--alt">
-        <div class="container">
-          <h2 class="section__title">연락처</h2>
-          <dl class="contact">
-            <dt>이메일</dt><dd><a href="mailto:torrico203@gmail.com">torrico203@gmail.com</a></dd>
-            <dt>GitHub</dt><dd><a href="https://github.com/torrico203" target="_blank" rel="noopener">github.com/torrico203</a></dd>
-            <dt>포트폴리오</dt><dd><a href="https://torrico203.github.io/" target="_blank" rel="noopener">torrico203.github.io</a></dd>
-            <dt>프로젝트</dt><dd><a href="https://quarterturn.pages.dev/" target="_blank" rel="noopener">quarterturn.pages.dev</a></dd>
-          </dl>
+      <!-- 프로젝트 -->
+      <section class="section">
+        <h2 class="section-title">PROJECT</h2>
+        <div class="project">
+          <h3 class="project-title">QUARTER TURN</h3>
+          <p>
+            브라우저에서 바로 실행되는 <strong>HTML5 게임 플랫폼</strong>.
+            호스트가 계정·지갑·세이브·랭킹을 소유하고, 게임은 iframe + postMessage SDK 로 연결되는
+            호스트-게임 분리 아키텍처. 게임 15종 등록 (완성 5종 공개 서비스), 통합 화폐 dia,
+            Unity·웹 레거시를 되살리는 리마스터 파이프라인까지 전부 1인 개발.
+          </p>
+          <ul>
+            <li><strong>지갑 단일 권위</strong> — 화폐 발행은 호스트 전용, 게임은 SDK 로 차감만. 백엔드 교체(localStorage→Firestore)를 게임 코드 변경 0건으로 완료한 구조라, 온체인 지갑 연동 시에도 게임들은 그대로.</li>
+            <li><strong>확장 파이프라인</strong> — 신규 게임 스캐폴딩 CLI 와 등록 검증 스크립트로 게임을 계속 얹는 구조. 리마스터·신작 9종 진행 중.</li>
+            <li><strong>로드맵</strong> — 개발중 게임 완성·공개, 실결제 연동, 서버 권위 전환, 자체 도메인 연결 후 정식 런칭.</li>
+          </ul>
+          <a class="btn" href="https://torrico203.github.io/projects/quarterturn.html" target="_blank" rel="noopener">기술 상세 노트 →</a>
         </div>
       </section>
 
-    </main>
+      <!-- 연락처 -->
+      <section class="section">
+        <h2 class="section-title">CONTACT</h2>
+        <div class="contact-grid">
+          <a class="contact-item" href="mailto:torrico203@gmail.com">
+            <span class="k">EMAIL</span>
+            <span class="v">torrico203@gmail.com</span>
+          </a>
+          <a class="contact-item" href="https://github.com/torrico203" target="_blank" rel="noopener">
+            <span class="k">GITHUB</span>
+            <span class="v">github.com/torrico203</span>
+          </a>
+          <a class="contact-item" href="https://torrico203.github.io/" target="_blank" rel="noopener">
+            <span class="k">PORTFOLIO</span>
+            <span class="v">torrico203.github.io</span>
+          </a>
+          <a class="contact-item" href="https://quarterturn.pages.dev/" target="_blank" rel="noopener">
+            <span class="k">PROJECT</span>
+            <span class="v">quarterturn.pages.dev</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
 
     <footer class="footer">
-      <div class="container">© 2026 TEAM LYNGUN (torrico203) — 모든 권리 보유</div>
+      <div class="footer-brand">TEAM LYNGUN</div>
+      <div>© 2026 torrico203</div>
     </footer>
   </body>
 </html>

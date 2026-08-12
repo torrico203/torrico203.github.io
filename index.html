@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title data-i18n="site.title">임재균 — 게임 기획·개발 포트폴리오</title>
-    <meta name="description" content="임재균 (JaeGyun Lim) — 11년차 게임 기획·개발자. 16종 프로젝트를 PD/PM/PO로 리딩." />
+    <title data-i18n="site.title">임재균 — Technical Lead · Product &amp; Platform Engineer</title>
+    <meta name="description" content="Technical Lead 임재균의 제품·플랫폼 엔지니어링 포트폴리오. 게임과 웹서비스의 0→1 개발, 멀티플랫폼 출시와 운영 경험." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,7 +21,7 @@
         <nav class="topbar__nav" aria-label="primary">
           <a href="#about"        data-i18n="nav.about">소개</a>
           <a href="#experience"   data-i18n="nav.experience">경력</a>
-          <a href="#projects"     data-i18n="nav.projects">프로젝트</a>
+          <a href="#featured-projects" data-i18n="nav.projects">프로젝트</a>
           <a href="#publishing"   data-i18n="nav.publishing">사업 이력</a>
           <a href="#contact"      data-i18n="nav.contact">연락처</a>
         </nav>
@@ -42,36 +42,31 @@
               <span class="hero__hanja" data-content="profile.nameHanja">任宰均</span>
             </h1>
             <p class="hero__headline" data-content="profile.headline"></p>
+            <p class="hero__value" data-content="profile.valueProposition"></p>
             <div class="hero__actions">
-              <button type="button" class="btn btn--primary" onclick="window.print()" data-i18n="hero.printResume">이력서 PDF로 인쇄</button>
-              <a href="#contact" class="btn btn--ghost" data-i18n="hero.contact">연락하기</a>
+              <a href="#featured-projects" class="btn btn--primary" data-i18n="hero.viewProjects">대표 프로젝트 보기</a>
+              <button type="button" class="btn btn--ghost" onclick="window.print()" data-i18n="hero.printResume">이력서 PDF</button>
+              <a class="btn btn--ghost" data-profile-link="github" target="_blank" rel="noopener">GitHub</a>
             </div>
           </div>
         </div>
+        <div class="container"><dl class="metrics" data-render="metrics"></dl></div>
       </section>
 
       <!-- About -->
       <section id="about" class="section">
         <div class="container">
           <h2 class="section__title" data-i18n="section.about">소개</h2>
-          <div class="tabs" role="tablist">
-            <button class="tab is-active" role="tab" data-tab="summary" data-i18n="intro.tabs.summary">요약</button>
-            <button class="tab"           role="tab" data-tab="pm"      data-i18n="intro.tabs.pm">PM 자기소개</button>
-            <button class="tab"           role="tab" data-tab="dev"     data-i18n="intro.tabs.dev">개발자 자기소개</button>
-          </div>
-          <div class="tab-panels">
-            <div class="tab-panel is-active" data-panel="summary" data-render="aboutSummary"></div>
-            <div class="tab-panel"           data-panel="pm"      data-render="aboutPM"></div>
-            <div class="tab-panel"           data-panel="dev"     data-render="aboutDev"></div>
-          </div>
+          <div class="about-copy" data-render="aboutSummary"></div>
+          <div class="capabilities" data-render="capabilities"></div>
         </div>
       </section>
 
-      <!-- Skills -->
-      <section id="skills" class="section section--alt">
+      <!-- Featured projects -->
+      <section id="featured-projects" class="section section--alt">
         <div class="container">
-          <h2 class="section__title" data-i18n="section.skills">기술 스택</h2>
-          <ul class="chips" data-render="skills"></ul>
+          <h2 class="section__title" data-i18n="section.featuredProjects">대표 프로젝트</h2>
+          <div class="featured-projects" data-render="featuredProjects"></div>
         </div>
       </section>
 
@@ -86,11 +81,20 @@
         </div>
       </section>
 
-      <!-- Projects -->
-      <section id="projects" class="section section--alt">
+      <!-- Capabilities -->
+      <section id="skills" class="section section--alt">
         <div class="container">
-          <h2 class="section__title" data-i18n="section.projects">프로젝트</h2>
-          <div class="cards" data-render="projects"></div>
+          <h2 class="section__title" data-i18n="section.skills">기술 역량</h2>
+          <div class="skill-groups" data-render="skillGroups"></div>
+        </div>
+      </section>
+
+      <!-- Career project archive -->
+      <section id="projects" class="section">
+        <div class="container">
+          <h2 class="section__title" data-i18n="section.projectArchive">경력 프로젝트</h2>
+          <p class="section__lede" data-i18n="section.projectArchiveLede">대표 프로젝트 외 게임·플랫폼 개발 및 사업화 이력입니다.</p>
+          <div class="archive-list" data-render="projectArchive"></div>
         </div>
       </section>
 
@@ -130,7 +134,7 @@
 
     <footer class="footer">
       <div class="container">
-        <span data-i18n="footer.copyright">© 2025 torrico203</span>
+        <span data-i18n="footer.copyright">© 2026 torrico203</span>
       </div>
     </footer>
 

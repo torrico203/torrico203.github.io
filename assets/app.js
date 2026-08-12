@@ -55,6 +55,12 @@
   // ---------- renderers --------------------------------------------------
   // Each returns an HTML string for the element it owns.
   var renderers = {
+    metrics: function (lang) {
+      return DATA.metrics.map(function (metric) {
+        return "<div class=\"metric\"><dt>" + esc(pick(metric.value, lang)) + "</dt><dd>" + esc(pick(metric, lang)) + "</dd></div>";
+      }).join("");
+    },
+
     aboutSummary: function (lang) {
       return DATA.about[lang].map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
     },
@@ -63,6 +69,63 @@
     },
     aboutDev: function (lang) {
       return DATA.intros.dev[lang].map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+    },
+
+    capabilities: function (lang) {
+      return DATA.capabilities.map(function (capability) {
+        var items = pick(capability.items, lang).map(function (item) {
+          return "<li>" + esc(item) + "</li>";
+        }).join("");
+        return "<article class=\"capability\"><h3>" + esc(pick(capability.title, lang)) + "</h3><ul>" + items + "</ul></article>";
+      }).join("");
+    },
+
+    skillGroups: function (lang) {
+      return DATA.skillGroups.map(function (group) {
+        var items = group.items.map(function (item) {
+          return "<li>" + esc(pick(item, lang)) + "</li>";
+        }).join("");
+        return "<article class=\"skill-group\"><h3>" + esc(pick(group.title, lang)) + "</h3><ul class=\"chips\">" + items + "</ul></article>";
+      }).join("");
+    },
+
+    featuredProjects: function (lang) {
+      var label = I18N[lang];
+      return DATA.projects.filter(function (project) { return project.featured; }).map(function (project) {
+        var ownership = pick(project.ownership, lang).map(function (item) {
+          return "<li>" + esc(item) + "</li>";
+        }).join("");
+        var outcomes = pick(project.results, lang).slice(0, 4).map(function (item) {
+          return "<li>" + esc(item) + "</li>";
+        }).join("");
+        var live = project.liveUrl
+          ? "<a class=\"card__cta\" href=\"" + esc(project.liveUrl) + "\" target=\"_blank\" rel=\"noopener\">" + esc(label["label.visitProject"]) + " ↗</a>"
+          : "";
+        var detail = project.caseStudyUrl
+          ? "<a class=\"card__cta card__cta--ghost\" href=\"" + esc(project.caseStudyUrl) + "\">" + esc(label["label.techDetails"]) + " →</a>"
+          : "";
+        return ""
+          + "<article class=\"featured-project\">"
+          +   "<div class=\"featured-project__head\"><div><p class=\"featured-project__role\">" + esc(pick(project.role, lang)) + "</p><h3>" + esc(pick(project.name, lang)) + "</h3></div><span>" + esc(project.period) + "</span></div>"
+          +   "<p class=\"featured-project__challenge\"><strong>" + esc(label["label.challenge"]) + "</strong> " + esc(pick(project.challenge, lang)) + "</p>"
+          +   "<div class=\"featured-project__grid\"><div><h4>" + esc(label["label.ownership"]) + "</h4><ul>" + ownership + "</ul></div><div><h4>" + esc(label["label.outcomes"]) + "</h4><ul class=\"card__results\">" + outcomes + "</ul></div></div>"
+          +   "<p class=\"featured-project__stack\">" + esc(project.stack) + "</p>"
+          +   "<div class=\"card__actions\">" + live + detail + "</div>"
+          + "</article>";
+      }).join("");
+    },
+
+    projectArchive: function (lang) {
+      return DATA.projects.filter(function (project) { return !project.featured; }).map(function (project) {
+        var results = pick(project.results, lang) || [];
+        return ""
+          + "<article class=\"archive-item\">"
+          +   "<div class=\"archive-item__period\">" + esc(project.period || project.year) + "</div>"
+          +   "<div><h3>" + esc(pick(project.name, lang)) + "</h3><p>" + esc(pick(project.tagline, lang)) + "</p>"
+          +     (results.length ? "<ul>" + results.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("") + "</ul>" : "")
+          +   "</div>"
+          + "</article>";
+      }).join("");
     },
 
     skills: function (lang) {
@@ -254,6 +317,11 @@
     document.querySelectorAll("[data-attr-src]").forEach(function (el) {
       var v = pick(path(DATA, el.getAttribute("data-attr-src")), lang);
       if (v != null) el.setAttribute("src", v);
+    });
+
+    document.querySelectorAll("[data-profile-link]").forEach(function (el) {
+      var key = el.getAttribute("data-profile-link");
+      if (DATA.profile.contact[key]) el.setAttribute("href", DATA.profile.contact[key]);
     });
 
     // [data-render] — call the named renderer

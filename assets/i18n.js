@@ -1,7 +1,7 @@
 // UI 라벨. data.js 의 본문 텍스트는 여기 들어가지 않는다.
 window.__I18N__ = {
   ko: {
-    "site.title":            "임재균 — 게임 기획·개발 포트폴리오",
+    "site.title":            "임재균 — Technical Lead · Product & Platform Engineer",
     "nav.about":             "소개",
     "nav.experience":        "경력",
     "nav.projects":          "프로젝트",
@@ -10,11 +10,15 @@ window.__I18N__ = {
     "lang.toggle":           "EN",
     "hero.printResume":      "이력서 PDF로 인쇄",
     "hero.contact":          "연락하기",
+    "hero.viewProjects":     "대표 프로젝트 보기",
     "intro.tabs.summary":    "요약",
     "intro.tabs.pm":         "PM 자기소개",
     "intro.tabs.dev":        "개발자 자기소개",
     "section.about":         "소개",
-    "section.skills":        "기술 스택",
+    "section.skills":        "기술 역량",
+    "section.featuredProjects":"대표 프로젝트",
+    "section.projectArchive": "경력 프로젝트",
+    "section.projectArchiveLede":"대표 프로젝트 외 게임·플랫폼 개발 및 사업화 이력입니다.",
     "section.experience":    "경력",
     "section.education":     "학력",
     "section.projects":      "프로젝트",
@@ -30,6 +34,9 @@ window.__I18N__ = {
     "label.watchVideo":      "영상 보기",
     "label.visitProject":    "프로젝트 보러가기",
     "label.techDetails":     "기술 상세",
+    "label.challenge":       "과제",
+    "label.ownership":       "핵심 기여",
+    "label.outcomes":        "결과",
     "label.email":           "이메일",
     "label.phone":           "전화",
     "label.website":         "웹사이트",
@@ -39,10 +46,10 @@ window.__I18N__ = {
     "table.agency":          "시행부처/기관",
     "table.content":         "주요 내용",
     "table.role":            "역할",
-    "footer.copyright":      "© 2025 torrico203 — 모든 권리 보유"
+    "footer.copyright":      "© 2026 torrico203 — 모든 권리 보유"
   },
   en: {
-    "site.title":            "JaeGyun Lim — Game Design & Development Portfolio",
+    "site.title":            "JaeGyun Lim — Technical Lead · Product & Platform Engineer",
     "nav.about":             "About",
     "nav.experience":        "Experience",
     "nav.projects":          "Projects",
@@ -51,11 +58,15 @@ window.__I18N__ = {
     "lang.toggle":           "한",
     "hero.printResume":      "Print Resume / PDF",
     "hero.contact":          "Contact me",
+    "hero.viewProjects":     "View featured projects",
     "intro.tabs.summary":    "Summary",
     "intro.tabs.pm":         "About me — PM",
     "intro.tabs.dev":        "About me — Engineer",
     "section.about":         "About",
-    "section.skills":        "Tech Stack",
+    "section.skills":        "Capabilities",
+    "section.featuredProjects":"Featured Projects",
+    "section.projectArchive": "Career Projects",
+    "section.projectArchiveLede":"Additional game, platform, and commercialization work from my career.",
     "section.experience":    "Experience",
     "section.education":     "Education",
     "section.projects":      "Projects",
@@ -71,6 +82,9 @@ window.__I18N__ = {
     "label.watchVideo":      "Watch video",
     "label.visitProject":    "Visit project",
     "label.techDetails":     "Tech notes",
+    "label.challenge":       "Challenge",
+    "label.ownership":       "Ownership",
+    "label.outcomes":        "Outcomes",
     "label.email":           "Email",
     "label.phone":           "Phone",
     "label.website":         "Website",
@@ -80,6 +94,6 @@ window.__I18N__ = {
     "table.agency":          "Agency",
     "table.content":         "Subject",
     "table.role":            "Role",
-    "footer.copyright":      "© 2025 torrico203 — All rights reserved"
+    "footer.copyright":      "© 2026 torrico203 — All rights reserved"
   }
 };

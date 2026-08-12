@@ -5,8 +5,12 @@ window.__DATA__ = {
     name:        { ko: "임재균",   en: "JaeGyun Lim" },
     nameHanja:   "任宰均",
     headline:    {
-      ko: "11년차 게임 기획·개발 · PD/PM/PO로 16종 프로젝트 리딩",
-      en: "11 years in game design & dev · Led 16 projects as PD/PM/PO"
+      ko: "Technical Lead · Product & Platform Engineer",
+      en: "Technical Lead · Product & Platform Engineer"
+    },
+    valueProposition: {
+      ko: "게임과 웹서비스를 0→1로 설계하고, 멀티플랫폼 출시와 운영까지 완결합니다.",
+      en: "I take games and web products from 0→1, through multi-platform launch and live operations."
     },
     photo: "images/임재균.png",
     contact: {
@@ -19,14 +23,46 @@ window.__DATA__ = {
 
   about: {
     ko: [
-      "11년간 공동대표로서 다양한 게임을 직접 기획·개발하고, 퍼블리싱 계약·글로벌 런칭·투자 유치 등 게임 스타트업의 전 과정을 리딩했습니다.",
-      "스타트업 대표 출신이라는 이력은 '주도성'이라는 강점이기도 했지만, 재취업 시장에서는 \"실무 감각이 무뎌졌을 것\"이라는 편견이기도 했습니다. 그래서 직함보다 실무로 증명하는 길을 택해 현장 중심의 역할부터 다시 시작했고, 입사 4개월 만에 팀장을 맡으며 모바일·웹·TV 3개 플랫폼 동시 런칭을 주도했습니다."
+      "11년간 게임 스튜디오를 공동 창업·운영하며 제품 기획과 개발부터 출시, 라이브 운영, 퍼블리싱 계약과 투자 유치까지 제품의 전 생애주기를 경험했습니다.",
+      "현재는 게임·웹 통합 개발과 기술 의사결정을 담당하며 TypeScript, Node.js, Firebase, Phaser를 중심으로 결제·광고·인증·데이터·운영 도구를 포함한 제품을 구축합니다. 작은 팀에서 불확실한 요구사항을 제품으로 구체화하고, 0→1 개발부터 실제 출시와 운영까지 끝까지 책임지는 환경에 강점이 있습니다."
     ],
     en: [
-      "For 11 years I co-led a game studio, planning and developing titles end-to-end and driving the full lifecycle of a game startup — publishing deals, global launches, and investment.",
-      "Coming from a CEO background was both an asset (ownership) and, in re-employment, a bias to overcome (\"out of touch with hands-on work\"). So I chose to prove it through the work rather than a title — starting over in a hands-on role and, within four months, earning a promotion to team lead while driving a simultaneous launch across mobile, web, and TV."
+      "For 11 years, I co-founded and operated a game studio, working across the full product lifecycle: product planning, engineering, launch, live operations, publishing deals, and fundraising.",
+      "Today I lead integrated game and web development and make technical decisions across products built with TypeScript, Node.js, Firebase, and Phaser. I am strongest in small teams where ambiguous requirements must become a working product—from 0→1 engineering through launch and live operations."
     ]
   },
+
+  metrics: [
+    { value: { ko: "11년", en: "11 yrs" }, ko: "공동창업·운영", en: "Co-founding & operations" },
+    { value: { ko: "16종", en: "16" }, ko: "프로젝트 리딩", en: "Projects led" },
+    { value: "500K+", ko: "Google Play 다운로드", en: "Google Play downloads" },
+    { value: { ko: "7천만 원", en: "₩70M" }, ko: "프로젝트 최고 일매출", en: "Peak project daily revenue" },
+    { value: "€100K", ko: "해외 수출 계약", en: "Export contract" },
+    { value: "4", ko: "출시 플랫폼", en: "Shipping platforms" }
+  ],
+
+  capabilities: [
+    {
+      title: { ko: "Product", en: "Product" },
+      items: { ko: ["요구사항 정의", "수익모델", "출시·라이브 운영"], en: ["Product definition", "Monetization", "Launch & live ops"] }
+    },
+    {
+      title: { ko: "Engineering", en: "Engineering" },
+      items: { ko: ["프론트엔드", "서버리스 백엔드", "플랫폼 아키텍처"], en: ["Frontend", "Serverless backend", "Platform architecture"] }
+    },
+    {
+      title: { ko: "Leadership", en: "Leadership" },
+      items: { ko: ["팀 리딩", "기술·일정 의사결정", "파트너 협업"], en: ["Team leadership", "Technical & delivery decisions", "Partner collaboration"] }
+    }
+  ],
+
+  skillGroups: [
+    { title: { ko: "Core Engineering", en: "Core Engineering" }, items: ["TypeScript", "JavaScript", "Node.js", "HTML5"] },
+    { title: { ko: "Game & Rendering", en: "Game & Rendering" }, items: ["Phaser", "PixiJS", "Unity (C#)", "WebGL"] },
+    { title: { ko: "Backend & Platform", en: "Backend & Platform" }, items: ["Firebase", "Cloud Functions", "Cloudflare", "AWS"] },
+    { title: { ko: "Product Delivery", en: "Product Delivery" }, items: [{ ko: "결제", en: "Payments" }, { ko: "광고", en: "Ads" }, { ko: "인증", en: "Auth" }, "RBAC", "Analytics", { ko: "스토어 출시", en: "Store release" }] },
+    { title: { ko: "AI Workflow", en: "AI Workflow" }, items: ["Claude Code", "Codex", "GPT", "Gemini"] }
+  ],
 
   // 두 가지 자기소개 (about.html 의 PM/Dev 분리)
   intros: {
@@ -126,6 +162,10 @@ window.__DATA__ = {
   projects: [
     {
       id: "quarterturn",
+      featured: true,
+      role: { ko: "Platform Engineer · 1인 개발", en: "Platform Engineer · Solo Builder" },
+      challenge: { ko: "여러 HTML5 게임의 계정·재화·저장 데이터를 하나의 플랫폼에서 통합", en: "Unify accounts, currency, and save data across multiple HTML5 games" },
+      ownership: { ko: ["호스트-게임 분리 아키텍처", "iframe 통합 SDK", "Firebase 인증·저장·랭킹"], en: ["Host-game split architecture", "iframe integration SDK", "Firebase auth, saves, and rankings"] },
       year: "2026",
       period: "2026.05 — Present",
       kind: { ko: "웹 서비스", en: "Web Service" },
@@ -147,6 +187,10 @@ window.__DATA__ = {
     },
     {
       id: "armi",
+      featured: true,
+      role: { ko: "Full-Stack Product Engineer · 1인 개발", en: "Full-Stack Product Engineer · Solo Builder" },
+      challenge: { ko: "IP 콘텐츠를 결제와 광고로 수익화하고 운영할 수 있는 서비스 구축", en: "Build an operable IP-content service monetized through payments and ads" },
+      ownership: { ko: ["결제 검증 및 재화 파이프라인", "Cloud Functions 서버리스 백엔드", "RBAC·감사 로그·광고 서버"], en: ["Payment verification and currency pipeline", "Cloud Functions serverless backend", "RBAC, audit logs, and ad server"] },
       year: "2026",
       period: "2026.01 — Present",
       kind: { ko: "웹 서비스", en: "Web Service" },
@@ -168,11 +212,15 @@ window.__DATA__ = {
     },
     {
       id: "bellygom",
+      featured: true,
+      role: { ko: "Technical Lead · Cross-Platform Engineer", en: "Technical Lead · Cross-Platform Engineer" },
+      challenge: { ko: "하나의 코드베이스로 제약이 다른 모바일·웹·TV 실행환경 지원", en: "Support mobile, web, and TV environments with different constraints from one codebase" },
+      ownership: { ko: ["PlatformManager 추상화", "webOS 저사양 환경 최적화", "플랫폼별 결제·광고·인증 및 심사 대응"], en: ["PlatformManager abstraction", "Low-end webOS optimization", "Platform payments, ads, authentication, and certification"] },
       year: "2025",
-      period: "2025.08 — 2025.12",
+      period: "2025.08 — 2026.02",
       kind: { ko: "게임", en: "Game" },
       name: { ko: "벨리곰 버블팝", en: "Bellygom Bubble Pop" },
-      tagline: { ko: "버블 슈팅 캐주얼 · 단일 코드베이스로 4개 플랫폼 동시 출시",
+      tagline: { ko: "버블 슈팅 캐주얼 · 단일 코드베이스로 4개 플랫폼 출시",
                  en: "Casual bubble shooter · single codebase, 4 platforms" },
       stack: "TypeScript · Phaser 3 · Vite · Capacitor · webOS · Apps-in-Toss",
       liveUrl: "https://play.google.com/store/apps/details?id=com.macovill.bellygombp",
@@ -182,7 +230,7 @@ window.__DATA__ = {
         en: ["webOS Smart TV", "Toss Miniapp", "Google Play", "Web"]
       },
       bullets: {
-        ko: ["TypeScript/Phaser 단일 코드베이스를 PlatformManager 추상화로 4개 플랫폼에 동시 배포. 결제·광고·렌더·승인 대응까지 단독 리드. 디테일은 기술 상세 참고."],
+        ko: ["TypeScript/Phaser 단일 코드베이스를 PlatformManager 추상화로 Web·Android·Toss Mini App·LG webOS에 출시. 결제·광고·렌더·승인 대응까지 리드. 디테일은 기술 상세 참고."],
         en: ["Single TypeScript/Phaser codebase shipped to four platforms via a PlatformManager abstraction. Solo lead across payments, ads, rendering, and store certification. See tech notes."]
       },
       videoEmbed: "https://drive.google.com/file/d/1BtxwHBqJPwcMGO9lKKcPM0oorQQsDBE8/preview",

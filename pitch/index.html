@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NAERIM — 3분 피치</title>
+  <style>
+    @font-face{font-family:game;src:url(assets/DNFBitBitv2.woff2)}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050608;color:#f6f2e9;font-family:system-ui,"Malgun Gothic",sans-serif}body{cursor:none}
+    .slide{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(1.018);transition:opacity .45s ease,transform .7s ease;pointer-events:none;background:#050608}.slide.active{opacity:1;transform:none;pointer-events:auto}
+    .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.visual .bg{filter:brightness(.92) saturate(.92)}.explained .bg{filter:brightness(.34) saturate(.72)}
+    .shade{position:absolute;inset:0;background:linear-gradient(90deg,#050608f2 0 25%,#0506089e 54%,#0506081f),linear-gradient(0deg,#050608d9,transparent 52%)}
+    .content{position:relative;z-index:2;width:min(86vw,1480px)}.center{text-align:center}.left{width:min(82vw,1380px);text-align:left}.eyebrow{font-family:game,sans-serif;font-size:clamp(16px,1.25vw,24px);letter-spacing:.16em;color:#c9a5ee;margin-bottom:2vh}
+    h1{margin:0;font-size:clamp(44px,5vw,88px);line-height:1.18;font-weight:650;letter-spacing:-.035em;text-wrap:balance;text-shadow:0 5px 26px #000}.accent{color:#d3b3f4}
+    .speech{max-width:1120px;margin-top:4vh;font-size:clamp(22px,1.75vw,32px);line-height:1.58;font-weight:430;letter-spacing:-.018em;color:#f1eee7;text-wrap:balance}.speech strong{font-weight:680;color:#dcc2f5}.center .speech{margin-inline:auto}
+    .choice{display:inline-block;margin-top:5vh;padding:17px 42px;border:1px solid #a97bd8;background:#0c0c12cc;font-size:clamp(21px,1.55vw,29px);font-weight:520;color:#f4ebff}
+    .steps{display:flex;gap:1.1vw;align-items:center;margin-top:4vh;font-size:clamp(20px,1.55vw,29px);font-weight:520}.steps b{color:#d4afea;font-weight:650}.steps i{font-style:normal;color:#80758b}
+    .hero-stage{position:relative;z-index:2;width:min(92vw,1640px);display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vw;align-items:end}.hero{text-align:center}.hero img{width:100%;height:min(68vh,660px);object-fit:cover;border:1px solid #5e5369;box-shadow:0 18px 34px #000}.explained .hero img{height:min(25vh,260px)}.hero h2{font-size:clamp(22px,1.65vw,31px);font-weight:650;margin:1.4vh 0 .6vh}.hero p{font-size:clamp(17px,1.15vw,22px);line-height:1.45;font-weight:420;color:#d0c8d6;margin:0}.hero-copy{text-align:center;margin-bottom:2.5vh}.hero-copy h1{font-size:clamp(38px,3.6vw,65px)}
+    .release{display:flex;gap:2.5vw;margin-top:4vh;font-size:clamp(18px,1.25vw,24px);font-weight:500}.release span{padding-left:18px;border-left:2px solid #9f6dcc}.logo{font-family:game,sans-serif;margin-top:6vh;font-size:clamp(23px,2vw,36px);letter-spacing:.12em;color:#d5b4f4}
+    .video-wrap{position:relative;z-index:2;width:min(88vw,1560px);aspect-ratio:16/9;background:#000;box-shadow:0 24px 70px #000}.video-wrap video{width:100%;height:100%;border:1px solid #665575;background:#000}.video-link{position:absolute;right:0;bottom:-38px;color:#bda5d6;font-size:16px;text-decoration:none}.video-link:hover{color:#fff}
+    .meter{position:fixed;z-index:20;right:3vw;top:3vh;width:min(22vw,340px);padding:11px 13px;background:#050608c7;box-shadow:0 0 24px #000;transition:opacity .25s}.meter-label{display:flex;justify-content:space-between;font-size:15px;font-weight:650;letter-spacing:.12em}.meter-track{height:7px;margin-top:8px;background:#302b37}.meter-fill{height:100%;width:0;background:linear-gradient(90deg,#7240a9,#d45bec);box-shadow:0 0 14px #bd4ee0;transition:width .6s ease}
+    .count,.hint{position:fixed;z-index:30;bottom:2.5vh;color:#847d8b;font-size:14px;transition:opacity .25s}.count{left:3vw}.hint{right:3vw}.is-landing .meter,.is-landing .count,.is-landing .hint{opacity:0}
+    @media(max-width:800px){h1{font-size:10vw}.speech{font-size:4vw}.hero-stage{gap:1vw}.hero img,.explained .hero img{height:32vh}.hero h2{font-size:3vw}.hero p{font-size:2.3vw}.release,.steps{flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+  <div class="meter"><div class="meter-label"><span>CURSE</span><span id="curse">0</span></div><div class="meter-track"><div class="meter-fill" id="fill"></div></div></div>
+
+  <section class="slide visual active" data-curse="0"><img class="bg" src="assets/title_bg.webp" alt="내림 타이틀 배경"></section>
+  <section class="slide explained" data-curse="0"><img class="bg" src="assets/title_bg.webp" alt=""><div class="shade"></div><div class="content center"><div class="eyebrow">당신의 선택</div><h1>누군가의 신열을<br><span class="accent">대신 앓아주시겠습니까?</span></h1><p class="speech">내림에서 무당은 귀신을 쫓는 사람이 아닙니다.<br><strong>끝내 죽지 못한 영웅의 한과 신열을 대신 앓아주는 사람</strong>입니다.</p><div class="choice">신내림을 받는다</div></div></section>
+
+  <section class="slide visual" data-curse="3"><img class="bg" src="assets/possessed.png" alt="영웅에게 빙의한 플레이 화면"><div class="video-wrap" onclick="event.stopPropagation()"><video src="assets/gameplay-ggo-final.mp4" poster="assets/possessed.png" controls preload="metadata"></video><a class="video-link" href="https://youtu.be/wj8RV27qigo" target="_blank" rel="noreferrer">전체 영상 YouTube ↗</a></div></section>
+  <section class="slide explained" data-curse="3"><img class="bg" src="assets/possessed.png" alt=""><div class="shade"></div><div class="content left"><div class="eyebrow">빙의 · 저주 · 정화</div><h1>영웅의 힘을 빌리고,<br><span class="accent">그 한까지 짊어집니다.</span></h1><p class="speech">현대 무당인 플레이어는 저주받은 영웅에게 빙의해 그 힘으로 싸웁니다. 저주를 자신의 몸으로 받아들이고, 끝내 영웅의 한을 풀어줍니다.</p><div class="steps"><span>빙의</span><i>→</i><b>대신 앓는다</b><i>→</i><span>정화한다</span></div></div></section>
+
+  <section class="slide visual" data-curse="6"><div class="hero-stage"><div class="hero"><img src="assets/hero-ian.png" alt="스테이지 2의 이안"></div><div class="hero"><img src="assets/hero-catalin.png" alt="스테이지 4의 카탈린"></div><div class="hero"><img src="assets/hero-tailin.png" alt="스테이지 6의 타이 린"></div></div></section>
+  <section class="slide explained" data-curse="6"><div class="content"><div class="hero-copy"><div class="eyebrow">세 개의 삶, 세 개의 전투 방식</div><h1>빙의할 때마다 <span class="accent">플레이도 바뀝니다.</span></h1><p class="speech">각 영웅의 성격과 삶의 흔적이 고유 스킬과 공격 형태로 이어집니다.</p></div><div class="hero-stage"><div class="hero"><img src="assets/hero-ian.png" alt=""><h2>이안 스타인펠드</h2><p>검격으로 파고드는 근접형<br>회복과 방어 상승으로 전선을 유지</p></div><div class="hero"><img src="assets/hero-catalin.png" alt=""><h2>언더테이커 카탈린</h2><p>한 번에 네 자루의 단검 투척<br>높은 치명타로 원거리 집중 공격</p></div><div class="hero"><img src="assets/hero-tailin.png" alt=""><h2>상좌 타이 린</h2><p>스태미나만큼 회전 구체 소환<br>접근하는 적을 지속적으로 타격</p></div></div></div></section>
+
+  <section class="slide visual" data-curse="9"><img class="bg" src="assets/deokbae-story.png" alt="덕배가 자신의 저주를 이야기하는 장면"></section>
+  <section class="slide explained" data-curse="9"><img class="bg" src="assets/corruption-choice.png" alt="타락을 받아들이는 선택"><div class="shade"></div><div class="content left"><div class="eyebrow">힘을 빌린다는 것의 대가</div><h1>영웅의 힘과 함께<br><span class="accent">그 한도 받아들일 것인가?</span></h1><p class="speech">빙의는 능력만 얻는 선택이 아닙니다. 타락한 영웅의 기억과 저주까지 받아들일지 결정하고, 그 선택이 이후의 전투와 정화 서사로 이어집니다.</p><div class="steps"><b>받아들인다</b><i>／</i><span>아직은 아니다</span></div></div></section>
+
+  <section class="slide visual" data-curse="14"><img class="bg" src="assets/shop-artifact.png" alt="최종 스테이지의 아티팩트 상점"></section>
+  <section class="slide explained" data-curse="14"><img class="bg" src="assets/shop-artifact.png" alt=""><div class="shade"></div><div class="content left"><div class="eyebrow">매번 달라지는 빌린 힘</div><h1>같은 영웅도<br><span class="accent">같은 방식으로 싸우지 않습니다.</span></h1><p class="speech">룬과 아이템, 아티팩트를 조합해 장점을 극대화하거나 약점을 뒤집습니다. 더 큰 저주를 감당하면 적도 강해지지만, 보상과 각성이 함께 커집니다.</p><div class="steps"><span>영웅 18</span><b>×</b><span>룬 6</span><b>×</b><span>아이템 96</span><b>×</b><span>아티팩트 21</span></div></div></section>
+
+  <section class="slide visual" data-curse="17"><img class="bg" src="assets/town-all.png" alt="NPC가 모두 모인 마을 전경"></section>
+  <section class="slide explained" data-curse="17"><img class="bg" src="assets/town-all.png" alt=""><div class="shade"></div><div class="content left"><div class="eyebrow">CODEX COLLABORATION · RELEASE POTENTIAL</div><h1>아이디어를 설명하는 대신<br><span class="accent">플레이하며 검증했습니다.</span></h1><p class="speech">저는 재미의 방향과 최종 결정을 맡고, Codex와 구현·실행·수정을 반복했습니다.<br>직접 만든 웹 게임 플랫폼 <strong>Quarterturn에 실제 빌드를 서비스</strong>하며 저장·랭킹·지갑을 플랫폼 연결부로 분리했고, 이 경험을 바탕으로 Hive의 인증·랭킹·운영 기능까지 확장할 수 있습니다.</p><div class="release"><span>Quarterturn Live</span><span>Steam · STOVE</span><span>Hive-ready platform adapter</span></div></div></section>
+
+  <section class="slide visual" data-curse="20"><img class="bg" src="assets/possession-choice.png" alt="어떤 영웅에게 빙의할지 선택하는 장면"></section>
+  <section class="slide explained" data-curse="20"><img class="bg" src="assets/possession-choice.png" alt=""><div class="shade"></div><div class="content center"><div class="eyebrow">당신이 대신 앓아줄 영웅은 누구입니까?</div><h1>어떤 영웅의 저주를<br><span class="accent">대신 앓아주시겠습니까?</span></h1><p class="speech">그 힘으로 싸우고, 그 저주를 견디고,<br>끝내 영웅이 잃어버린 이름을 되돌려줍니다.</p><div class="logo">내림 — 저주를 먹는 자</div></div></section>
+
+  <div class="count" id="count">1 / 14</div><div class="hint">← → 이동 · F 전체화면</div>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')],count=document.querySelector('#count'),curse=document.querySelector('#curse'),fill=document.querySelector('#fill');let at=0;
+    function show(next){at=Math.max(0,Math.min(slides.length-1,next));slides.forEach((s,i)=>s.classList.toggle('active',i===at));const value=+slides[at].dataset.curse;curse.textContent=value;fill.style.width=`${value/20*100}%`;count.textContent=`${at+1} / ${slides.length}`;document.body.classList.toggle('is-landing',at===0)}
+    addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key))show(at+1);if(['ArrowLeft','PageUp'].includes(e.key))show(at-1);if(e.key.toLowerCase()==='f')document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()});
+    addEventListener('click',()=>show(at+1));show(Number(new URLSearchParams(location.search).get('slide')||0));
+  </script>
+</body>
+</html>

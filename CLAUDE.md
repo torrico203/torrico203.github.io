@@ -11,7 +11,7 @@ A static GitHub Pages portfolio site for 임재균 (JaeGyun Lim), served from th
 There is **no build step**. No `package.json`, no bundler, no CI. The main page is a single `index.html` plus three sibling files in `assets/`. Third-party assets (Google Fonts, etc.) are loaded at runtime from public CDNs.
 
 - **Deploy**: `git push origin main` — GitHub Pages serves the repo root directly.
-- **Local preview**: opening `index.html` directly with `file://` works (data is loaded as a JS module, not via `fetch`). For sub-page links (`game/`, `h5/`, `tech/`) to behave correctly, run `python -m http.server 8000` from the repo root.
+- **Local preview**: opening `index.html` directly with `file://` works (data is loaded as a JS module, not via `fetch`). For sub-page links (`tech/`, `projects/`) to behave correctly, run `python -m http.server 8000` from the repo root.
 - **Commit messages are Korean** (see `git log`) — match the existing style when committing.
 
 ## Architecture
@@ -43,12 +43,8 @@ When adding content, edit `data.js`. Most fields use the `{ ko, en }` shape — 
 
 ## File-organization conventions
 
-- **Subdirectory pages are independent landing pages**, not shared partials, and were intentionally left out of the SPA consolidation:
-  - `game/` — board-game prototypes (`Board_DB.html` is the only page with a backend; it talks to Supabase via the CDN client and embeds `SUPABASE_URL` + anon key in the page).
-  - `h5/` — HTML5 game-business pitch deck (`h5.html` uses Chart.js for embedded charts; `gamelist.html` and `phase1_details.html` are supporting pages).
-  - `tech/` — interactive tech-demo write-ups (`bubblepop.html`, `platform.html`).
-  - `my-protected-game-list/gamelist.html` is a near-duplicate of `h5/gamelist.html`. If you change one, check whether the other should change too.
-- All `gamelist.html` pages link out to external games hosted at `cdn.zip-lab.co.kr/data/<game>/game/` — these URLs are not under this repo's control.
+- `tech/` contains independent interactive tech-demo write-ups (`bubblepop.html`, `platform.html`).
+- Competition pitch decks, team introduction, game prototypes, and old HTML5 business proposals have been removed. Keep local exports and temporary files out of Git.
 - The pre-consolidation pages have been moved to `old/` (`index_en.html`, `resume.html`, `resume_en.html`, `portfolio_projects.html`, `portfolio_projects_en.html`, `about.html`). They are no longer linked from the main site but kept in case external URLs ever land on them.
 - `bell.html` (a 돌잔치 초대장 / personal invitation page) and `tech-docs.html` (the hub that `tech/bubblepop.html` and `tech/platform.html` link back to) are kept at the repo root — both have likely-shared URLs or inbound links from sibling pages.
 

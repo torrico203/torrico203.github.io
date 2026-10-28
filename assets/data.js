@@ -174,7 +174,7 @@ window.__DATA__ = {
       tagline: { ko: "게임 포털 + 통합 화폐 SDK + 레거시 리마스터 파이프라인 · 1인 개발",
                  en: "Game portal + unified-currency SDK + legacy remaster pipeline · solo build" },
       stack: "Vite MPA · Phaser 3 · PixiJS v8 · TypeScript · Firebase (Auth/Firestore) · Cloudflare Pages",
-      liveUrl: "https://quarterturn.pages.dev/",
+      liveUrl: "https://quarterturn.dev/",
       caseStudyUrl: "projects/quarterturn.html",
       results: {
         ko: ["게임 15종 등록 (완성 5종)", "dia 통합 지갑 SDK", "iframe 브리지 ~16ms", "Firestore 세이브·랭킹", "ko/en i18n", "1인 개발"],

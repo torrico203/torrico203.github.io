@@ -223,7 +223,7 @@ window.__DATA__ = {
       tagline: { ko: "버블 슈팅 캐주얼 · 단일 코드베이스로 4개 플랫폼 출시",
                  en: "Casual bubble shooter · single codebase, 4 platforms" },
       stack: "TypeScript · Phaser 3 · Vite · Capacitor · webOS · Apps-in-Toss",
-      liveUrl: "https://play.google.com/store/apps/details?id=com.macovill.bellygombp",
+      liveUrl: "https://play.google.com/store/apps/details?id=com.macovill.bubblegame.android",
       caseStudyUrl: "projects/bellygom.html",
       results: {
         ko: ["webOS Smart TV", "Toss 미니앱", "Google Play", "Web"],
